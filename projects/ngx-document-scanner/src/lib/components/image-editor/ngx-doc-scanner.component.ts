@@ -2,10 +2,9 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {LimitsService, PointPositionChange, PositionChangeData, RolesArray} from '../../services/limits.service';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {NgxFilterMenuComponent} from '../filter-menu/ngx-filter-menu.component';
-import {PointShape} from '../../PrivateModels';
+import {EditorActionButton, PointOptions, PointShape} from '../../PrivateModels';
 // import {NgxOpenCVService} from '../../services/ngx-opencv.service';
-import {ImageDimensions, DocScannerConfig, OpenCVState} from '../../PublicModels';
-import {EditorActionButton, PointOptions} from '../../PrivateModels';
+import {DocScannerConfig, ImageDimensions, OpenCVState} from '../../PublicModels';
 import {NgxOpenCVService} from 'ngx-opencv';
 
 declare var cv: any;
@@ -26,61 +25,8 @@ export class NgxDocScannerComponent implements OnInit {
   /**
    * an array of action buttons displayed on the editor screen
    */
-  private editorButtons: Array<EditorActionButton> = [
-    {
-      name: 'exit',
-      action: () => {
-        this.exitEditor.emit('canceled');
-      },
-      icon: 'arrow_back',
-      type: 'fab',
-      mode: 'crop'
-    },
-    {
-      name: 'rotate',
-      action: this.rotateImage.bind(this),
-      icon: 'rotate_right',
-      type: 'fab',
-      mode: 'crop'
-    },
-    {
-      name: 'done_crop',
-      action: async () => {
-        this.mode = 'color';
-        await this.transform();
-        await this.applyFilter(true);
-      },
-      icon: 'done',
-      type: 'fab',
-      mode: 'crop'
-    },
-    {
-      name: 'back',
-      action: () => {
-        this.mode = 'crop';
-        this.loadFile(this.originalImage);
-      },
-      icon: 'arrow_back',
-      type: 'fab',
-      mode: 'color'
-    },
-    {
-      name: 'filter',
-      action: () => {
-        return this.chooseFilters();
-      },
-      icon: 'photo_filter',
-      type: 'fab',
-      mode: 'color'
-    },
-    {
-      name: 'upload',
-      action: this.exportImage.bind(this),
-      icon: 'cloud_upload',
-      type: 'fab',
-      mode: 'color'
-    },
-  ];
+  private editorButtons: Array<EditorActionButton>;
+
   /**
    * returns an array of buttons according to the editor mode
    */
@@ -89,6 +35,7 @@ export class NgxDocScannerComponent implements OnInit {
       return button.mode === this.mode;
     });
   }
+
   /**
    * max width of the preview area
    */
@@ -96,11 +43,11 @@ export class NgxDocScannerComponent implements OnInit {
   /**
    * dimensions of the image container
    */
-  imageDivStyle: {[key: string]: string|number};
+  imageDivStyle: { [key: string]: string | number };
   /**
    * editor div style
    */
-  editorStyle: {[key: string]: string|number};
+  editorStyle: { [key: string]: string | number };
 
   // ************* //
   // EDITOR STATE //
@@ -116,7 +63,7 @@ export class NgxDocScannerComponent implements OnInit {
   /**
    * editor mode
    */
-  mode: 'crop'|'color' = 'crop';
+  mode: 'crop' | 'color' = 'crop';
   /**
    * filter selected by the user, returned by the filter selector bottom sheet
    */
@@ -242,6 +189,66 @@ export class NgxDocScannerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.editorButtons = [
+      {
+        name: 'exit',
+        action: () => {
+          this.exitEditor.emit('canceled');
+        },
+        icon: 'arrow_back',
+        type: 'fab',
+        mode: 'crop'
+      },
+      {
+        name: 'rotate',
+        action: this.rotateImage.bind(this),
+        icon: 'rotate_right',
+        type: 'fab',
+        mode: 'crop'
+      },
+      {
+        name: 'done_crop',
+        action: async () => {
+          this.mode = 'color';
+          await this.transform();
+          if (this.config.filterEnable) {
+            await this.applyFilter(true);
+          }
+        },
+        icon: 'done',
+        type: 'fab',
+        mode: 'crop'
+      },
+      {
+        name: 'back',
+        action: () => {
+          this.mode = 'crop';
+          this.loadFile(this.originalImage);
+        },
+        icon: 'arrow_back',
+        type: 'fab',
+        mode: 'color'
+      },
+      {
+        name: 'filter',
+        action: () => {
+          if (this.config.filterEnable) {
+            return this.chooseFilters();
+          }
+        },
+        icon: 'photo_filter',
+        type: 'fab',
+        mode: this.config.filterEnable ? 'color' : 'disabled'
+      },
+      {
+        name: 'upload',
+        action: this.exportImage.bind(this),
+        icon: 'cloud_upload',
+        type: 'fab',
+        mode: 'color'
+      },
+    ];
+
     // set options from config object
     this.options = new ImageEditorConfig(this.config);
     // set export image icon
@@ -272,12 +279,12 @@ export class NgxDocScannerComponent implements OnInit {
     await this.applyFilter(false);
     if (this.options.maxImageDimensions) {
       this.resize(this.editedImage)
-        .then(resizeResult => {
-          resizeResult.toBlob((blob) => {
-            this.editResult.emit(blob);
-            this.processing.emit(false);
-          }, this.originalImage.type);
-        });
+      .then(resizeResult => {
+        resizeResult.toBlob((blob) => {
+          this.editResult.emit(blob);
+          this.processing.emit(false);
+        }, this.originalImage.type);
+      });
     } else {
       this.editedImage.toBlob((blob) => {
         this.editResult.emit(blob);
@@ -290,7 +297,7 @@ export class NgxDocScannerComponent implements OnInit {
    * open the bottom sheet for selecting filters, and applies the selected filter in preview mode
    */
   private chooseFilters() {
-    const data = { filter: this.selectedFilter };
+    const data = {filter: this.selectedFilter};
     const bottomSheetRef = this.bottomSheet.open(NgxFilterMenuComponent, {
       data: data
     });
@@ -348,7 +355,7 @@ export class NgxDocScannerComponent implements OnInit {
       const img = new Image();
       img.onload = async () => {
         // set edited image canvas and dimensions
-        this.editedImage = <HTMLCanvasElement> document.createElement('canvas');
+        this.editedImage = <HTMLCanvasElement>document.createElement('canvas');
         this.editedImage.width = img.width;
         this.editedImage.height = img.height;
         const ctx = this.editedImage.getContext('2d');
@@ -447,10 +454,12 @@ export class NgxDocScannerComponent implements OnInit {
         const hierarchy = new cv.Mat();
         cv.findContours(dst, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
         const rect = cv.boundingRect(dst);
-        dst.delete(); hierarchy.delete(); contours.delete();
+        dst.delete();
+        hierarchy.delete();
+        contours.delete();
         // transform the rectangle into a set of points
         Object.keys(rect).forEach(key => {
-          rect[key] = rect[key]  * this.imageResizeRatio;
+          rect[key] = rect[key] * this.imageResizeRatio;
         });
 
         const contourCoordinates = [
@@ -512,7 +521,10 @@ export class NgxDocScannerComponent implements OnInit {
         cv.warpPerspective(dst, dst, transformMatrix, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
         cv.imshow(this.editedImage, dst);
 
-        dst.delete(); Ms.delete(); Md.delete(); transformMatrix.delete();
+        dst.delete();
+        Ms.delete();
+        Md.delete();
+        transformMatrix.delete();
 
         this.setPreviewPaneDimensions(this.editedImage);
         this.showPreview().then(() => {
@@ -542,6 +554,10 @@ export class NgxDocScannerComponent implements OnInit {
         grayScale: true,
       };
       const dst = cv.imread(this.editedImage);
+
+      if (!this.config.filterEnable) {
+        this.selectedFilter = 'original';
+      }
 
       switch (this.selectedFilter) {
         case 'original':
@@ -614,7 +630,7 @@ export class NgxDocScannerComponent implements OnInit {
           }
           const dsize = new cv.Size(Math.floor(resizeDimensions.width), Math.floor(resizeDimensions.height));
           cv.resize(src, src, dsize, 0, 0, cv.INTER_AREA);
-          const resizeResult = <HTMLCanvasElement> document.createElement('canvas');
+          const resizeResult = <HTMLCanvasElement>document.createElement('canvas');
           cv.imshow(resizeResult, src);
           src.delete();
           this.processing.emit(false);
@@ -672,7 +688,7 @@ export class NgxDocScannerComponent implements OnInit {
   /**
    * calculate dimensions of the preview canvas
    */
-  private calculateDimensions(width: number, height: number): { width: number; height: number; ratio: number} {
+  private calculateDimensions(width: number, height: number): { width: number; height: number; ratio: number } {
     const ratio = width / height;
 
     const maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
@@ -727,7 +743,7 @@ class ImageEditorConfig implements DocScannerConfig {
   /**
    * css that will be added to the main div of the editor component
    */
-  extraCss: {[key: string]: string|number} = {
+  extraCss: { [key: string]: string | number } = {
     position: 'absolute',
     top: 0,
     left: 0
@@ -736,7 +752,7 @@ class ImageEditorConfig implements DocScannerConfig {
   /**
    * material design theme color name
    */
-  buttonThemeColor: 'primary'|'warn'|'accent' = 'accent';
+  buttonThemeColor: 'primary' | 'warn' | 'accent' = 'accent';
   /**
    * icon for the button that completes the editing and emits the edited image
    */
@@ -763,7 +779,7 @@ class ImageEditorConfig implements DocScannerConfig {
   /**
    * aggregation of the properties regarding the editor style generated by the class constructor
    */
-  editorStyle?: {[key: string]: string|number};
+  editorStyle?: { [key: string]: string | number };
   /**
    * crop tool outline width
    */
@@ -780,7 +796,7 @@ class ImageEditorConfig implements DocScannerConfig {
       });
     }
 
-    this.editorStyle = {'background-color': this.editorBackgroundColor };
+    this.editorStyle = {'background-color': this.editorBackgroundColor};
     Object.assign(this.editorStyle, this.editorDimensions);
     Object.assign(this.editorStyle, this.extraCss);
 

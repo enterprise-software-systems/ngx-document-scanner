@@ -8,7 +8,7 @@ export interface EditorActionButton {
     icon: string;
     action: Function;
     text?: string;
-    mode?: 'crop' | 'color';
+    mode?: 'crop' | 'color' | 'disabled';
 }
 /**
  * a string describing the shape of a draggable point

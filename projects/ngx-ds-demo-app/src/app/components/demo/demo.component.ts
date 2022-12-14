@@ -17,6 +17,7 @@ export class DemoComponent {
     buttonThemeColor: 'primary',
     cropToolColor: '#ff4081',
     cropToolShape: 'rect',
+    filterEnable: false,
     cropToolDimensions: {
       width: 16,
       height: 16

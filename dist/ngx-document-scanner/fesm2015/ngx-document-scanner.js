@@ -558,7 +558,7 @@ class NgxDraggablePointComponent {
 NgxDraggablePointComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ngx-draggable-point',
-                template: "<div #point ngDraggable=\"draggable\"\n     (movingOffset)=\"positionChange($event)\"\n     [ngStyle]=\"pointStyle()\"\n     [position]=\"position\"\n     [bounds]=\"container\"\n     [inBounds]=\"true\"\n     (endOffset)=\"movementEnd($event)\"\n      style=\"z-index: 1000\">\n</div>\n"
+                template: "<div #point ngDraggable=\"draggable\"\r\n     (movingOffset)=\"positionChange($event)\"\r\n     [ngStyle]=\"pointStyle()\"\r\n     [position]=\"position\"\r\n     [bounds]=\"container\"\r\n     [inBounds]=\"true\"\r\n     (endOffset)=\"movementEnd($event)\"\r\n      style=\"z-index: 1000\">\r\n</div>\r\n"
             }] }
 ];
 /** @nocollapse */
@@ -703,7 +703,7 @@ class NgxFilterMenuComponent {
 NgxFilterMenuComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ngx-filter-menu',
-                template: "<mat-action-list>\n  <button mat-list-item *ngFor=\"let option of filterOptions\" (click)=\"selectOption(option.name)\">\n    <mat-icon>{{option.icon}}</mat-icon>\n    <span fxFlex=\"100\" style=\"text-align: start; margin: 5px\">{{option.text}}</span>\n    <span fxFlex=\"100\"></span>\n    <mat-icon *ngIf=\"option.name === data.filter\">done</mat-icon>\n  </button>\n</mat-action-list>\n"
+                template: "<mat-action-list>\r\n  <button mat-list-item *ngFor=\"let option of filterOptions\" (click)=\"selectOption(option.name)\">\r\n    <mat-icon>{{option.icon}}</mat-icon>\r\n    <span fxFlex=\"100\" style=\"text-align: start; margin: 5px\">{{option.text}}</span>\r\n    <span fxFlex=\"100\"></span>\r\n    <mat-icon *ngIf=\"option.name === data.filter\">done</mat-icon>\r\n  </button>\r\n</mat-action-list>\r\n"
             }] }
 ];
 /** @nocollapse */
@@ -865,7 +865,7 @@ class NgxShapeOutlineComponent {
 NgxShapeOutlineComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ngx-shape-outine',
-                template: "<canvas #outline\n        style=\"position: absolute; z-index: 1000\"\n        [ngStyle]=\"{width: dimensions.width + 'px', height: dimensions.height + 'px'}\"\n        *ngIf=\"dimensions\">\n</canvas>\n"
+                template: "<canvas #outline\r\n        style=\"position: absolute; z-index: 1000\"\r\n        [ngStyle]=\"{width: dimensions.width + 'px', height: dimensions.height + 'px'}\"\r\n        *ngIf=\"dimensions\">\r\n</canvas>\r\n"
             }] }
 ];
 /** @nocollapse */
@@ -919,79 +919,6 @@ class NgxDocScannerComponent {
         this.ngxOpenCv = ngxOpenCv;
         this.limitsService = limitsService;
         this.bottomSheet = bottomSheet;
-        // ************* //
-        // EDITOR CONFIG //
-        // ************* //
-        /**
-         * an array of action buttons displayed on the editor screen
-         */
-        this.editorButtons = [
-            {
-                name: 'exit',
-                action: (/**
-                 * @return {?}
-                 */
-                () => {
-                    this.exitEditor.emit('canceled');
-                }),
-                icon: 'arrow_back',
-                type: 'fab',
-                mode: 'crop'
-            },
-            {
-                name: 'rotate',
-                action: this.rotateImage.bind(this),
-                icon: 'rotate_right',
-                type: 'fab',
-                mode: 'crop'
-            },
-            {
-                name: 'done_crop',
-                action: (/**
-                 * @return {?}
-                 */
-                () => __awaiter(this, void 0, void 0, function* () {
-                    this.mode = 'color';
-                    yield this.transform();
-                    yield this.applyFilter(true);
-                })),
-                icon: 'done',
-                type: 'fab',
-                mode: 'crop'
-            },
-            {
-                name: 'back',
-                action: (/**
-                 * @return {?}
-                 */
-                () => {
-                    this.mode = 'crop';
-                    this.loadFile(this.originalImage);
-                }),
-                icon: 'arrow_back',
-                type: 'fab',
-                mode: 'color'
-            },
-            {
-                name: 'filter',
-                action: (/**
-                 * @return {?}
-                 */
-                () => {
-                    return this.chooseFilters();
-                }),
-                icon: 'photo_filter',
-                type: 'fab',
-                mode: 'color'
-            },
-            {
-                name: 'upload',
-                action: this.exportImage.bind(this),
-                icon: 'cloud_upload',
-                type: 'fab',
-                mode: 'color'
-            },
-        ];
         /**
          * true after the image is loaded and preview is displayed
          */
@@ -1113,6 +1040,77 @@ class NgxDocScannerComponent {
      * @return {?}
      */
     ngOnInit() {
+        this.editorButtons = [
+            {
+                name: 'exit',
+                action: (/**
+                 * @return {?}
+                 */
+                () => {
+                    this.exitEditor.emit('canceled');
+                }),
+                icon: 'arrow_back',
+                type: 'fab',
+                mode: 'crop'
+            },
+            {
+                name: 'rotate',
+                action: this.rotateImage.bind(this),
+                icon: 'rotate_right',
+                type: 'fab',
+                mode: 'crop'
+            },
+            {
+                name: 'done_crop',
+                action: (/**
+                 * @return {?}
+                 */
+                () => __awaiter(this, void 0, void 0, function* () {
+                    this.mode = 'color';
+                    yield this.transform();
+                    if (this.config.filterEnable) {
+                        yield this.applyFilter(true);
+                    }
+                })),
+                icon: 'done',
+                type: 'fab',
+                mode: 'crop'
+            },
+            {
+                name: 'back',
+                action: (/**
+                 * @return {?}
+                 */
+                () => {
+                    this.mode = 'crop';
+                    this.loadFile(this.originalImage);
+                }),
+                icon: 'arrow_back',
+                type: 'fab',
+                mode: 'color'
+            },
+            {
+                name: 'filter',
+                action: (/**
+                 * @return {?}
+                 */
+                () => {
+                    if (this.config.filterEnable) {
+                        return this.chooseFilters();
+                    }
+                }),
+                icon: 'photo_filter',
+                type: 'fab',
+                mode: this.config.filterEnable ? 'color' : 'disabled'
+            },
+            {
+                name: 'upload',
+                action: this.exportImage.bind(this),
+                icon: 'cloud_upload',
+                type: 'fab',
+                mode: 'color'
+            },
+        ];
         // set options from config object
         this.options = new ImageEditorConfig(this.config);
         // set export image icon
@@ -1548,6 +1546,9 @@ class NgxDocScannerComponent {
             };
             /** @type {?} */
             const dst = cv.imread(this.editedImage);
+            if (!this.config.filterEnable) {
+                this.selectedFilter = 'original';
+            }
             switch (this.selectedFilter) {
                 case 'original':
                     options.th = false;
@@ -1752,7 +1753,7 @@ class NgxDocScannerComponent {
 NgxDocScannerComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ngx-doc-scanner',
-                template: "<div [ngStyle]=\"editorStyle\" fxLayoutAlign=\"space-around\" style=\"direction: ltr !important\">\n  <div #imageContainer [ngStyle]=\"imageDivStyle\" style=\"margin: auto;\" >\n    <ng-container *ngIf=\"imageLoaded && mode === 'crop'\">\n      <ngx-shape-outine #shapeOutline [color]=\"options.cropToolColor\" [weight]=\"options.cropToolLineWeight\" [dimensions]=\"previewDimensions\"></ngx-shape-outine>\n      <ngx-draggable-point #topLeft [pointOptions]=\"options.pointOptions\" [startPosition]=\"{x: 0, y: 0}\" [limitRoles]=\"['top', 'left']\" [container]=\"imageContainer\"></ngx-draggable-point>\n      <ngx-draggable-point #topRight [pointOptions]=\"options.pointOptions\" [startPosition]=\"{x: previewDimensions.width, y: 0}\" [limitRoles]=\"['top', 'right']\" [container]=\"imageContainer\"></ngx-draggable-point>\n      <ngx-draggable-point #bottomLeft [pointOptions]=\"options.pointOptions\" [startPosition]=\"{x: 0, y: previewDimensions.height}\" [limitRoles]=\"['bottom', 'left']\" [container]=\"imageContainer\"></ngx-draggable-point>\n      <ngx-draggable-point #bottomRight [pointOptions]=\"options.pointOptions\" [startPosition]=\"{x: previewDimensions.width, y: previewDimensions.height}\" [limitRoles]=\"['bottom', 'right']\" [container]=\"imageContainer\"></ngx-draggable-point>\n    </ng-container>\n    <canvas #PreviewCanvas [ngStyle]=\"{'max-width': options.maxPreviewWidth}\" style=\"z-index: 5\" ></canvas>\n  </div>\n  <div class=\"editor-actions\" fxLayout=\"row\" fxLayoutAlign=\"space-around\" style=\"position: absolute; bottom: 0; width: 100vw\">\n    <ng-container *ngFor=\"let button of displayedButtons\" [ngSwitch]=\"button.type\">\n      <button mat-mini-fab *ngSwitchCase=\"'fab'\" [name]=\"button.name\" (click)=\"button.action()\" [color]=\"options.buttonThemeColor\">\n        <mat-icon>{{button.icon}}</mat-icon>\n      </button>\n      <button mat-raised-button *ngSwitchCase=\"'button'\" [name]=\"button.name\" (click)=\"button.action()\" [color]=\"options.buttonThemeColor\">\n        <mat-icon>{{button.icon}}</mat-icon>\n        <span>{{button.text}}}</span>\n      </button>\n    </ng-container>\n  </div>\n</div>\n\n\n",
+                template: "<div [ngStyle]=\"editorStyle\" fxLayoutAlign=\"space-around\" style=\"direction: ltr !important\">\r\n  <div #imageContainer [ngStyle]=\"imageDivStyle\" style=\"margin: auto;\" >\r\n    <ng-container *ngIf=\"imageLoaded && mode === 'crop'\">\r\n      <ngx-shape-outine #shapeOutline [color]=\"options.cropToolColor\" [weight]=\"options.cropToolLineWeight\" [dimensions]=\"previewDimensions\"></ngx-shape-outine>\r\n      <ngx-draggable-point #topLeft [pointOptions]=\"options.pointOptions\" [startPosition]=\"{x: 0, y: 0}\" [limitRoles]=\"['top', 'left']\" [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #topRight [pointOptions]=\"options.pointOptions\" [startPosition]=\"{x: previewDimensions.width, y: 0}\" [limitRoles]=\"['top', 'right']\" [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomLeft [pointOptions]=\"options.pointOptions\" [startPosition]=\"{x: 0, y: previewDimensions.height}\" [limitRoles]=\"['bottom', 'left']\" [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomRight [pointOptions]=\"options.pointOptions\" [startPosition]=\"{x: previewDimensions.width, y: previewDimensions.height}\" [limitRoles]=\"['bottom', 'right']\" [container]=\"imageContainer\"></ngx-draggable-point>\r\n    </ng-container>\r\n    <canvas #PreviewCanvas [ngStyle]=\"{'max-width': options.maxPreviewWidth}\" style=\"z-index: 5\" ></canvas>\r\n  </div>\r\n  <div class=\"editor-actions\" fxLayout=\"row\" fxLayoutAlign=\"space-around\" style=\"position: absolute; bottom: 0; width: 100vw\">\r\n    <ng-container *ngFor=\"let button of displayedButtons\" [ngSwitch]=\"button.type\">\r\n      <button mat-mini-fab *ngSwitchCase=\"'fab'\" [name]=\"button.name\" (click)=\"button.action()\" [color]=\"options.buttonThemeColor\">\r\n        <mat-icon>{{button.icon}}</mat-icon>\r\n      </button>\r\n      <button mat-raised-button *ngSwitchCase=\"'button'\" [name]=\"button.name\" (click)=\"button.action()\" [color]=\"options.buttonThemeColor\">\r\n        <mat-icon>{{button.icon}}</mat-icon>\r\n        <span>{{button.text}}}</span>\r\n      </button>\r\n    </ng-container>\r\n  </div>\r\n</div>\r\n\r\n\r\n",
                 styles: [".editor-actions{padding:12px}.editor-actions button{margin:5px}"]
             }] }
 ];
@@ -2161,6 +2162,11 @@ if (false) {
  */
 function DocScannerConfig() { }
 if (false) {
+    /**
+     * whether filter options are enabled
+     * @type {?|undefined}
+     */
+    DocScannerConfig.prototype.filterEnable;
     /**
      * max dimensions of output image. if set to zero will not resize the image
      * @type {?|undefined}

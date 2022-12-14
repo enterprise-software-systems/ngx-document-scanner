@@ -20,6 +20,10 @@ export interface ImageDimensions {
  */
 export interface DocScannerConfig {
     /**
+     * whether filter options are enabled
+     */
+    filterEnable?: boolean;
+    /**
      * max dimensions of output image. if set to zero will not resize the image
      */
     maxImageDimensions?: ImageDimensions;
