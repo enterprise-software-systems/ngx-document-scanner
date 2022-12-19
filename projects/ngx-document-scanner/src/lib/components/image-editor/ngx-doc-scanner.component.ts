@@ -441,27 +441,45 @@ export class NgxDocScannerComponent implements OnInit {
       setTimeout(() => {
         // load the image and compute the ratio of the old height to the new height, clone it, and resize it
         const processingResizeRatio = 0.5;
-        const dst = cv.imread(this.editedImage);
-        const dsize = new cv.Size(dst.rows * processingResizeRatio, dst.cols * processingResizeRatio);
+        const src = cv.imread(this.editedImage);
+        const dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
+        const dsize = new cv.Size(src.rows * processingResizeRatio, src.cols * processingResizeRatio);
         const ksize = new cv.Size(5, 5);
         // convert the image to grayscale, blur it, and find edges in the image
-        cv.cvtColor(dst, dst, cv.COLOR_RGBA2GRAY, 0);
-        cv.GaussianBlur(dst, dst, ksize, 0, 0, cv.BORDER_DEFAULT);
-        cv.Canny(dst, dst, 75, 200);
+        cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+        // cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
+        // cv.Canny(src, src, 75, 200);
         // find contours
-        cv.threshold(dst, dst, 120, 200, cv.THRESH_BINARY);
+
+        if (this.config.thresholdInfo.thresholdType === 'standard') {
+          cv.threshold(src, src, this.config.thresholdInfo.thresh, this.config.thresholdInfo.maxValue, cv.THRESH_BINARY);
+        } else if (this.config.thresholdInfo.thresholdType === 'adaptive_mean') {
+          cv.adaptiveThreshold(src, src, this.config.thresholdInfo.maxValue, cv.ADAPTIVE_THRESH_MEAN_C,
+            cv.THRESH_BINARY, this.config.thresholdInfo.blockSize, this.config.thresholdInfo.c);
+        } else if (this.config.thresholdInfo.thresholdType === 'adaptive_gaussian') {
+          cv.adaptiveThreshold(src, src, this.config.thresholdInfo.maxValue, cv.ADAPTIVE_THRESH_GAUSSIAN_C,
+            cv.THRESH_BINARY, this.config.thresholdInfo.blockSize, this.config.thresholdInfo.c);
+        }
+
         const contours = new cv.MatVector();
         const hierarchy = new cv.Mat();
-        cv.findContours(dst, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+        cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+        const cnt = contours.get(0);
 
-        // const one = cv.minAreaRect(dst);
-        // const rect = cv.boxPoints(one);
-        // console.log(rect);
+        const rect2 = cv.minAreaRect(cnt);
 
-        const rect = cv.boundingRect(dst);
-        const box = cv.minAreaRect
+        const vertices = cv.RotatedRect.points(rect2);
 
-        dst.delete();
+        for (let i = 0; i < 4; i++) {
+          vertices[i].x = vertices[i].x * this.imageResizeRatio;
+          vertices[i].y = vertices[i].y * this.imageResizeRatio;
+        }
+
+        console.log(vertices);
+
+        const rect = cv.boundingRect(src);
+
+        src.delete();
         hierarchy.delete();
         contours.delete();
         // transform the rectangle into a set of points
@@ -470,10 +488,10 @@ export class NgxDocScannerComponent implements OnInit {
         });
 
         const contourCoordinates = [
-          new PositionChangeData({x: rect.x, y: rect.y}, ['left', 'top']),
-          new PositionChangeData({x: rect.x + rect.width, y: rect.y}, ['right', 'top']),
-          new PositionChangeData({x: rect.x + rect.width, y: rect.y + rect.height}, ['right', 'bottom']),
-          new PositionChangeData({x: rect.x, y: rect.y + rect.height}, ['left', 'bottom']),
+          new PositionChangeData({x: vertices[0].x, y: vertices[0].y}, ['left', 'top']),
+          new PositionChangeData({x: vertices[1].x, y: vertices[1].y}, ['right', 'top']),
+          new PositionChangeData({x: vertices[2].x, y: vertices[2].y}, ['right', 'bottom']),
+          new PositionChangeData({x: vertices[3].x, y: vertices[3].y}, ['left', 'bottom']),
         ];
 
         this.limitsService.repositionPoints(contourCoordinates);

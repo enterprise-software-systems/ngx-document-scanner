@@ -1393,30 +1393,46 @@ class NgxDocScannerComponent {
                 /** @type {?} */
                 const processingResizeRatio = 0.5;
                 /** @type {?} */
-                const dst = cv.imread(this.editedImage);
+                const src = cv.imread(this.editedImage);
                 /** @type {?} */
-                const dsize = new cv.Size(dst.rows * processingResizeRatio, dst.cols * processingResizeRatio);
+                const dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
+                /** @type {?} */
+                const dsize = new cv.Size(src.rows * processingResizeRatio, src.cols * processingResizeRatio);
                 /** @type {?} */
                 const ksize = new cv.Size(5, 5);
                 // convert the image to grayscale, blur it, and find edges in the image
-                cv.cvtColor(dst, dst, cv.COLOR_RGBA2GRAY, 0);
-                cv.GaussianBlur(dst, dst, ksize, 0, 0, cv.BORDER_DEFAULT);
-                cv.Canny(dst, dst, 75, 200);
+                cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+                // cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
+                // cv.Canny(src, src, 75, 200);
                 // find contours
-                cv.threshold(dst, dst, 120, 200, cv.THRESH_BINARY);
+                if (this.config.thresholdInfo.thresholdType === 'standard') {
+                    cv.threshold(src, src, this.config.thresholdInfo.thresh, this.config.thresholdInfo.maxValue, cv.THRESH_BINARY);
+                }
+                else if (this.config.thresholdInfo.thresholdType === 'adaptive_mean') {
+                    cv.adaptiveThreshold(src, src, this.config.thresholdInfo.maxValue, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, this.config.thresholdInfo.blockSize, this.config.thresholdInfo.c);
+                }
+                else if (this.config.thresholdInfo.thresholdType === 'adaptive_gaussian') {
+                    cv.adaptiveThreshold(src, src, this.config.thresholdInfo.maxValue, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, this.config.thresholdInfo.blockSize, this.config.thresholdInfo.c);
+                }
                 /** @type {?} */
                 const contours = new cv.MatVector();
                 /** @type {?} */
                 const hierarchy = new cv.Mat();
-                cv.findContours(dst, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
-                // const one = cv.minAreaRect(dst);
-                // const rect = cv.boxPoints(one);
-                // console.log(rect);
+                cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
                 /** @type {?} */
-                const rect = cv.boundingRect(dst);
+                const cnt = contours.get(0);
                 /** @type {?} */
-                const box = cv.minAreaRect;
-                dst.delete();
+                const rect2 = cv.minAreaRect(cnt);
+                /** @type {?} */
+                const vertices = cv.RotatedRect.points(rect2);
+                for (let i = 0; i < 4; i++) {
+                    vertices[i].x = vertices[i].x * this.imageResizeRatio;
+                    vertices[i].y = vertices[i].y * this.imageResizeRatio;
+                }
+                console.log(vertices);
+                /** @type {?} */
+                const rect = cv.boundingRect(src);
+                src.delete();
                 hierarchy.delete();
                 contours.delete();
                 // transform the rectangle into a set of points
@@ -1429,10 +1445,10 @@ class NgxDocScannerComponent {
                 }));
                 /** @type {?} */
                 const contourCoordinates = [
-                    new PositionChangeData({ x: rect.x, y: rect.y }, ['left', 'top']),
-                    new PositionChangeData({ x: rect.x + rect.width, y: rect.y }, ['right', 'top']),
-                    new PositionChangeData({ x: rect.x + rect.width, y: rect.y + rect.height }, ['right', 'bottom']),
-                    new PositionChangeData({ x: rect.x, y: rect.y + rect.height }, ['left', 'bottom']),
+                    new PositionChangeData({ x: vertices[0].x, y: vertices[0].y }, ['left', 'top']),
+                    new PositionChangeData({ x: vertices[1].x, y: vertices[1].y }, ['right', 'top']),
+                    new PositionChangeData({ x: vertices[2].x, y: vertices[2].y }, ['right', 'bottom']),
+                    new PositionChangeData({ x: vertices[3].x, y: vertices[3].y }, ['left', 'bottom']),
                 ];
                 this.limitsService.repositionPoints(contourCoordinates);
                 // this.processing.emit(false);
@@ -2162,6 +2178,38 @@ if (false) {
     ImageDimensions.prototype.height;
 }
 /**
+ * threshold information for automatically detecting corners
+ * @record
+ */
+function ThresholdInformation() { }
+if (false) {
+    /** @type {?} */
+    ThresholdInformation.prototype.thresholdType;
+    /**
+     * Non-zero value assigned to the pixels for which the condition is satisfied
+     * @type {?|undefined}
+     */
+    ThresholdInformation.prototype.maxValue;
+    /**
+     * Size of a pixel neighborhood that is used to calculate a threshold value for the pixel: 3, 5, 7, and so on.
+     * Only used with adaptive threshold variants
+     * @type {?|undefined}
+     */
+    ThresholdInformation.prototype.blockSize;
+    /**
+     *  Constant subtracted from the mean or weighted mean (see the details below).
+     *  Normally, it is positive but may be zero or negative as well.
+     *  Only used with adaptive threshold variants
+     * @type {?|undefined}
+     */
+    ThresholdInformation.prototype.c;
+    /**
+     * threshold value. Only used with standard threshold type.
+     * @type {?|undefined}
+     */
+    ThresholdInformation.prototype.thresh;
+}
+/**
  * describes a configuration object for the editor
  * @record
  */
@@ -2227,6 +2275,11 @@ if (false) {
      * @type {?|undefined}
      */
     DocScannerConfig.prototype.maxPreviewWidth;
+    /**
+     * config threshold for auto
+     * @type {?|undefined}
+     */
+    DocScannerConfig.prototype.thresholdInfo;
 }
 /**
  * describes a configuration object for the OpenCV service

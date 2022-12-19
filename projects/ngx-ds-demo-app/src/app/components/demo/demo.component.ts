@@ -31,6 +31,13 @@ export class DemoComponent {
       position: 'absolute',
       top: 0,
       left: 0
+    },
+    thresholdInfo: {
+      thresholdType: 'standard',
+      maxValue: 255,
+      thresh: 170,
+      blockSize: 11,
+      c: 6
     }
   };
 

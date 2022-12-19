@@ -19,6 +19,34 @@ export interface ImageDimensions {
 }
 
 /**
+ * threshold information for automatically detecting corners
+ */
+export interface ThresholdInformation {
+  thresholdType: 'standard' | 'adaptive_mean' | 'adaptive_gaussian';
+  /**
+   * Non-zero value assigned to the pixels for which the condition is satisfied
+   */
+  maxValue?: number;
+  /**
+   * Size of a pixel neighborhood that is used to calculate a threshold value for the pixel: 3, 5, 7, and so on.
+   * Only used with adaptive threshold variants
+   */
+  blockSize?: number;
+  /**
+   *  Constant subtracted from the mean or weighted mean (see the details below).
+   *  Normally, it is positive but may be zero or negative as well.
+   *  Only used with adaptive threshold variants
+   */
+  c?: number;
+  /**
+   * threshold value. Only used with standard threshold type.
+   */
+  thresh?: number;
+
+
+}
+
+/**
  * describes a configuration object for the editor
  */
 export interface DocScannerConfig {
@@ -70,6 +98,10 @@ export interface DocScannerConfig {
    * max width of the preview pane
    */
   maxPreviewWidth?: number;
+  /**
+   * config threshold for auto
+   */
+  thresholdInfo?: ThresholdInformation;
 }
 
 /**
