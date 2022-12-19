@@ -101,6 +101,10 @@ export interface DocScannerConfig {
      * config threshold for auto
      */
     thresholdInfo?: ThresholdInformation;
+    /**
+     * whether rotated rectangle is used
+     */
+    useRotatedRectangle?: boolean;
 }
 /**
  * describes a configuration object for the OpenCV service

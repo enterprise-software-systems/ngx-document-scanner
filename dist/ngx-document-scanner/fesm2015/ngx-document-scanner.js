@@ -1423,6 +1423,8 @@ class NgxDocScannerComponent {
                 const cnt = contours.get(0);
                 /** @type {?} */
                 const rect2 = cv.minAreaRect(cnt);
+                console.log(cnt);
+                console.log(rect2);
                 /** @type {?} */
                 const vertices = cv.RotatedRect.points(rect2);
                 for (let i = 0; i < 4; i++) {
@@ -1444,12 +1446,23 @@ class NgxDocScannerComponent {
                     rect[key] = rect[key] * this.imageResizeRatio;
                 }));
                 /** @type {?} */
-                const contourCoordinates = [
-                    new PositionChangeData({ x: vertices[0].x, y: vertices[0].y }, ['left', 'top']),
-                    new PositionChangeData({ x: vertices[1].x, y: vertices[1].y }, ['right', 'top']),
-                    new PositionChangeData({ x: vertices[2].x, y: vertices[2].y }, ['right', 'bottom']),
-                    new PositionChangeData({ x: vertices[3].x, y: vertices[3].y }, ['left', 'bottom']),
-                ];
+                let contourCoordinates;
+                if (this.config.useRotatedRectangle) {
+                    contourCoordinates = [
+                        new PositionChangeData({ x: vertices[0].x, y: vertices[0].y }, ['left', 'top']),
+                        new PositionChangeData({ x: vertices[1].x, y: vertices[1].y }, ['right', 'top']),
+                        new PositionChangeData({ x: vertices[2].x, y: vertices[2].y }, ['right', 'bottom']),
+                        new PositionChangeData({ x: vertices[3].x, y: vertices[3].y }, ['left', 'bottom']),
+                    ];
+                }
+                else {
+                    contourCoordinates = [
+                        new PositionChangeData({ x: rect.x, y: rect.y }, ['left', 'top']),
+                        new PositionChangeData({ x: rect.x + rect.width, y: rect.y }, ['right', 'top']),
+                        new PositionChangeData({ x: rect.x + rect.width, y: rect.y + rect.height }, ['right', 'bottom']),
+                        new PositionChangeData({ x: rect.x, y: rect.y + rect.height }, ['left', 'bottom']),
+                    ];
+                }
                 this.limitsService.repositionPoints(contourCoordinates);
                 // this.processing.emit(false);
                 resolve();
@@ -2280,6 +2293,11 @@ if (false) {
      * @type {?|undefined}
      */
     DocScannerConfig.prototype.thresholdInfo;
+    /**
+     * whether rotated rectangle is used
+     * @type {?|undefined}
+     */
+    DocScannerConfig.prototype.useRotatedRectangle;
 }
 /**
  * describes a configuration object for the OpenCV service

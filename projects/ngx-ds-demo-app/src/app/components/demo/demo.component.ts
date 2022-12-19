@@ -38,7 +38,8 @@ export class DemoComponent {
       thresh: 170,
       blockSize: 11,
       c: 6
-    }
+    },
+    useRotatedRectangle: false
   };
 
   constructor() {}
