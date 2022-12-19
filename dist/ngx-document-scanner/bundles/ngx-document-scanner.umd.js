@@ -2007,7 +2007,10 @@
                     /** @type {?} */
                     var cnt = contours.get(0);
                     /** @type {?} */
-                    var rect2 = cv.minAreaRect(cnt);
+                    var hull = new cv.Mat();
+                    cv.convexHull(cnt, hull, false, true);
+                    /** @type {?} */
+                    var rect2 = cv.minAreaRect(hull);
                     console.log(cnt);
                     console.log(rect2);
                     /** @type {?} */

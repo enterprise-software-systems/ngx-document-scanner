@@ -466,7 +466,9 @@ export class NgxDocScannerComponent implements OnInit {
         cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
         const cnt = contours.get(0);
 
-        const rect2 = cv.minAreaRect(cnt);
+        const hull = new cv.Mat();
+        cv.convexHull(cnt, hull, false, true);
+        const rect2 = cv.minAreaRect(hull);
         console.log(cnt);
         console.log(rect2);
         const vertices = cv.RotatedRect.points(rect2);

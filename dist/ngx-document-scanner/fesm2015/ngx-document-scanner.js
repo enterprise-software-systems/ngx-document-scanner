@@ -1422,7 +1422,10 @@ class NgxDocScannerComponent {
                 /** @type {?} */
                 const cnt = contours.get(0);
                 /** @type {?} */
-                const rect2 = cv.minAreaRect(cnt);
+                const hull = new cv.Mat();
+                cv.convexHull(cnt, hull, false, true);
+                /** @type {?} */
+                const rect2 = cv.minAreaRect(hull);
                 console.log(cnt);
                 console.log(rect2);
                 /** @type {?} */
