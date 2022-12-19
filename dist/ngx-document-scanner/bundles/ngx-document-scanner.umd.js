@@ -1994,8 +1994,13 @@
                     /** @type {?} */
                     var hierarchy = new cv.Mat();
                     cv.findContours(dst, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+                    // const one = cv.minAreaRect(dst);
+                    // const rect = cv.boxPoints(one);
+                    // console.log(rect);
                     /** @type {?} */
                     var rect = cv.boundingRect(dst);
+                    /** @type {?} */
+                    var box = cv.minAreaRect;
                     dst.delete();
                     hierarchy.delete();
                     contours.delete();

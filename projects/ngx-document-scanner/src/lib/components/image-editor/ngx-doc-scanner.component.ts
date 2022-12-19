@@ -453,7 +453,14 @@ export class NgxDocScannerComponent implements OnInit {
         const contours = new cv.MatVector();
         const hierarchy = new cv.Mat();
         cv.findContours(dst, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+
+        // const one = cv.minAreaRect(dst);
+        // const rect = cv.boxPoints(one);
+        // console.log(rect);
+
         const rect = cv.boundingRect(dst);
+        const box = cv.minAreaRect
+
         dst.delete();
         hierarchy.delete();
         contours.delete();
