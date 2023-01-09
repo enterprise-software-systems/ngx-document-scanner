@@ -1986,7 +1986,9 @@ var NgxDocScannerComponent = /** @class */ (function () {
                     var r = cv.minAreaRect(cn);
                     /** @type {?} */
                     var add = true;
-                    if (r.size.height < 50 && r.size.width < 50) {
+                    if (r.size.height < 50 || r.size.width < 50
+                        || r.angle === 90 || r.angle === 180 || r.angle === 0
+                        || r.angle === -90 || r.angle === -180) {
                         continue;
                     }
                     for (var j = 0; j < rects.length; j++) {
@@ -2004,11 +2006,13 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 /** @type {?} */
                 var rect2 = cv.minAreaRect(cnt);
                 for (var i = 0; i < rects.length; i++) {
-                    if (rects[i].size.width + rects[i].size.height > rect2.size.width + rect2.size.height) {
+                    if (rects[i].size.width + rects[i].size.height > rect2.size.width + rect2.size.height
+                        && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
+                            || rects[i].angle === -90 || rects[i].angle === -180)) {
                         rect2 = rects[i];
                     }
-                    console.log(rects);
                 }
+                console.log(rects);
                 console.log('---------------------------------------------------------');
                 console.log(cnt);
                 console.log(rect2);
@@ -2035,8 +2039,7 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 /** @type {?} */
                 var contourCoordinates;
                 if (_this.config.useRotatedRectangle
-                // && this.pointsAreNotTheSame(vertices)
-                ) {
+                    && _this.pointsAreNotTheSame(vertices)) {
                     contourCoordinates = [
                         new PositionChangeData({ x: vertices[0].x, y: vertices[0].y }, ['left', 'top']),
                         new PositionChangeData({ x: vertices[1].x, y: vertices[1].y }, ['right', 'top']),

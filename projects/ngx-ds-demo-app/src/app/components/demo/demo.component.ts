@@ -35,9 +35,9 @@ export class DemoComponent {
     thresholdInfo: {
       thresholdType: 'standard',
       maxValue: 255,
-      thresh: 170,
+      thresh: 165,
       blockSize: 11,
-      c: 6
+      c: 5
     },
     useRotatedRectangle: true
   };
