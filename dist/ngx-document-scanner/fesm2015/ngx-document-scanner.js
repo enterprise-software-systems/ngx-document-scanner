@@ -1421,12 +1421,41 @@ class NgxDocScannerComponent {
                 cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
                 /** @type {?} */
                 const cnt = contours.get(4);
+                console.log('----------UNIQUE RECTANGLES FROM ALL CONTOURS----------');
                 /** @type {?} */
-                const rect2 = cv.minAreaRect(cnt);
+                const rects = [];
+                for (let i = 0; i < contours.size(); i++) {
+                    /** @type {?} */
+                    const cn = contours.get(i);
+                    /** @type {?} */
+                    const r = cv.minAreaRect(cn);
+                    /** @type {?} */
+                    let add = true;
+                    if (r.size.height < 50 && r.size.width < 50) {
+                        continue;
+                    }
+                    for (let j = 0; j < rects.length; j++) {
+                        if (rects[j].angle === r.angle
+                            && rects[j].center.x === r.center.x && rects[j].center.y === r.center.y
+                            && rects[j].size.width === r.size.width && rects[j].size.height === r.size.height) {
+                            add = false;
+                            break;
+                        }
+                    }
+                    if (add) {
+                        rects.push(r);
+                    }
+                }
+                /** @type {?} */
+                let rect2 = cv.minAreaRect(cnt);
+                for (let i = 0; i < rects.length; i++) {
+                    if (rects[i].size.width + rects[i].size.height > rect2.size.width + rect2.size.height) {
+                        rect2 = rects[i];
+                    }
+                    console.log(rects);
+                }
+                console.log('---------------------------------------------------------');
                 console.log(cnt);
-                console.log('------CONTOURS------');
-                console.log(contours);
-                console.log('--------------------');
                 console.log(rect2);
                 /** @type {?} */
                 const vertices = cv.RotatedRect.points(rect2);
@@ -1450,8 +1479,9 @@ class NgxDocScannerComponent {
                 }));
                 /** @type {?} */
                 let contourCoordinates;
-                if (this.config.useRotatedRectangle &&
-                    this.pointsAreNotTheSame(vertices)) {
+                if (this.config.useRotatedRectangle
+                // && this.pointsAreNotTheSame(vertices)
+                ) {
                     contourCoordinates = [
                         new PositionChangeData({ x: vertices[0].x, y: vertices[0].y }, ['left', 'top']),
                         new PositionChangeData({ x: vertices[1].x, y: vertices[1].y }, ['right', 'top']),

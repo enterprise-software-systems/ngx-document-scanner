@@ -34,7 +34,7 @@ export class DemoComponent {
     },
     thresholdInfo: {
       thresholdType: 'standard',
-      maxValue: 200,
+      maxValue: 255,
       thresh: 170,
       blockSize: 11,
       c: 6
