@@ -1,4 +1,4 @@
-<div [ngStyle]="editorStyle" fxLayoutAlign="space-around" style="direction: ltr !important">
+<div [ngStyle]="editorStyle" fxLayout="column" fxLayoutAlign="space-around" style="direction: ltr !important">
   <div #imageContainer [ngStyle]="imageDivStyle" style="margin: auto;">
     <ng-container *ngIf="imageLoaded && mode === 'crop'">
       <ngx-shape-outine #shapeOutline [color]="options.cropToolColor"
@@ -23,7 +23,7 @@
     <canvas #PreviewCanvas [ngStyle]="{'max-width': options.maxPreviewWidth}"
             style="z-index: 5"></canvas>
   </div>
-  <div fxLayout="column" style="position: absolute; bottom: 0; width: 100vw">
+  <div fxLayout="column" style="width: 100vw">
     <div class="editor-actions" fxLayout="row" fxLayoutAlign="space-around">
       <ng-container *ngFor="let button of displayedButtons" [ngSwitch]="button.type">
         <button mat-mini-fab *ngSwitchCase="'fab'" [name]="button.name" (click)="button.action()"
