@@ -602,7 +602,7 @@ export class NgxDocScannerComponent implements OnInit {
         // set new image size
         const dsize = new cv.Size(maxWidth, maxHeight);
         // perform warp
-        cv.warpPerspective(dst, dst, transformMatrix, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+        cv.warpPerspective(dst, dst, transformMatrix, dsize, cv.INTER_NEAREST, cv.BORDER_CONSTANT, new cv.Scalar());
         cv.imshow(this.editedImage, dst);
 
         dst.delete();
@@ -810,8 +810,8 @@ class ImageEditorConfig implements DocScannerConfig {
    * max dimensions of oputput image. if set to zero
    */
   maxImageDimensions: ImageDimensions = {
-    width: 800,
-    height: 1200
+    width: 6000,
+    height: 6000
   };
   /**
    * background color of the main editor div

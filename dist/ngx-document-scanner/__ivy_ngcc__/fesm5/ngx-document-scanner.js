@@ -2155,7 +2155,7 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 /** @type {?} */
                 var dsize = new cv.Size(maxWidth, maxHeight);
                 // perform warp
-                cv.warpPerspective(dst, dst, transformMatrix, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+                cv.warpPerspective(dst, dst, transformMatrix, dsize, cv.INTER_NEAREST, cv.BORDER_CONSTANT, new cv.Scalar());
                 cv.imshow(_this.editedImage, dst);
                 dst.delete();
                 Ms.delete();
@@ -2734,8 +2734,8 @@ ImageEditorConfig = /** @class */ (function () {
          * max dimensions of oputput image. if set to zero
          */
         this.maxImageDimensions = {
-            width: 800,
-            height: 1200
+            width: 6000,
+            height: 6000
         };
         /**
          * background color of the main editor div
