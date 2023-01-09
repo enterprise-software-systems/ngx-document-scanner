@@ -37,23 +37,6 @@
         </button>
       </ng-container>
     </div>
-    <div class="editor-actions" fxLayout="row" fxLayoutAlign="space-around">
-      <div fxLayout="column">
-        <div class="example-label-container">
-          <label id="example-name-label" class="example-name-label">Threshold</label>
-          <label class="example-value-label">{{value}}</label>
-        </div>
-        <mat-slider
-          thumbLabel
-          class="example-margin"
-          [max]="255"
-          [min]="0"
-          [step]="1"
-          [(ngModel)]="value"
-        >
-        </mat-slider>
-      </div>
-    </div>
   </div>
 
 </div>
