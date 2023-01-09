@@ -8,6 +8,7 @@ export declare class NgxDocScannerComponent implements OnInit {
     private ngxOpenCv;
     private limitsService;
     private bottomSheet;
+    value: number;
     /**
      * editor config object
      */

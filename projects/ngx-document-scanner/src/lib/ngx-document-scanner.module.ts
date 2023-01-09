@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatListModule } from '@angular/material/list';
 import {NgxOpenCVService, OpenCvConfigToken} from 'ngx-opencv';
+import {MatSliderModule} from '@angular/material/slider';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import {NgxOpenCVService, OpenCvConfigToken} from 'ngx-opencv';
     AngularDraggableModule,
     CommonModule,
     NgxOpenCVModule,
+    MatSliderModule,
+    FormsModule,
   ],
   exports: [
     FlexLayoutModule,

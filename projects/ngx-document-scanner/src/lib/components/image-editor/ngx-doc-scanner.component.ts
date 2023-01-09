@@ -15,6 +15,8 @@ declare var cv: any;
   styleUrls: ['./ngx-doc-scanner.component.scss']
 })
 export class NgxDocScannerComponent implements OnInit {
+  value = 0;
+
   /**
    * editor config object
    */
