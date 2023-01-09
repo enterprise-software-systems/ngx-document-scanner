@@ -34,12 +34,12 @@ export class DemoComponent {
     },
     thresholdInfo: {
       thresholdType: 'standard',
-      maxValue: 255,
+      maxValue: 200,
       thresh: 170,
       blockSize: 11,
       c: 6
     },
-    useRotatedRectangle: false
+    useRotatedRectangle: true
   };
 
   constructor() {}

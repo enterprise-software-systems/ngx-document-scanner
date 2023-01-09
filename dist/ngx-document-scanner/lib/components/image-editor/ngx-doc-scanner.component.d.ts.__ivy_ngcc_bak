@@ -143,6 +143,7 @@ export declare class NgxDocScannerComponent implements OnInit {
      * detects the contours of the document and
      **/
     private detectContours;
+    private pointsAreNotTheSame;
     /**
      * apply perspective transform
      */

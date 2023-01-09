@@ -1783,13 +1783,13 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 var hierarchy = new cv.Mat();
                 cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
                 /** @type {?} */
-                var cnt = contours.get(0);
+                var cnt = contours.get(4);
                 /** @type {?} */
-                var hull = new cv.Mat();
-                cv.convexHull(cnt, hull, false, true);
-                /** @type {?} */
-                var rect2 = cv.minAreaRect(hull);
+                var rect2 = cv.minAreaRect(cnt);
                 console.log(cnt);
+                console.log('------CONTOURS------');
+                console.log(contours);
+                console.log('--------------------');
                 console.log(rect2);
                 /** @type {?} */
                 var vertices = cv.RotatedRect.points(rect2);
@@ -1813,7 +1813,8 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 }));
                 /** @type {?} */
                 var contourCoordinates;
-                if (_this.config.useRotatedRectangle) {
+                if (_this.config.useRotatedRectangle &&
+                    _this.pointsAreNotTheSame(vertices)) {
                     contourCoordinates = [
                         new PositionChangeData({ x: vertices[0].x, y: vertices[0].y }, ['left', 'top']),
                         new PositionChangeData({ x: vertices[1].x, y: vertices[1].y }, ['right', 'top']),
@@ -1834,6 +1835,20 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 resolve();
             }), 30);
         }));
+    };
+    /**
+     * @private
+     * @param {?} vertices
+     * @return {?}
+     */
+    NgxDocScannerComponent.prototype.pointsAreNotTheSame = /**
+     * @private
+     * @param {?} vertices
+     * @return {?}
+     */
+    function (vertices) {
+        return !(vertices[0].x === vertices[1].x && vertices[1].x === vertices[2].x && vertices[2].x === vertices[3].x &&
+            vertices[0].y === vertices[1].y && vertices[1].y === vertices[2].y && vertices[2].y === vertices[3].y);
     };
     /**
      * apply perspective transform

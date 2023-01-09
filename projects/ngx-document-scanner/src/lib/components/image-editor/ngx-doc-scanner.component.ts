@@ -464,12 +464,12 @@ export class NgxDocScannerComponent implements OnInit {
         const contours = new cv.MatVector();
         const hierarchy = new cv.Mat();
         cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
-        const cnt = contours.get(0);
-
-        const hull = new cv.Mat();
-        cv.convexHull(cnt, hull, false, true);
-        const rect2 = cv.minAreaRect(hull);
+        const cnt = contours.get(4);
+        const rect2 = cv.minAreaRect(cnt);
         console.log(cnt);
+        console.log('------CONTOURS------');
+        console.log(contours);
+        console.log('--------------------');
         console.log(rect2);
         const vertices = cv.RotatedRect.points(rect2);
 
@@ -491,7 +491,9 @@ export class NgxDocScannerComponent implements OnInit {
         });
 
         let contourCoordinates;
-        if (this.config.useRotatedRectangle) {
+        if (this.config.useRotatedRectangle &&
+          this.pointsAreNotTheSame(vertices)
+        ) {
           contourCoordinates = [
             new PositionChangeData({x: vertices[0].x, y: vertices[0].y}, ['left', 'top']),
             new PositionChangeData({x: vertices[1].x, y: vertices[1].y}, ['right', 'top']),
@@ -513,6 +515,11 @@ export class NgxDocScannerComponent implements OnInit {
         resolve();
       }, 30);
     });
+  }
+
+  private pointsAreNotTheSame(vertices: any): boolean {
+    return !(vertices[0].x === vertices[1].x && vertices[1].x === vertices[2].x && vertices[2].x === vertices[3].x &&
+      vertices[0].y === vertices[1].y && vertices[1].y === vertices[2].y && vertices[2].y === vertices[3].y);
   }
 
   /**
