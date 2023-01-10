@@ -844,11 +844,11 @@ class ImageEditorConfig implements DocScannerConfig {
   /**
    * color of the crop tool
    */
-  cropToolColor = '#3cabe2';
+  cropToolColor = '#FF3333';
   /**
    * shape of the crop tool, can be either a rectangle or a circle
    */
-  cropToolShape: PointShape = 'rect';
+  cropToolShape: PointShape = 'circle';
   /**
    * dimensions of the crop tool
    */

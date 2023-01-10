@@ -2506,11 +2506,11 @@ ImageEditorConfig = /** @class */ (function () {
         /**
          * color of the crop tool
          */
-        this.cropToolColor = '#3cabe2';
+        this.cropToolColor = '#FF3333';
         /**
          * shape of the crop tool, can be either a rectangle or a circle
          */
-        this.cropToolShape = 'rect';
+        this.cropToolShape = 'circle';
         /**
          * dimensions of the crop tool
          */
