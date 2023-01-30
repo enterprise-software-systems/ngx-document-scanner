@@ -406,14 +406,19 @@ export class NgxDocScannerComponent implements OnInit {
   /**
    * rotate image 90 degrees
    */
-  rotateImage() {
+  rotateImage(clockwise = true) {
     return new Promise((resolve, reject) => {
       this.processing.emit(true);
       setTimeout(() => {
         const dst = cv.imread(this.editedImage);
         // const dst = new cv.Mat();
         cv.transpose(dst, dst);
-        cv.flip(dst, dst, 1);
+        if (clockwise) {
+          cv.flip(dst, dst, 1);
+        } else {
+          cv.flip(dst, dst, 0);
+        }
+
         cv.imshow(this.editedImage, dst);
         // src.delete();
         dst.delete();
@@ -431,15 +436,17 @@ export class NgxDocScannerComponent implements OnInit {
         };
         // set new preview pane dimensions
 
-        this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+        if (clockwise) {
+          this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+        } else {
+          this.limitsService.rotateAntiClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+        }
         this.showPreview().then(() => {
           this.processing.emit(false);
           resolve();
         });
       }, 30);
     });
-
-
   }
 
   /**

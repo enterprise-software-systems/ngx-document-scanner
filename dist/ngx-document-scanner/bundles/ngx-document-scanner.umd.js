@@ -503,6 +503,47 @@
             })));
         };
         /**
+         * rotate crop tool points anti-clockwise
+         * @param resizeRatios - ratio between the new dimensions and the previous
+         * @param initialPreviewDimensions - preview pane dimensions before rotation
+         * @param initialPositions - current positions before rotation
+         */
+        /**
+         * rotate crop tool points anti-clockwise
+         * @param {?} resizeRatios - ratio between the new dimensions and the previous
+         * @param {?} initialPreviewDimensions - preview pane dimensions before rotation
+         * @param {?} initialPositions - current positions before rotation
+         * @return {?}
+         */
+        LimitsService.prototype.rotateAntiClockwise = /**
+         * rotate crop tool points anti-clockwise
+         * @param {?} resizeRatios - ratio between the new dimensions and the previous
+         * @param {?} initialPreviewDimensions - preview pane dimensions before rotation
+         * @param {?} initialPositions - current positions before rotation
+         * @return {?}
+         */
+        function (resizeRatios, initialPreviewDimensions, initialPositions) {
+            var _this = this;
+            // convert positions to ratio between position to initial pane dimension
+            initialPositions = initialPositions.map((/**
+             * @param {?} point
+             * @return {?}
+             */
+            function (point) {
+                return new PositionChangeData({
+                    x: point.x / initialPreviewDimensions.width,
+                    y: point.y / initialPreviewDimensions.height,
+                }, point.roles);
+            }));
+            this.repositionPoints(initialPositions.map((/**
+             * @param {?} point
+             * @return {?}
+             */
+            function (point) {
+                return _this.rotateCornerAntiClockwise(point);
+            })));
+        };
+        /**
          * returns the corner positions after a 90 degrees clockwise rotation
          */
         /**
@@ -541,6 +582,49 @@
             function (roles) {
                 return _this.compareArray(roles, corner.roles);
             })) + 1];
+            console.log(rotated);
+            return rotated;
+        };
+        /**
+         * returns the corner positions after a 90 degrees anti-clockwise rotation
+         */
+        /**
+         * returns the corner positions after a 90 degrees anti-clockwise rotation
+         * @private
+         * @param {?} corner
+         * @return {?}
+         */
+        LimitsService.prototype.rotateCornerAntiClockwise = /**
+         * returns the corner positions after a 90 degrees anti-clockwise rotation
+         * @private
+         * @param {?} corner
+         * @return {?}
+         */
+        function (corner) {
+            var _this = this;
+            /** @type {?} */
+            var rotated = {
+                x: this._paneDimensions.width * corner.y,
+                y: this._paneDimensions.height * (1 - corner.x),
+                roles: []
+            };
+            // rotates corner according to order
+            /** @type {?} */
+            var order = [
+                ['bottom', 'left'],
+                ['bottom', 'right'],
+                ['top', 'right'],
+                ['top', 'left'],
+                ['bottom', 'left']
+            ];
+            rotated.roles = order[order.findIndex((/**
+             * @param {?} roles
+             * @return {?}
+             */
+            function (roles) {
+                return _this.compareArray(roles, corner.roles);
+            })) + 1];
+            console.log(rotated);
             return rotated;
         };
         /**
@@ -1906,6 +1990,7 @@
         // ************************ //
         /**
          * rotate image 90 degrees
+         * @param {?=} clockwise
          * @return {?}
          */
         NgxDocScannerComponent.prototype.rotateImage = 
@@ -1914,10 +1999,12 @@
         // ************************ //
         /**
          * rotate image 90 degrees
+         * @param {?=} clockwise
          * @return {?}
          */
-        function () {
+        function (clockwise) {
             var _this = this;
+            if (clockwise === void 0) { clockwise = true; }
             return new Promise((/**
              * @param {?} resolve
              * @param {?} reject
@@ -1933,7 +2020,12 @@
                     var dst = cv.imread(_this.editedImage);
                     // const dst = new cv.Mat();
                     cv.transpose(dst, dst);
-                    cv.flip(dst, dst, 1);
+                    if (clockwise) {
+                        cv.flip(dst, dst, 1);
+                    }
+                    else {
+                        cv.flip(dst, dst, 0);
+                    }
                     cv.imshow(_this.editedImage, dst);
                     // src.delete();
                     dst.delete();
@@ -1953,7 +2045,12 @@
                         height: _this.previewDimensions.height / initialPreviewDimensions.height
                     };
                     // set new preview pane dimensions
-                    _this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+                    if (clockwise) {
+                        _this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+                    }
+                    else {
+                        _this.limitsService.rotateAntiClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+                    }
                     _this.showPreview().then((/**
                      * @return {?}
                      */
@@ -2098,14 +2195,6 @@
                     /** @type {?} */
                     var fourthRoles = [_this.isLeft(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'left' : 'right',
                         _this.isTop(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'top' : 'bottom'];
-                    console.log(firstRoles);
-                    console.log(vertices[0]);
-                    console.log(secondRoles);
-                    console.log(vertices[1]);
-                    console.log(thirdRoles);
-                    console.log(vertices[2]);
-                    console.log(fourthRoles);
-                    console.log(vertices[3]);
                     if (_this.config.useRotatedRectangle
                         && _this.pointsAreNotTheSame(vertices)) {
                         contourCoordinates = [

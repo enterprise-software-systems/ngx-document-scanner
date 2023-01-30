@@ -127,6 +127,10 @@ export class DemoComponent implements OnInit {
     this.docScanner.rotateImage();
   }
 
+  rotateAntiClockwise() {
+    this.docScanner.rotateImage(false);
+  }
+
   confirmEdit(): void {
     this.docScanner.doneCrop();
   }
@@ -143,4 +147,6 @@ export class DemoComponent implements OnInit {
     }
 
   }
+
+
 }

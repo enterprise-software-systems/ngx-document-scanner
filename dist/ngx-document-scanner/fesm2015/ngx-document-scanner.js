@@ -220,6 +220,33 @@ class LimitsService {
         })));
     }
     /**
+     * rotate crop tool points anti-clockwise
+     * @param {?} resizeRatios - ratio between the new dimensions and the previous
+     * @param {?} initialPreviewDimensions - preview pane dimensions before rotation
+     * @param {?} initialPositions - current positions before rotation
+     * @return {?}
+     */
+    rotateAntiClockwise(resizeRatios, initialPreviewDimensions, initialPositions) {
+        // convert positions to ratio between position to initial pane dimension
+        initialPositions = initialPositions.map((/**
+         * @param {?} point
+         * @return {?}
+         */
+        point => {
+            return new PositionChangeData({
+                x: point.x / initialPreviewDimensions.width,
+                y: point.y / initialPreviewDimensions.height,
+            }, point.roles);
+        }));
+        this.repositionPoints(initialPositions.map((/**
+         * @param {?} point
+         * @return {?}
+         */
+        point => {
+            return this.rotateCornerAntiClockwise(point);
+        })));
+    }
+    /**
      * returns the corner positions after a 90 degrees clockwise rotation
      * @private
      * @param {?} corner
@@ -248,6 +275,39 @@ class LimitsService {
         roles => {
             return this.compareArray(roles, corner.roles);
         })) + 1];
+        console.log(rotated);
+        return rotated;
+    }
+    /**
+     * returns the corner positions after a 90 degrees anti-clockwise rotation
+     * @private
+     * @param {?} corner
+     * @return {?}
+     */
+    rotateCornerAntiClockwise(corner) {
+        /** @type {?} */
+        const rotated = {
+            x: this._paneDimensions.width * corner.y,
+            y: this._paneDimensions.height * (1 - corner.x),
+            roles: []
+        };
+        // rotates corner according to order
+        /** @type {?} */
+        const order = [
+            ['bottom', 'left'],
+            ['bottom', 'right'],
+            ['top', 'right'],
+            ['top', 'left'],
+            ['bottom', 'left']
+        ];
+        rotated.roles = order[order.findIndex((/**
+         * @param {?} roles
+         * @return {?}
+         */
+        roles => {
+            return this.compareArray(roles, corner.roles);
+        })) + 1];
+        console.log(rotated);
         return rotated;
     }
     /**
@@ -1334,9 +1394,10 @@ class NgxDocScannerComponent {
     // ************************ //
     /**
      * rotate image 90 degrees
+     * @param {?=} clockwise
      * @return {?}
      */
-    rotateImage() {
+    rotateImage(clockwise = true) {
         return new Promise((/**
          * @param {?} resolve
          * @param {?} reject
@@ -1352,7 +1413,12 @@ class NgxDocScannerComponent {
                 const dst = cv.imread(this.editedImage);
                 // const dst = new cv.Mat();
                 cv.transpose(dst, dst);
-                cv.flip(dst, dst, 1);
+                if (clockwise) {
+                    cv.flip(dst, dst, 1);
+                }
+                else {
+                    cv.flip(dst, dst, 0);
+                }
                 cv.imshow(this.editedImage, dst);
                 // src.delete();
                 dst.delete();
@@ -1372,7 +1438,12 @@ class NgxDocScannerComponent {
                     height: this.previewDimensions.height / initialPreviewDimensions.height
                 };
                 // set new preview pane dimensions
-                this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+                if (clockwise) {
+                    this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+                }
+                else {
+                    this.limitsService.rotateAntiClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+                }
                 this.showPreview().then((/**
                  * @return {?}
                  */
@@ -1507,14 +1578,6 @@ class NgxDocScannerComponent {
                 /** @type {?} */
                 const fourthRoles = [this.isLeft(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'left' : 'right',
                     this.isTop(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'top' : 'bottom'];
-                console.log(firstRoles);
-                console.log(vertices[0]);
-                console.log(secondRoles);
-                console.log(vertices[1]);
-                console.log(thirdRoles);
-                console.log(vertices[2]);
-                console.log(fourthRoles);
-                console.log(vertices[3]);
                 if (this.config.useRotatedRectangle
                     && this.pointsAreNotTheSame(vertices)) {
                     contourCoordinates = [

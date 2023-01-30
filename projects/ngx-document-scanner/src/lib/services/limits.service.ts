@@ -76,9 +76,9 @@ export class LimitsService {
       const relevantPoints = this._points.filter(point => {
         return point.roles.includes(direction);
       })
-        .map((point: PointPositionChange) => {
-          return point[this.getDirectionAxis(direction)];
-        });
+      .map((point: PointPositionChange) => {
+        return point[this.getDirectionAxis(direction)];
+      });
       let limit;
       if (direction === 'top' || direction === 'left') {
         limit = Math.max(...relevantPoints);
@@ -174,6 +174,25 @@ export class LimitsService {
   }
 
   /**
+   * rotate crop tool points anti-clockwise
+   * @param resizeRatios - ratio between the new dimensions and the previous
+   * @param initialPreviewDimensions - preview pane dimensions before rotation
+   * @param initialPositions - current positions before rotation
+   */
+  public rotateAntiClockwise(resizeRatios, initialPreviewDimensions, initialPositions: Array<PointPositionChange>) {
+    // convert positions to ratio between position to initial pane dimension
+    initialPositions = initialPositions.map(point => {
+      return new PositionChangeData({
+        x: point.x / initialPreviewDimensions.width,
+        y: point.y / initialPreviewDimensions.height,
+      }, point.roles);
+    });
+    this.repositionPoints(initialPositions.map(point => {
+      return this.rotateCornerAntiClockwise(point);
+    }));
+  }
+
+  /**
    * returns the corner positions after a 90 degrees clockwise rotation
    */
   private rotateCornerClockwise(corner: PointPositionChange): PointPositionChange {
@@ -193,6 +212,31 @@ export class LimitsService {
     rotated.roles = order[order.findIndex(roles => {
       return this.compareArray(roles, corner.roles);
     }) + 1];
+    console.log(rotated);
+    return rotated;
+  }
+
+  /**
+   * returns the corner positions after a 90 degrees anti-clockwise rotation
+   */
+  private rotateCornerAntiClockwise(corner: PointPositionChange): PointPositionChange {
+    const rotated: PointPositionChange = {
+      x: this._paneDimensions.width * corner.y,
+      y: this._paneDimensions.height * (1 - corner.x),
+      roles: []
+    };
+    // rotates corner according to order
+    const order: Array<RolesArray> = [
+      ['bottom', 'left'],
+      ['bottom', 'right'],
+      ['top', 'right'],
+      ['top', 'left'],
+      ['bottom', 'left']
+    ];
+    rotated.roles = order[order.findIndex(roles => {
+      return this.compareArray(roles, corner.roles);
+    }) + 1];
+    console.log(rotated);
     return rotated;
   }
 

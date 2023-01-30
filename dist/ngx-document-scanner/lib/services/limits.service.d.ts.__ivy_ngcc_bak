@@ -52,9 +52,20 @@ export declare class LimitsService {
      */
     rotateClockwise(resizeRatios: any, initialPreviewDimensions: any, initialPositions: Array<PointPositionChange>): void;
     /**
+     * rotate crop tool points anti-clockwise
+     * @param resizeRatios - ratio between the new dimensions and the previous
+     * @param initialPreviewDimensions - preview pane dimensions before rotation
+     * @param initialPositions - current positions before rotation
+     */
+    rotateAntiClockwise(resizeRatios: any, initialPreviewDimensions: any, initialPositions: Array<PointPositionChange>): void;
+    /**
      * returns the corner positions after a 90 degrees clockwise rotation
      */
     private rotateCornerClockwise;
+    /**
+     * returns the corner positions after a 90 degrees anti-clockwise rotation
+     */
+    private rotateCornerAntiClockwise;
     /**
      * checks if two array contain the same values
      * @param array1 - array 1
