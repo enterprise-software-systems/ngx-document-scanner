@@ -1172,6 +1172,17 @@ class NgxDocScannerComponent {
         this.maxPreviewWidth = this.options.maxPreviewWidth;
         this.editorStyle = this.options.editorStyle;
     }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    ngOnChanges(changes) {
+        if (changes.config) {
+            if (changes.config.currentValue.thresholdInfo.thresh !== changes.config.previousValue.thresholdInfo.thresh) {
+                this.loadFile(this.originalImage);
+            }
+        }
+    }
     // ***************************** //
     // editor action buttons methods //
     // ***************************** //
@@ -1502,7 +1513,7 @@ class NgxDocScannerComponent {
                 cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
                 /** @type {?} */
                 const cnt = contours.get(4);
-                console.log('----------UNIQUE RECTANGLES FROM ALL CONTOURS----------');
+                // console.log('----------UNIQUE RECTANGLES FROM ALL CONTOURS----------');
                 /** @type {?} */
                 const rects = [];
                 for (let i = 0; i < contours.size(); i++) {
@@ -1543,24 +1554,25 @@ class NgxDocScannerComponent {
                     // if (isNegative) {
                     //   continue;
                     // }
-                    if ((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
+                    if (((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
                         && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
-                            || rects[i].angle === -90 || rects[i].angle === -180)) {
+                            || rects[i].angle === -90 || rects[i].angle === -180) && ((rects[i].angle > 85 || rects[i].angle < 5)))) {
                         rect2 = rects[i];
                     }
                 }
-                console.log(rects);
-                console.log('---------------------------------------------------------');
-                console.log(cnt);
-                console.log(rect2);
+                // console.log(rects);
+                //
+                // console.log('---------------------------------------------------------');
+                // console.log(cnt);
+                // console.log(rect2);
                 /** @type {?} */
                 const vertices = cv.RotatedRect.points(rect2);
-                console.log(vertices);
+                // console.log(vertices);
                 for (let i = 0; i < 4; i++) {
                     vertices[i].x = vertices[i].x * this.imageResizeRatio;
                     vertices[i].y = vertices[i].y * this.imageResizeRatio;
                 }
-                console.log(vertices);
+                // console.log(vertices);
                 /** @type {?} */
                 const rect = cv.boundingRect(src);
                 src.delete();
@@ -1598,8 +1610,8 @@ class NgxDocScannerComponent {
                         bs.push(i);
                     }
                 }
-                console.log(ts);
-                console.log(bs);
+                // console.log(ts);
+                // console.log(bs);
                 if (this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
                     roles[ts[0]].push('left');
                     roles[ts[1]].push('right');
@@ -1616,7 +1628,7 @@ class NgxDocScannerComponent {
                     roles[bs[1]].push('left');
                     roles[bs[0]].push('right');
                 }
-                console.log(roles);
+                // console.log(roles);
                 if (this.config.useRotatedRectangle
                     && this.pointsAreNotTheSame(vertices)) {
                     contourCoordinates = [

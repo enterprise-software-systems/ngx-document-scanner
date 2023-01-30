@@ -17,6 +17,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { RoutingModule } from './routing.module';
 import { DemoComponent } from './components/demo/demo.component';
 import {OpenCVConfig} from 'ngx-document-scanner';
+import {MatSliderModule} from '@angular/material/slider';
 
 const openCvConfig: OpenCVConfig = {
   openCVDirPath: './assets/opencv'
@@ -42,6 +43,7 @@ const openCvConfig: OpenCVConfig = {
     MatSidenavModule,
     MatListModule,
     RoutingModule,
+    MatSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {LimitsService, PointPositionChange, PositionChangeData, RolesArray} from '../../services/limits.service';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {NgxFilterMenuComponent} from '../filter-menu/ngx-filter-menu.component';
@@ -14,7 +14,7 @@ declare var cv: any;
   templateUrl: './ngx-doc-scanner.component.html',
   styleUrls: ['./ngx-doc-scanner.component.scss']
 })
-export class NgxDocScannerComponent implements OnInit {
+export class NgxDocScannerComponent implements OnInit, OnChanges {
   value = 0;
 
   /**
@@ -164,7 +164,6 @@ export class NgxDocScannerComponent implements OnInit {
    */
   @Input() config: DocScannerConfig;
 
-
   constructor(private ngxOpenCv: NgxOpenCVService, private limitsService: LimitsService, private bottomSheet: MatBottomSheet) {
     this.screenDimensions = {
       width: window.innerWidth,
@@ -252,6 +251,14 @@ export class NgxDocScannerComponent implements OnInit {
     });
     this.maxPreviewWidth = this.options.maxPreviewWidth;
     this.editorStyle = this.options.editorStyle;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.config) {
+      if (changes.config.currentValue.thresholdInfo.thresh !== changes.config.previousValue.thresholdInfo.thresh) {
+        this.loadFile(this.originalImage);
+      }
+    }
   }
 
   // ***************************** //
@@ -482,7 +489,7 @@ export class NgxDocScannerComponent implements OnInit {
         const hierarchy = new cv.Mat();
         cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
         const cnt = contours.get(4);
-        console.log('----------UNIQUE RECTANGLES FROM ALL CONTOURS----------');
+        // console.log('----------UNIQUE RECTANGLES FROM ALL CONTOURS----------');
         const rects = [];
         for (let i = 0; i < contours.size(); i++) {
           const cn = contours.get(i);
@@ -524,26 +531,26 @@ export class NgxDocScannerComponent implements OnInit {
           // if (isNegative) {
           //   continue;
           // }
-          if ((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
+          if (((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
             && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
-              || rects[i].angle === -90 || rects[i].angle === -180)
+              || rects[i].angle === -90 || rects[i].angle === -180) && ((rects[i].angle > 85 || rects[i].angle < 5)))
           ) {
             rect2 = rects[i];
           }
         }
-        console.log(rects);
-
-        console.log('---------------------------------------------------------');
-        console.log(cnt);
-        console.log(rect2);
+        // console.log(rects);
+        //
+        // console.log('---------------------------------------------------------');
+        // console.log(cnt);
+        // console.log(rect2);
         const vertices = cv.RotatedRect.points(rect2);
-        console.log(vertices);
+        // console.log(vertices);
         for (let i = 0; i < 4; i++) {
           vertices[i].x = vertices[i].x * this.imageResizeRatio;
           vertices[i].y = vertices[i].y * this.imageResizeRatio;
         }
 
-        console.log(vertices);
+        // console.log(vertices);
 
         const rect = cv.boundingRect(src);
 
@@ -574,8 +581,8 @@ export class NgxDocScannerComponent implements OnInit {
           }
         }
 
-        console.log(ts);
-        console.log(bs);
+        // console.log(ts);
+        // console.log(bs);
 
         if (this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
           roles[ts[0]].push('left');
@@ -593,7 +600,7 @@ export class NgxDocScannerComponent implements OnInit {
           roles[bs[0]].push('right');
         }
 
-        console.log(roles);
+        // console.log(roles);
 
         if (this.config.useRotatedRectangle
           && this.pointsAreNotTheSame(vertices)

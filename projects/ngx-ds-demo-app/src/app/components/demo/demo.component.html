@@ -46,6 +46,7 @@
   <button mat-mini-fab [name]="done" (click)="confirmEdit()">
     <mat-icon>done</mat-icon>
   </button>
+  <mat-slider min="1" max="255" step="1" [value]="thresh" (change)="onChange($event)"></mat-slider>
 </div>
 
 <div *ngIf="image && !modeIsCrop()">

@@ -1,10 +1,10 @@
-import { EventEmitter, OnInit } from '@angular/core';
+import { EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { LimitsService } from '../../services/limits.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { EditorActionButton, PointOptions, PointShape } from '../../PrivateModels';
 import { DocScannerConfig, ImageDimensions } from '../../PublicModels';
 import { NgxOpenCVService } from 'ngx-opencv';
-export declare class NgxDocScannerComponent implements OnInit {
+export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     private ngxOpenCv;
     private limitsService;
     private bottomSheet;
@@ -116,6 +116,7 @@ export declare class NgxDocScannerComponent implements OnInit {
     config: DocScannerConfig;
     constructor(ngxOpenCv: NgxOpenCVService, limitsService: LimitsService, bottomSheet: MatBottomSheet);
     ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
     /**
      * emits the exitEditor event
      */

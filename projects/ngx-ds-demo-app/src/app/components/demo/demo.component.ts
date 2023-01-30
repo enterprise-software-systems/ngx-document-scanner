@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DocScannerConfig} from '../../../../../ngx-document-scanner/src/lib/PublicModels';
 import {NgxDocScannerComponent} from 'ngx-document-scanner';
+import {MatSliderChange} from '@angular/material/slider';
 
 @Component({
   selector: 'app-demo',
@@ -11,6 +12,7 @@ export class DemoComponent implements OnInit {
 
   @ViewChild(NgxDocScannerComponent) docScanner: NgxDocScannerComponent;
 
+  thresh = 110;
   overZone = false;
   image: File;
   processing: boolean;
@@ -37,8 +39,8 @@ export class DemoComponent implements OnInit {
     },
     thresholdInfo: {
       thresholdType: 'standard',
-      maxValue: 255,
-      thresh: 110,
+      maxValue: 220,
+      thresh: 100,
       blockSize: 11,
       c: 5
     },
@@ -145,8 +147,13 @@ export class DemoComponent implements OnInit {
     } catch (e) {
       return false;
     }
-
   }
 
-
+  onChange($event: MatSliderChange) {
+    const conf = {...this.config};
+    const tInfo = {...conf.thresholdInfo};
+    tInfo.thresh = $event.value;
+    conf.thresholdInfo = tInfo;
+    this.config = conf;
+  }
 }
