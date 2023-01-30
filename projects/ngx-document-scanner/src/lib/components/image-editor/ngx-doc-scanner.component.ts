@@ -489,6 +489,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
         const hierarchy = new cv.Mat();
         cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
         const cnt = contours.get(4);
+        console.log(contours);
         // console.log('----------UNIQUE RECTANGLES FROM ALL CONTOURS----------');
         const rects = [];
         for (let i = 0; i < contours.size(); i++) {
