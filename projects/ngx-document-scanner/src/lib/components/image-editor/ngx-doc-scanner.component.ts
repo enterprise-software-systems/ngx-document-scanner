@@ -551,15 +551,6 @@ export class NgxDocScannerComponent implements OnInit {
         const fourthRoles: RolesArray = [this.isLeft(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'left' : 'right',
           this.isTop(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'top' : 'bottom'];
 
-        console.log(firstRoles);
-        console.log(vertices[0]);
-        console.log(secondRoles);
-        console.log(vertices[1]);
-        console.log(thirdRoles);
-        console.log(vertices[2]);
-        console.log(fourthRoles);
-        console.log(vertices[3]);
-
         if (this.config.useRotatedRectangle
           && this.pointsAreNotTheSame(vertices)
         ) {
