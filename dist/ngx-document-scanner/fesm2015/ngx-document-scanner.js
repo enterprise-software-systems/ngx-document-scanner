@@ -1495,13 +1495,33 @@ class NgxDocScannerComponent {
                 }));
                 /** @type {?} */
                 let contourCoordinates;
+                /** @type {?} */
+                const firstRoles = [this.isLeft(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'left' : 'right',
+                    this.isTop(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+                /** @type {?} */
+                const secondRoles = [this.isLeft(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'left' : 'right',
+                    this.isTop(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+                /** @type {?} */
+                const thirdRoles = [this.isLeft(vertices[2], [vertices[1], vertices[0], vertices[3]]) ? 'left' : 'right',
+                    this.isTop(vertices[2], [vertices[1], vertices[0], vertices[3]]) ? 'top' : 'bottom'];
+                /** @type {?} */
+                const fourthRoles = [this.isLeft(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'left' : 'right',
+                    this.isTop(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'top' : 'bottom'];
+                console.log(firstRoles);
+                console.log(vertices[0]);
+                console.log(secondRoles);
+                console.log(vertices[1]);
+                console.log(thirdRoles);
+                console.log(vertices[2]);
+                console.log(fourthRoles);
+                console.log(vertices[3]);
                 if (this.config.useRotatedRectangle
                     && this.pointsAreNotTheSame(vertices)) {
                     contourCoordinates = [
-                        new PositionChangeData({ x: vertices[0].x, y: vertices[0].y }, ['left', 'top']),
-                        new PositionChangeData({ x: vertices[1].x, y: vertices[1].y }, ['right', 'top']),
-                        new PositionChangeData({ x: vertices[2].x, y: vertices[2].y }, ['right', 'bottom']),
-                        new PositionChangeData({ x: vertices[3].x, y: vertices[3].y }, ['left', 'bottom']),
+                        new PositionChangeData({ x: vertices[0].x, y: vertices[0].y }, firstRoles),
+                        new PositionChangeData({ x: vertices[1].x, y: vertices[1].y }, secondRoles),
+                        new PositionChangeData({ x: vertices[2].x, y: vertices[2].y }, thirdRoles),
+                        new PositionChangeData({ x: vertices[3].x, y: vertices[3].y }, fourthRoles),
                     ];
                 }
                 else {
@@ -1517,6 +1537,36 @@ class NgxDocScannerComponent {
                 resolve();
             }), 30);
         }));
+    }
+    /**
+     * @param {?} coordinate
+     * @param {?} otherVertices
+     * @return {?}
+     */
+    isLeft(coordinate, otherVertices) {
+        /** @type {?} */
+        let count = 0;
+        for (let i = 0; i < otherVertices.length; i++) {
+            if (coordinate.x < otherVertices[i].x) {
+                count++;
+            }
+        }
+        return count >= 2;
+    }
+    /**
+     * @param {?} coordinate
+     * @param {?} otherVertices
+     * @return {?}
+     */
+    isTop(coordinate, otherVertices) {
+        /** @type {?} */
+        let count = 0;
+        for (let i = 0; i < otherVertices.length; i++) {
+            if (coordinate.y < otherVertices[i].y) {
+                count++;
+            }
+        }
+        return count >= 2;
     }
     /**
      * @private
