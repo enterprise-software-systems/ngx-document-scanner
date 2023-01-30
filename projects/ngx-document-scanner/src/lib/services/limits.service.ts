@@ -212,7 +212,6 @@ export class LimitsService {
     rotated.roles = order[order.findIndex(roles => {
       return this.compareArray(roles, corner.roles);
     }) + 1];
-    console.log(rotated);
     return rotated;
   }
 
@@ -236,7 +235,6 @@ export class LimitsService {
     rotated.roles = order[order.findIndex(roles => {
       return this.compareArray(roles, corner.roles);
     }) + 1];
-    console.log(rotated);
     return rotated;
   }
 
