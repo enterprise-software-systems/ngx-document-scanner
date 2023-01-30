@@ -120,6 +120,9 @@ export declare class NgxDocScannerComponent implements OnInit {
      * emits the exitEditor event
      */
     exit(): void;
+    getMode(): string;
+    doneCrop(): Promise<void>;
+    undo(): void;
     /**
      * applies the selected filter, and when done emits the resulted image
      */
@@ -139,7 +142,7 @@ export declare class NgxDocScannerComponent implements OnInit {
     /**
      * rotate image 90 degrees
      */
-    private rotateImage;
+    rotateImage(): Promise<unknown>;
     /**
      * detects the contours of the document and
      **/

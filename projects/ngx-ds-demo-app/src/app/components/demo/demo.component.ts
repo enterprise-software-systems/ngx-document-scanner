@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {DocScannerConfig} from '../../../../../ngx-document-scanner/src/lib/PublicModels';
+import {NgxDocScannerComponent} from 'ngx-document-scanner';
 
 @Component({
   selector: 'app-demo',
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.scss']
 })
-export class DemoComponent {
+export class DemoComponent implements OnInit {
+
+  @ViewChild(NgxDocScannerComponent) docScanner: NgxDocScannerComponent;
 
   overZone = false;
   image: File;
@@ -24,7 +27,7 @@ export class DemoComponent {
     },
     exportImageIcon: 'cloud_download',
     editorDimensions: {
-      width: '99vw',
+      width: '20vw',
       height: '82vh'
     },
     extraCss: {
@@ -35,14 +38,15 @@ export class DemoComponent {
     thresholdInfo: {
       thresholdType: 'standard',
       maxValue: 255,
-      thresh: 165,
+      thresh: 110,
       blockSize: 11,
       c: 5
     },
     useRotatedRectangle: true
   };
 
-  constructor() {}
+  constructor() {
+  }
 
   // ******************* //
   // file input handlers //
@@ -98,7 +102,7 @@ export class DemoComponent {
 
   // handles the result emitted by the editor
   editResult(result: Blob) {
-    const link = <HTMLAnchorElement> document.createElement('a');
+    const link = <HTMLAnchorElement>document.createElement('a');
     link.href = URL.createObjectURL(result);
     link.setAttribute('download', `edited_image_${new Date().toLocaleString()}.${this.image.type.split('/')[1]}`);
     link.click();
@@ -115,4 +119,28 @@ export class DemoComponent {
     this.processing = processing;
   }
 
+  ngOnInit(): void {
+    // this.image = readFile('H:\\Customers\\F+W\\Workshop\\Example Docuscan Images\\4 Corners\\Aarron Caldwell 2023-01-1712-13-41.jpg');
+  }
+
+  rotate(): void {
+    this.docScanner.rotateImage();
+  }
+
+  confirmEdit(): void {
+    this.docScanner.doneCrop();
+  }
+
+  undo(): void {
+    this.docScanner.undo();
+  }
+
+  modeIsCrop(): boolean {
+    try {
+      return this.docScanner.getMode() === 'crop';
+    } catch (e) {
+      return false;
+    }
+
+  }
 }

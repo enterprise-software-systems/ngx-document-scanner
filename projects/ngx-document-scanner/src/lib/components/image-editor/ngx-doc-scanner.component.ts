@@ -210,23 +210,14 @@ export class NgxDocScannerComponent implements OnInit {
       },
       {
         name: 'done_crop',
-        action: async () => {
-          this.mode = 'color';
-          await this.transform();
-          if (this.config.filterEnable) {
-            await this.applyFilter(true);
-          }
-        },
+        action: this.doneCrop(),
         icon: 'done',
         type: 'fab',
         mode: 'crop'
       },
       {
         name: 'back',
-        action: () => {
-          this.mode = 'crop';
-          this.loadFile(this.originalImage);
-        },
+        action: this.undo(),
         icon: 'arrow_back',
         type: 'fab',
         mode: 'color'
@@ -272,6 +263,23 @@ export class NgxDocScannerComponent implements OnInit {
    */
   exit() {
     this.exitEditor.emit('canceled');
+  }
+
+  getMode(): string {
+    return this.mode;
+  }
+
+  async doneCrop() {
+    this.mode = 'color';
+    await this.transform();
+    if (this.config.filterEnable) {
+      await this.applyFilter(true);
+    }
+  }
+
+  undo() {
+    this.mode = 'crop';
+    this.loadFile(this.originalImage);
   }
 
   /**
@@ -398,7 +406,7 @@ export class NgxDocScannerComponent implements OnInit {
   /**
    * rotate image 90 degrees
    */
-  private rotateImage() {
+  rotateImage() {
     return new Promise((resolve, reject) => {
       this.processing.emit(true);
       setTimeout(() => {
@@ -449,8 +457,8 @@ export class NgxDocScannerComponent implements OnInit {
         const ksize = new cv.Size(5, 5);
         // convert the image to grayscale, blur it, and find edges in the image
         cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
-        // cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
-        // cv.Canny(src, src, 75, 200);
+        cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
+        cv.Canny(src, src, 75, 200);
         // find contours
 
         if (this.config.thresholdInfo.thresholdType === 'standard') {
@@ -500,7 +508,8 @@ export class NgxDocScannerComponent implements OnInit {
         for (let i = 0; i < rects.length; i++) {
           if (rects[i].size.width + rects[i].size.height > rect2.size.width + rect2.size.height
             && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
-              || rects[i].angle === -90 || rects[i].angle === -180)) {
+              || rects[i].angle === -90 || rects[i].angle === -180)
+          ) {
             rect2 = rects[i];
           }
         }

@@ -17,18 +17,36 @@
        (dragleave)="$event.preventDefault(); overZone = false;"
        (dragover)="$event.preventDefault(); overZone = true;"
        (click)="hiddenInput.click()">
-    <div fxLayout="column" fxFlex="100"  fxLayoutAlign="space-around" style="text-align: center">
+    <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-around" style="text-align: center">
       <span class="inner-text" style="margin-top: auto; text-align: center">Drop an image here, or click to upload</span>
-      <mat-icon color="primary" class="cloud-icon" style="margin-bottom:auto; margin-top: 12px; font-size: 64px;">cloud_upload</mat-icon>
+      <mat-icon color="primary" class="cloud-icon"
+                style="margin-bottom:auto; margin-top: 12px; font-size: 64px;">cloud_upload
+      </mat-icon>
     </div>
   </div>
 </div>
 <input #hiddenInput type="file" (change)="loadFile($event)" style="display:none" accept="image/*">
 
 <!--Loading Indicator-->
-<div style="width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.16); position: fixed; top: 0; left: 0; z-index: 100"
-     *ngIf="processing && this.image"
-     fxFlex="100"
-     fxLayoutAlign="space-around">
+<div
+  style="width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.16); position: fixed; top: 0; left: 0; z-index: 100"
+  *ngIf="processing && this.image"
+  fxFlex="100"
+  fxLayoutAlign="space-around">
   <mat-spinner style="z-index: 500; margin: auto; width: 100px"></mat-spinner>
+</div>
+
+<div *ngIf="image && modeIsCrop()">
+  <button mat-mini-fab [name]="rotate" (click)="rotate()">
+    <mat-icon>rotate_right</mat-icon>
+  </button>
+  <button mat-mini-fab [name]="done" (click)="confirmEdit()">
+    <mat-icon>done</mat-icon>
+  </button>
+</div>
+
+<div *ngIf="image && !modeIsCrop()">
+  <button mat-mini-fab [name]="undo" (click)="undo()">
+    <mat-icon>undo</mat-icon>
+  </button>
 </div>

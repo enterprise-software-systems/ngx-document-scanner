@@ -23,21 +23,21 @@
     <canvas #PreviewCanvas [ngStyle]="{'max-width': options.maxPreviewWidth}"
             style="z-index: 5"></canvas>
   </div>
-  <div fxLayout="column" style="width: 100vw">
-    <div class="editor-actions" fxLayout="row" fxLayoutAlign="space-around">
-      <ng-container *ngFor="let button of displayedButtons" [ngSwitch]="button.type">
-        <button mat-mini-fab *ngSwitchCase="'fab'" [name]="button.name" (click)="button.action()"
-                [color]="options.buttonThemeColor">
-          <mat-icon>{{button.icon}}</mat-icon>
-        </button>
-        <button mat-raised-button *ngSwitchCase="'button'" [name]="button.name"
-                (click)="button.action()" [color]="options.buttonThemeColor">
-          <mat-icon>{{button.icon}}</mat-icon>
-          <span>{{button.text}}}</span>
-        </button>
-      </ng-container>
-    </div>
-  </div>
+<!--  <div fxLayout="column" style="width: 100vw">-->
+<!--    <div class="editor-actions" fxLayout="row" fxLayoutAlign="space-around">-->
+<!--      <ng-container *ngFor="let button of displayedButtons" [ngSwitch]="button.type">-->
+<!--        <button mat-mini-fab *ngSwitchCase="'fab'" [name]="button.name" (click)="button.action()"-->
+<!--                [color]="options.buttonThemeColor">-->
+<!--          <mat-icon>{{button.icon}}</mat-icon>-->
+<!--        </button>-->
+<!--        <button mat-raised-button *ngSwitchCase="'button'" [name]="button.name"-->
+<!--                (click)="button.action()" [color]="options.buttonThemeColor">-->
+<!--          <mat-icon>{{button.icon}}</mat-icon>-->
+<!--          <span>{{button.text}}}</span>-->
+<!--        </button>-->
+<!--      </ng-container>-->
+<!--    </div>-->
+<!--  </div>-->
 
 </div>
 

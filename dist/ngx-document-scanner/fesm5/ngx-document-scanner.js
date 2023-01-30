@@ -1281,39 +1281,14 @@ var NgxDocScannerComponent = /** @class */ (function () {
             },
             {
                 name: 'done_crop',
-                action: (/**
-                 * @return {?}
-                 */
-                function () { return __awaiter(_this, void 0, void 0, function () {
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                this.mode = 'color';
-                                return [4 /*yield*/, this.transform()];
-                            case 1:
-                                _a.sent();
-                                if (!this.config.filterEnable) return [3 /*break*/, 3];
-                                return [4 /*yield*/, this.applyFilter(true)];
-                            case 2:
-                                _a.sent();
-                                _a.label = 3;
-                            case 3: return [2 /*return*/];
-                        }
-                    });
-                }); }),
+                action: this.doneCrop(),
                 icon: 'done',
                 type: 'fab',
                 mode: 'crop'
             },
             {
                 name: 'back',
-                action: (/**
-                 * @return {?}
-                 */
-                function () {
-                    _this.mode = 'crop';
-                    _this.loadFile(_this.originalImage);
-                }),
+                action: this.undo(),
                 icon: 'arrow_back',
                 type: 'fab',
                 mode: 'color'
@@ -1378,6 +1353,50 @@ var NgxDocScannerComponent = /** @class */ (function () {
      */
     function () {
         this.exitEditor.emit('canceled');
+    };
+    /**
+     * @return {?}
+     */
+    NgxDocScannerComponent.prototype.getMode = /**
+     * @return {?}
+     */
+    function () {
+        return this.mode;
+    };
+    /**
+     * @return {?}
+     */
+    NgxDocScannerComponent.prototype.doneCrop = /**
+     * @return {?}
+     */
+    function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.mode = 'color';
+                        return [4 /*yield*/, this.transform()];
+                    case 1:
+                        _a.sent();
+                        if (!this.config.filterEnable) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.applyFilter(true)];
+                    case 2:
+                        _a.sent();
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * @return {?}
+     */
+    NgxDocScannerComponent.prototype.undo = /**
+     * @return {?}
+     */
+    function () {
+        this.mode = 'crop';
+        this.loadFile(this.originalImage);
     };
     /**
      * applies the selected filter, and when done emits the resulted image
@@ -1667,7 +1686,6 @@ var NgxDocScannerComponent = /** @class */ (function () {
     // ************************ //
     /**
      * rotate image 90 degrees
-     * @private
      * @return {?}
      */
     NgxDocScannerComponent.prototype.rotateImage = 
@@ -1676,7 +1694,6 @@ var NgxDocScannerComponent = /** @class */ (function () {
     // ************************ //
     /**
      * rotate image 90 degrees
-     * @private
      * @return {?}
      */
     function () {
@@ -1768,8 +1785,8 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 var ksize = new cv.Size(5, 5);
                 // convert the image to grayscale, blur it, and find edges in the image
                 cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
-                // cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
-                // cv.Canny(src, src, 75, 200);
+                cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
+                cv.Canny(src, src, 75, 200);
                 // find contours
                 if (_this.config.thresholdInfo.thresholdType === 'standard') {
                     cv.threshold(src, src, _this.config.thresholdInfo.thresh, _this.config.thresholdInfo.maxValue, cv.THRESH_BINARY);
@@ -2293,7 +2310,7 @@ var NgxDocScannerComponent = /** @class */ (function () {
     NgxDocScannerComponent.decorators = [
         { type: Component, args: [{
                     selector: 'ngx-doc-scanner',
-                    template: "<div [ngStyle]=\"editorStyle\" fxLayout=\"column\" fxLayoutAlign=\"space-around\" style=\"direction: ltr !important\">\r\n  <div #imageContainer [ngStyle]=\"imageDivStyle\" style=\"margin: auto;\">\r\n    <ng-container *ngIf=\"imageLoaded && mode === 'crop'\">\r\n      <ngx-shape-outine #shapeOutline [color]=\"options.cropToolColor\"\r\n                        [weight]=\"options.cropToolLineWeight\"\r\n                        [dimensions]=\"previewDimensions\"></ngx-shape-outine>\r\n      <ngx-draggable-point #topLeft [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: 0, y: 0}\" [limitRoles]=\"['top', 'left']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #topRight [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: previewDimensions.width, y: 0}\"\r\n                           [limitRoles]=\"['top', 'right']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomLeft [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: 0, y: previewDimensions.height}\"\r\n                           [limitRoles]=\"['bottom', 'left']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomRight [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: previewDimensions.width, y: previewDimensions.height}\"\r\n                           [limitRoles]=\"['bottom', 'right']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n    </ng-container>\r\n    <canvas #PreviewCanvas [ngStyle]=\"{'max-width': options.maxPreviewWidth}\"\r\n            style=\"z-index: 5\"></canvas>\r\n  </div>\r\n  <div fxLayout=\"column\" style=\"width: 100vw\">\r\n    <div class=\"editor-actions\" fxLayout=\"row\" fxLayoutAlign=\"space-around\">\r\n      <ng-container *ngFor=\"let button of displayedButtons\" [ngSwitch]=\"button.type\">\r\n        <button mat-mini-fab *ngSwitchCase=\"'fab'\" [name]=\"button.name\" (click)=\"button.action()\"\r\n                [color]=\"options.buttonThemeColor\">\r\n          <mat-icon>{{button.icon}}</mat-icon>\r\n        </button>\r\n        <button mat-raised-button *ngSwitchCase=\"'button'\" [name]=\"button.name\"\r\n                (click)=\"button.action()\" [color]=\"options.buttonThemeColor\">\r\n          <mat-icon>{{button.icon}}</mat-icon>\r\n          <span>{{button.text}}}</span>\r\n        </button>\r\n      </ng-container>\r\n    </div>\r\n  </div>\r\n\r\n</div>\r\n\r\n\r\n",
+                    template: "<div [ngStyle]=\"editorStyle\" fxLayout=\"column\" fxLayoutAlign=\"space-around\" style=\"direction: ltr !important\">\r\n  <div #imageContainer [ngStyle]=\"imageDivStyle\" style=\"margin: auto;\">\r\n    <ng-container *ngIf=\"imageLoaded && mode === 'crop'\">\r\n      <ngx-shape-outine #shapeOutline [color]=\"options.cropToolColor\"\r\n                        [weight]=\"options.cropToolLineWeight\"\r\n                        [dimensions]=\"previewDimensions\"></ngx-shape-outine>\r\n      <ngx-draggable-point #topLeft [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: 0, y: 0}\" [limitRoles]=\"['top', 'left']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #topRight [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: previewDimensions.width, y: 0}\"\r\n                           [limitRoles]=\"['top', 'right']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomLeft [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: 0, y: previewDimensions.height}\"\r\n                           [limitRoles]=\"['bottom', 'left']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomRight [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: previewDimensions.width, y: previewDimensions.height}\"\r\n                           [limitRoles]=\"['bottom', 'right']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n    </ng-container>\r\n    <canvas #PreviewCanvas [ngStyle]=\"{'max-width': options.maxPreviewWidth}\"\r\n            style=\"z-index: 5\"></canvas>\r\n  </div>\r\n<!--  <div fxLayout=\"column\" style=\"width: 100vw\">-->\r\n<!--    <div class=\"editor-actions\" fxLayout=\"row\" fxLayoutAlign=\"space-around\">-->\r\n<!--      <ng-container *ngFor=\"let button of displayedButtons\" [ngSwitch]=\"button.type\">-->\r\n<!--        <button mat-mini-fab *ngSwitchCase=\"'fab'\" [name]=\"button.name\" (click)=\"button.action()\"-->\r\n<!--                [color]=\"options.buttonThemeColor\">-->\r\n<!--          <mat-icon>{{button.icon}}</mat-icon>-->\r\n<!--        </button>-->\r\n<!--        <button mat-raised-button *ngSwitchCase=\"'button'\" [name]=\"button.name\"-->\r\n<!--                (click)=\"button.action()\" [color]=\"options.buttonThemeColor\">-->\r\n<!--          <mat-icon>{{button.icon}}</mat-icon>-->\r\n<!--          <span>{{button.text}}}</span>-->\r\n<!--        </button>-->\r\n<!--      </ng-container>-->\r\n<!--    </div>-->\r\n<!--  </div>-->\r\n\r\n</div>\r\n\r\n\r\n",
                     styles: [".editor-actions{padding:12px}.editor-actions button{margin:5px}.example-h2{margin-left:10px;margin-right:10px}.example-section{display:flex;flex-wrap:wrap;align-content:center;align-items:center}.example-margin{margin:8px}.example-width{max-width:180px;width:100%}.mat-mdc-slider{max-width:300px;width:100%}.mat-mdc-card+.mat-mdc-card{margin-top:8px}.example-result-card h2{margin:0 8px}.example-label-container{display:flex;justify-content:space-between;margin:20px 10px 0;max-width:284px}.example-result-card .example-value-label{font-weight:600}"]
                 }] }
     ];
