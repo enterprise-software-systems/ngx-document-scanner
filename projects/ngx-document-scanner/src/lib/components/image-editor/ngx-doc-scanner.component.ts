@@ -513,7 +513,18 @@ export class NgxDocScannerComponent implements OnInit {
 
         let rect2 = cv.minAreaRect(cnt);
         for (let i = 0; i < rects.length; i++) {
-          if (rects[i].size.width + rects[i].size.height > rect2.size.width + rect2.size.height
+          // const v = cv.RotatedRect.points(rects[i]);
+          // let isNegative = false;
+          // for (let j = 0; j < v.length; j++) {
+          //   if (v[j].x < 0 || v[j].y < 0) {
+          //     isNegative = true;
+          //     break;
+          //   }
+          // }
+          // if (isNegative) {
+          //   continue;
+          // }
+          if ((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
             && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
               || rects[i].angle === -90 || rects[i].angle === -180)
           ) {
@@ -526,7 +537,7 @@ export class NgxDocScannerComponent implements OnInit {
         console.log(cnt);
         console.log(rect2);
         const vertices = cv.RotatedRect.points(rect2);
-
+        console.log(vertices);
         for (let i = 0; i < 4; i++) {
           vertices[i].x = vertices[i].x * this.imageResizeRatio;
           vertices[i].y = vertices[i].y * this.imageResizeRatio;
@@ -546,17 +557,43 @@ export class NgxDocScannerComponent implements OnInit {
 
         let contourCoordinates;
 
-        const firstRoles: RolesArray = [this.isLeft(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'left' : 'right',
-          this.isTop(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+        const firstRoles: RolesArray = [this.isTop(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+        const secondRoles: RolesArray = [this.isTop(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+        const thirdRoles: RolesArray = [this.isTop(vertices[2], [vertices[0], vertices[1], vertices[3]]) ? 'top' : 'bottom'];
+        const fourthRoles: RolesArray = [this.isTop(vertices[3], [vertices[0], vertices[2], vertices[1]]) ? 'top' : 'bottom'];
 
-        const secondRoles: RolesArray = [this.isLeft(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'left' : 'right',
-          this.isTop(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+        const roles = [firstRoles, secondRoles, thirdRoles, fourthRoles];
+        const ts = [];
+        const bs = [];
 
-        const thirdRoles: RolesArray = [this.isLeft(vertices[2], [vertices[1], vertices[0], vertices[3]]) ? 'left' : 'right',
-          this.isTop(vertices[2], [vertices[1], vertices[0], vertices[3]]) ? 'top' : 'bottom'];
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i][0] === 'top') {
+            ts.push(i);
+          } else {
+            bs.push(i);
+          }
+        }
 
-        const fourthRoles: RolesArray = [this.isLeft(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'left' : 'right',
-          this.isTop(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'top' : 'bottom'];
+        console.log(ts);
+        console.log(bs);
+
+        if (this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
+          roles[ts[0]].push('left');
+          roles[ts[1]].push('right');
+        } else {
+          roles[ts[1]].push('right');
+          roles[ts[0]].push('left');
+        }
+
+        if (this.isLeft(vertices[bs[0]], vertices[bs[1]])) {
+          roles[bs[0]].push('left');
+          roles[bs[1]].push('right');
+        } else {
+          roles[bs[1]].push('left');
+          roles[bs[0]].push('right');
+        }
+
+        console.log(roles);
 
         if (this.config.useRotatedRectangle
           && this.pointsAreNotTheSame(vertices)
@@ -584,20 +621,8 @@ export class NgxDocScannerComponent implements OnInit {
     });
   }
 
-  isLeft(coordinate, otherVertices): boolean {
-
-    let count = 0;
-    for (let i = 0; i < otherVertices.length; i++) {
-      if (coordinate.x < otherVertices[i].x) {
-        count++;
-      }
-    }
-
-    return count >= 2;
-
-  }
-
   isTop(coordinate, otherVertices): boolean {
+
     let count = 0;
     for (let i = 0; i < otherVertices.length; i++) {
       if (coordinate.y < otherVertices[i].y) {
@@ -606,6 +631,11 @@ export class NgxDocScannerComponent implements OnInit {
     }
 
     return count >= 2;
+
+  }
+
+  isLeft(coordinate, secondCoordinate): boolean {
+    return coordinate.x < secondCoordinate.x;
   }
 
   private pointsAreNotTheSame(vertices: any): boolean {

@@ -362,7 +362,6 @@ var LimitsService = /** @class */ (function () {
         function (roles) {
             return _this.compareArray(roles, corner.roles);
         })) + 1];
-        console.log(rotated);
         return rotated;
     };
     /**
@@ -404,7 +403,6 @@ var LimitsService = /** @class */ (function () {
         function (roles) {
             return _this.compareArray(roles, corner.roles);
         })) + 1];
-        console.log(rotated);
         return rotated;
     };
     /**
@@ -1931,7 +1929,18 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 /** @type {?} */
                 var rect2 = cv.minAreaRect(cnt);
                 for (var i = 0; i < rects.length; i++) {
-                    if (rects[i].size.width + rects[i].size.height > rect2.size.width + rect2.size.height
+                    // const v = cv.RotatedRect.points(rects[i]);
+                    // let isNegative = false;
+                    // for (let j = 0; j < v.length; j++) {
+                    //   if (v[j].x < 0 || v[j].y < 0) {
+                    //     isNegative = true;
+                    //     break;
+                    //   }
+                    // }
+                    // if (isNegative) {
+                    //   continue;
+                    // }
+                    if ((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
                         && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
                             || rects[i].angle === -90 || rects[i].angle === -180)) {
                         rect2 = rects[i];
@@ -1943,6 +1952,7 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 console.log(rect2);
                 /** @type {?} */
                 var vertices = cv.RotatedRect.points(rect2);
+                console.log(vertices);
                 for (var i = 0; i < 4; i++) {
                     vertices[i].x = vertices[i].x * _this.imageResizeRatio;
                     vertices[i].y = vertices[i].y * _this.imageResizeRatio;
@@ -1964,17 +1974,46 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 /** @type {?} */
                 var contourCoordinates;
                 /** @type {?} */
-                var firstRoles = [_this.isLeft(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'left' : 'right',
-                    _this.isTop(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+                var firstRoles = [_this.isTop(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
                 /** @type {?} */
-                var secondRoles = [_this.isLeft(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'left' : 'right',
-                    _this.isTop(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+                var secondRoles = [_this.isTop(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
                 /** @type {?} */
-                var thirdRoles = [_this.isLeft(vertices[2], [vertices[1], vertices[0], vertices[3]]) ? 'left' : 'right',
-                    _this.isTop(vertices[2], [vertices[1], vertices[0], vertices[3]]) ? 'top' : 'bottom'];
+                var thirdRoles = [_this.isTop(vertices[2], [vertices[0], vertices[1], vertices[3]]) ? 'top' : 'bottom'];
                 /** @type {?} */
-                var fourthRoles = [_this.isLeft(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'left' : 'right',
-                    _this.isTop(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'top' : 'bottom'];
+                var fourthRoles = [_this.isTop(vertices[3], [vertices[0], vertices[2], vertices[1]]) ? 'top' : 'bottom'];
+                /** @type {?} */
+                var roles = [firstRoles, secondRoles, thirdRoles, fourthRoles];
+                /** @type {?} */
+                var ts = [];
+                /** @type {?} */
+                var bs = [];
+                for (var i = 0; i < roles.length; i++) {
+                    if (roles[i][0] === 'top') {
+                        ts.push(i);
+                    }
+                    else {
+                        bs.push(i);
+                    }
+                }
+                console.log(ts);
+                console.log(bs);
+                if (_this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
+                    roles[ts[0]].push('left');
+                    roles[ts[1]].push('right');
+                }
+                else {
+                    roles[ts[1]].push('right');
+                    roles[ts[0]].push('left');
+                }
+                if (_this.isLeft(vertices[bs[0]], vertices[bs[1]])) {
+                    roles[bs[0]].push('left');
+                    roles[bs[1]].push('right');
+                }
+                else {
+                    roles[bs[1]].push('left');
+                    roles[bs[0]].push('right');
+                }
+                console.log(roles);
                 if (_this.config.useRotatedRectangle
                     && _this.pointsAreNotTheSame(vertices)) {
                     contourCoordinates = [
@@ -2003,26 +2042,6 @@ var NgxDocScannerComponent = /** @class */ (function () {
      * @param {?} otherVertices
      * @return {?}
      */
-    NgxDocScannerComponent.prototype.isLeft = /**
-     * @param {?} coordinate
-     * @param {?} otherVertices
-     * @return {?}
-     */
-    function (coordinate, otherVertices) {
-        /** @type {?} */
-        var count = 0;
-        for (var i = 0; i < otherVertices.length; i++) {
-            if (coordinate.x < otherVertices[i].x) {
-                count++;
-            }
-        }
-        return count >= 2;
-    };
-    /**
-     * @param {?} coordinate
-     * @param {?} otherVertices
-     * @return {?}
-     */
     NgxDocScannerComponent.prototype.isTop = /**
      * @param {?} coordinate
      * @param {?} otherVertices
@@ -2037,6 +2056,19 @@ var NgxDocScannerComponent = /** @class */ (function () {
             }
         }
         return count >= 2;
+    };
+    /**
+     * @param {?} coordinate
+     * @param {?} secondCoordinate
+     * @return {?}
+     */
+    NgxDocScannerComponent.prototype.isLeft = /**
+     * @param {?} coordinate
+     * @param {?} secondCoordinate
+     * @return {?}
+     */
+    function (coordinate, secondCoordinate) {
+        return coordinate.x < secondCoordinate.x;
     };
     /**
      * @private

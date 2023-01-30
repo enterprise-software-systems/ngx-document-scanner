@@ -275,7 +275,6 @@ class LimitsService {
         roles => {
             return this.compareArray(roles, corner.roles);
         })) + 1];
-        console.log(rotated);
         return rotated;
     }
     /**
@@ -307,7 +306,6 @@ class LimitsService {
         roles => {
             return this.compareArray(roles, corner.roles);
         })) + 1];
-        console.log(rotated);
         return rotated;
     }
     /**
@@ -1534,7 +1532,18 @@ class NgxDocScannerComponent {
                 /** @type {?} */
                 let rect2 = cv.minAreaRect(cnt);
                 for (let i = 0; i < rects.length; i++) {
-                    if (rects[i].size.width + rects[i].size.height > rect2.size.width + rect2.size.height
+                    // const v = cv.RotatedRect.points(rects[i]);
+                    // let isNegative = false;
+                    // for (let j = 0; j < v.length; j++) {
+                    //   if (v[j].x < 0 || v[j].y < 0) {
+                    //     isNegative = true;
+                    //     break;
+                    //   }
+                    // }
+                    // if (isNegative) {
+                    //   continue;
+                    // }
+                    if ((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
                         && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
                             || rects[i].angle === -90 || rects[i].angle === -180)) {
                         rect2 = rects[i];
@@ -1546,6 +1555,7 @@ class NgxDocScannerComponent {
                 console.log(rect2);
                 /** @type {?} */
                 const vertices = cv.RotatedRect.points(rect2);
+                console.log(vertices);
                 for (let i = 0; i < 4; i++) {
                     vertices[i].x = vertices[i].x * this.imageResizeRatio;
                     vertices[i].y = vertices[i].y * this.imageResizeRatio;
@@ -1567,17 +1577,46 @@ class NgxDocScannerComponent {
                 /** @type {?} */
                 let contourCoordinates;
                 /** @type {?} */
-                const firstRoles = [this.isLeft(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'left' : 'right',
-                    this.isTop(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+                const firstRoles = [this.isTop(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
                 /** @type {?} */
-                const secondRoles = [this.isLeft(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'left' : 'right',
-                    this.isTop(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
+                const secondRoles = [this.isTop(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
                 /** @type {?} */
-                const thirdRoles = [this.isLeft(vertices[2], [vertices[1], vertices[0], vertices[3]]) ? 'left' : 'right',
-                    this.isTop(vertices[2], [vertices[1], vertices[0], vertices[3]]) ? 'top' : 'bottom'];
+                const thirdRoles = [this.isTop(vertices[2], [vertices[0], vertices[1], vertices[3]]) ? 'top' : 'bottom'];
                 /** @type {?} */
-                const fourthRoles = [this.isLeft(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'left' : 'right',
-                    this.isTop(vertices[3], [vertices[1], vertices[2], vertices[0]]) ? 'top' : 'bottom'];
+                const fourthRoles = [this.isTop(vertices[3], [vertices[0], vertices[2], vertices[1]]) ? 'top' : 'bottom'];
+                /** @type {?} */
+                const roles = [firstRoles, secondRoles, thirdRoles, fourthRoles];
+                /** @type {?} */
+                const ts = [];
+                /** @type {?} */
+                const bs = [];
+                for (let i = 0; i < roles.length; i++) {
+                    if (roles[i][0] === 'top') {
+                        ts.push(i);
+                    }
+                    else {
+                        bs.push(i);
+                    }
+                }
+                console.log(ts);
+                console.log(bs);
+                if (this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
+                    roles[ts[0]].push('left');
+                    roles[ts[1]].push('right');
+                }
+                else {
+                    roles[ts[1]].push('right');
+                    roles[ts[0]].push('left');
+                }
+                if (this.isLeft(vertices[bs[0]], vertices[bs[1]])) {
+                    roles[bs[0]].push('left');
+                    roles[bs[1]].push('right');
+                }
+                else {
+                    roles[bs[1]].push('left');
+                    roles[bs[0]].push('right');
+                }
+                console.log(roles);
                 if (this.config.useRotatedRectangle
                     && this.pointsAreNotTheSame(vertices)) {
                     contourCoordinates = [
@@ -1606,21 +1645,6 @@ class NgxDocScannerComponent {
      * @param {?} otherVertices
      * @return {?}
      */
-    isLeft(coordinate, otherVertices) {
-        /** @type {?} */
-        let count = 0;
-        for (let i = 0; i < otherVertices.length; i++) {
-            if (coordinate.x < otherVertices[i].x) {
-                count++;
-            }
-        }
-        return count >= 2;
-    }
-    /**
-     * @param {?} coordinate
-     * @param {?} otherVertices
-     * @return {?}
-     */
     isTop(coordinate, otherVertices) {
         /** @type {?} */
         let count = 0;
@@ -1630,6 +1654,14 @@ class NgxDocScannerComponent {
             }
         }
         return count >= 2;
+    }
+    /**
+     * @param {?} coordinate
+     * @param {?} secondCoordinate
+     * @return {?}
+     */
+    isLeft(coordinate, secondCoordinate) {
+        return coordinate.x < secondCoordinate.x;
     }
     /**
      * @private
