@@ -27,6 +27,7 @@ export class DemoComponent implements OnInit {
       width: 16,
       height: 16
     },
+    maxPreviewWidth: 500,
     exportImageIcon: 'cloud_download',
     editorDimensions: {
       width: '20vw',

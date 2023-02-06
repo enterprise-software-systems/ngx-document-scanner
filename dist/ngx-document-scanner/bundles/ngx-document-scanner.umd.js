@@ -1647,9 +1647,11 @@
                 }
                 if (changes.config.currentValue.maxPreviewWidth !== changes.config.previousValue.maxPreviewWidth) {
                     this.maxPreviewWidth = changes.config.currentValue.maxPreviewWidth;
+                    this.setPreviewPaneDimensions(this.editedImage);
                 }
                 if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
                     Object.assign(this.editorStyle, changes.config.currentValue.extraCss);
+                    this.setPreviewPaneDimensions(this.editedImage);
                 }
             }
         };
