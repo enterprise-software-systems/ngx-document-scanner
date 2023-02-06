@@ -2743,11 +2743,13 @@
         function (width, height) {
             /** @type {?} */
             var ratio = width / height;
+            // const maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
+            //   this.maxPreviewWidth : this.screenDimensions.width - 40;
+            // const maxHeight = this.screenDimensions.height > this.maxPreviewHeight ? this.maxPreviewHeight : this.screenDimensions.height - 240;
             /** @type {?} */
-            var maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
-                this.maxPreviewWidth : this.screenDimensions.width - 40;
+            var maxWidth = this.maxPreviewWidth;
             /** @type {?} */
-            var maxHeight = this.screenDimensions.height > this.maxPreviewHeight ? this.maxPreviewHeight : this.screenDimensions.height - 240;
+            var maxHeight = this.maxPreviewHeight;
             /** @type {?} */
             var calculated = {
                 width: maxWidth,

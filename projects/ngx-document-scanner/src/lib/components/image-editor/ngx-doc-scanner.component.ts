@@ -903,9 +903,11 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
   private calculateDimensions(width: number, height: number): { width: number; height: number; ratio: number } {
     const ratio = width / height;
 
-    const maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
-      this.maxPreviewWidth : this.screenDimensions.width - 40;
-    const maxHeight = this.screenDimensions.height > this.maxPreviewHeight ? this.maxPreviewHeight : this.screenDimensions.height - 240;
+    // const maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
+    //   this.maxPreviewWidth : this.screenDimensions.width - 40;
+    // const maxHeight = this.screenDimensions.height > this.maxPreviewHeight ? this.maxPreviewHeight : this.screenDimensions.height - 240;
+    const maxWidth = this.maxPreviewWidth;
+    const maxHeight = this.maxPreviewHeight;
     const calculated = {
       width: maxWidth,
       height: Math.round(maxWidth / ratio),

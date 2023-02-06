@@ -2019,11 +2019,13 @@ class NgxDocScannerComponent {
     calculateDimensions(width, height) {
         /** @type {?} */
         const ratio = width / height;
+        // const maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
+        //   this.maxPreviewWidth : this.screenDimensions.width - 40;
+        // const maxHeight = this.screenDimensions.height > this.maxPreviewHeight ? this.maxPreviewHeight : this.screenDimensions.height - 240;
         /** @type {?} */
-        const maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
-            this.maxPreviewWidth : this.screenDimensions.width - 40;
+        const maxWidth = this.maxPreviewWidth;
         /** @type {?} */
-        const maxHeight = this.screenDimensions.height > this.maxPreviewHeight ? this.maxPreviewHeight : this.screenDimensions.height - 240;
+        const maxHeight = this.maxPreviewHeight;
         /** @type {?} */
         const calculated = {
             width: maxWidth,
