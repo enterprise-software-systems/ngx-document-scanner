@@ -38,6 +38,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
     });
   }
 
+  private maxPreviewHeight: number;
   /**
    * max width of the preview area
    */
@@ -250,6 +251,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
       }
     });
     this.maxPreviewWidth = this.options.maxPreviewWidth;
+    this.maxPreviewHeight = this.options.maxPreviewHeight;
     this.editorStyle = this.options.editorStyle;
   }
 
@@ -261,6 +263,10 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
       let updatePreview = false;
       if (changes.config.currentValue.maxPreviewWidth !== changes.config.previousValue.maxPreviewWidth) {
         this.maxPreviewWidth = changes.config.currentValue.maxPreviewWidth;
+        updatePreview = true;
+      }
+      if (changes.config.currentValue.maxPreviewHeight !== changes.config.previousValue.maxPreviewHeight) {
+        this.maxPreviewHeight = changes.config.currentValue.maxPreviewHeight;
         updatePreview = true;
       }
       if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
@@ -899,7 +905,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
 
     const maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
       this.maxPreviewWidth : this.screenDimensions.width - 40;
-    const maxHeight = this.screenDimensions.height - 240;
+    const maxHeight = this.screenDimensions.height > this.maxPreviewHeight ? this.maxPreviewHeight : this.screenDimensions.height - 240;
     const calculated = {
       width: maxWidth,
       height: Math.round(maxWidth / ratio),
@@ -994,6 +1000,11 @@ class ImageEditorConfig implements DocScannerConfig {
    * maximum size of the preview pane
    */
   maxPreviewWidth = 800;
+
+  /**
+   * maximum size of the preview pane
+   */
+  maxPreviewHeight = 800;
 
   constructor(options: DocScannerConfig) {
     if (options) {

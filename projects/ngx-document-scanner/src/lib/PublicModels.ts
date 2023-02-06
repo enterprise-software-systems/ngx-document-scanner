@@ -99,6 +99,10 @@ export interface DocScannerConfig {
    */
   maxPreviewWidth?: number;
   /**
+   * max height of the preview pane
+   */
+  maxPreviewHeight?: number;
+  /**
    * config threshold for auto
    */
   thresholdInfo?: ThresholdInformation;

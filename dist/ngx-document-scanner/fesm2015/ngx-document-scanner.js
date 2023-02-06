@@ -1170,6 +1170,7 @@ class NgxDocScannerComponent {
             }
         }));
         this.maxPreviewWidth = this.options.maxPreviewWidth;
+        this.maxPreviewHeight = this.options.maxPreviewHeight;
         this.editorStyle = this.options.editorStyle;
     }
     /**
@@ -1185,6 +1186,10 @@ class NgxDocScannerComponent {
             let updatePreview = false;
             if (changes.config.currentValue.maxPreviewWidth !== changes.config.previousValue.maxPreviewWidth) {
                 this.maxPreviewWidth = changes.config.currentValue.maxPreviewWidth;
+                updatePreview = true;
+            }
+            if (changes.config.currentValue.maxPreviewHeight !== changes.config.previousValue.maxPreviewHeight) {
+                this.maxPreviewHeight = changes.config.currentValue.maxPreviewHeight;
                 updatePreview = true;
             }
             if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
@@ -2018,7 +2023,7 @@ class NgxDocScannerComponent {
         const maxWidth = this.screenDimensions.width > this.maxPreviewWidth ?
             this.maxPreviewWidth : this.screenDimensions.width - 40;
         /** @type {?} */
-        const maxHeight = this.screenDimensions.height - 240;
+        const maxHeight = this.screenDimensions.height > this.maxPreviewHeight ? this.maxPreviewHeight : this.screenDimensions.height - 240;
         /** @type {?} */
         const calculated = {
             width: maxWidth,
@@ -2084,6 +2089,11 @@ if (false) {
      * @private
      */
     NgxDocScannerComponent.prototype.editorButtons;
+    /**
+     * @type {?}
+     * @private
+     */
+    NgxDocScannerComponent.prototype.maxPreviewHeight;
     /**
      * max width of the preview area
      * @type {?}
@@ -2280,6 +2290,10 @@ class ImageEditorConfig {
          * maximum size of the preview pane
          */
         this.maxPreviewWidth = 800;
+        /**
+         * maximum size of the preview pane
+         */
+        this.maxPreviewHeight = 800;
         if (options) {
             Object.keys(options).forEach((/**
              * @param {?} key
@@ -2367,6 +2381,11 @@ if (false) {
      * @type {?}
      */
     ImageEditorConfig.prototype.maxPreviewWidth;
+    /**
+     * maximum size of the preview pane
+     * @type {?}
+     */
+    ImageEditorConfig.prototype.maxPreviewHeight;
 }
 
 /**
@@ -2555,6 +2574,11 @@ if (false) {
      * @type {?|undefined}
      */
     DocScannerConfig.prototype.maxPreviewWidth;
+    /**
+     * max height of the preview pane
+     * @type {?|undefined}
+     */
+    DocScannerConfig.prototype.maxPreviewHeight;
     /**
      * config threshold for auto
      * @type {?|undefined}
