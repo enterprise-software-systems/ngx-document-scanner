@@ -144,6 +144,8 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
      * rotate image 90 degrees
      */
     rotateImage(clockwise?: boolean): Promise<unknown>;
+    doubleRotate(): Promise<unknown>;
+    rotate(clockwise?: boolean): void;
     /**
      * detects the contours of the document and
      **/

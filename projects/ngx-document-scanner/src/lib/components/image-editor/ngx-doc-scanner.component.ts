@@ -258,13 +258,17 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
       if (changes.config.currentValue.thresholdInfo.thresh !== changes.config.previousValue.thresholdInfo.thresh) {
         this.loadFile(this.originalImage);
       }
+      let updatePreview = false;
       if (changes.config.currentValue.maxPreviewWidth !== changes.config.previousValue.maxPreviewWidth) {
         this.maxPreviewWidth = changes.config.currentValue.maxPreviewWidth;
-        this.setPreviewPaneDimensions(this.editedImage);
+        updatePreview = true;
       }
       if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
         Object.assign(this.editorStyle, changes.config.currentValue.extraCss);
-        this.setPreviewPaneDimensions(this.editedImage);
+        updatePreview = true;
+      }
+      if (updatePreview) {
+        this.doubleRotate();
       }
     }
   }
@@ -425,43 +429,62 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
     return new Promise((resolve, reject) => {
       this.processing.emit(true);
       setTimeout(() => {
-        const dst = cv.imread(this.editedImage);
-        // const dst = new cv.Mat();
-        cv.transpose(dst, dst);
-        if (clockwise) {
-          cv.flip(dst, dst, 1);
-        } else {
-          cv.flip(dst, dst, 0);
-        }
+        this.rotate(clockwise);
 
-        cv.imshow(this.editedImage, dst);
-        // src.delete();
-        dst.delete();
-        // save current preview dimensions and positions
-        const initialPreviewDimensions = {width: 0, height: 0};
-        Object.assign(initialPreviewDimensions, this.previewDimensions);
-        const initialPositions = Array.from(this.points);
-        // get new dimensions
-        // set new preview pane dimensions
-        this.setPreviewPaneDimensions(this.editedImage);
-        // get preview pane resize ratio
-        const previewResizeRatios = {
-          width: this.previewDimensions.width / initialPreviewDimensions.width,
-          height: this.previewDimensions.height / initialPreviewDimensions.height
-        };
-        // set new preview pane dimensions
-
-        if (clockwise) {
-          this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
-        } else {
-          this.limitsService.rotateAntiClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
-        }
         this.showPreview().then(() => {
           this.processing.emit(false);
           resolve();
         });
       }, 30);
     });
+  }
+
+  doubleRotate() {
+    return new Promise((resolve, reject) => {
+      this.processing.emit(true);
+      setTimeout(() => {
+        this.rotate(true);
+        this.rotate(false);
+        this.showPreview().then(() => {
+          this.processing.emit(false);
+          resolve();
+        });
+      }, 30);
+    });
+  }
+
+  rotate(clockwise = true) {
+    const dst = cv.imread(this.editedImage);
+    // const dst = new cv.Mat();
+    cv.transpose(dst, dst);
+    if (clockwise) {
+      cv.flip(dst, dst, 1);
+    } else {
+      cv.flip(dst, dst, 0);
+    }
+
+    cv.imshow(this.editedImage, dst);
+    // src.delete();
+    dst.delete();
+    // save current preview dimensions and positions
+    const initialPreviewDimensions = {width: 0, height: 0};
+    Object.assign(initialPreviewDimensions, this.previewDimensions);
+    const initialPositions = Array.from(this.points);
+    // get new dimensions
+    // set new preview pane dimensions
+    this.setPreviewPaneDimensions(this.editedImage);
+    // get preview pane resize ratio
+    const previewResizeRatios = {
+      width: this.previewDimensions.width / initialPreviewDimensions.width,
+      height: this.previewDimensions.height / initialPreviewDimensions.height
+    };
+    // set new preview pane dimensions
+
+    if (clockwise) {
+      this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+    } else {
+      this.limitsService.rotateAntiClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+    }
   }
 
   /**

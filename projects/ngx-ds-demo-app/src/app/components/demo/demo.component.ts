@@ -17,6 +17,7 @@ export class DemoComponent implements OnInit {
   image: File;
   processing: boolean;
   test: boolean;
+  zoom = 1;
   config: DocScannerConfig = {
     editorBackgroundColor: '#fafafa',
     buttonThemeColor: 'primary',
@@ -30,8 +31,8 @@ export class DemoComponent implements OnInit {
     maxPreviewWidth: 500,
     exportImageIcon: 'cloud_download',
     editorDimensions: {
-      width: '20vw',
-      height: '82vh'
+      width: '100%',
+      height: 'calc(' + (this.zoom * 100).toString() + '% - 20px)'
     },
     extraCss: {
       position: 'absolute',
@@ -156,5 +157,39 @@ export class DemoComponent implements OnInit {
     tInfo.thresh = $event.value;
     conf.thresholdInfo = tInfo;
     this.config = conf;
+  }
+
+  zoom_out() {
+    if (this.zoom < 2) {
+      this.zoom = this.zoom += 0.25;
+    }
+    const conf = {...this.config};
+    conf.maxPreviewWidth = this.zoom * 500;
+    const tInfo = {...conf.thresholdInfo};
+    conf.thresholdInfo = tInfo;
+    conf.editorDimensions = {
+      width: (this.zoom * 100).toString() + '%',
+      height: 'calc(' + (this.zoom * 100).toString() + '% - 20px)'
+    };
+    this.config = conf;
+
+    console.log(this.config);
+  }
+
+  zoom_in() {
+    if (this.zoom > 0) {
+      this.zoom = this.zoom -= 0.25;
+    }
+    const conf = {...this.config};
+    conf.maxPreviewWidth = this.zoom * 500;
+    const tInfo = {...conf.thresholdInfo};
+    conf.thresholdInfo = tInfo;
+    conf.editorDimensions = {
+      width: (this.zoom * 100).toString() + '%',
+      height: 'calc(' + (this.zoom * 100).toString() + '% - 20px)'
+    };
+    this.config = conf;
+
+    console.log(this.config);
   }
 }

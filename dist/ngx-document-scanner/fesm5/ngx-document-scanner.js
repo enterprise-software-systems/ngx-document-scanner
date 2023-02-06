@@ -1425,13 +1425,18 @@ var NgxDocScannerComponent = /** @class */ (function () {
             if (changes.config.currentValue.thresholdInfo.thresh !== changes.config.previousValue.thresholdInfo.thresh) {
                 this.loadFile(this.originalImage);
             }
+            /** @type {?} */
+            var updatePreview = false;
             if (changes.config.currentValue.maxPreviewWidth !== changes.config.previousValue.maxPreviewWidth) {
                 this.maxPreviewWidth = changes.config.currentValue.maxPreviewWidth;
-                this.setPreviewPaneDimensions(this.editedImage);
+                updatePreview = true;
             }
             if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
                 Object.assign(this.editorStyle, changes.config.currentValue.extraCss);
-                this.setPreviewPaneDimensions(this.editedImage);
+                updatePreview = true;
+            }
+            if (updatePreview) {
+                this.doubleRotate();
             }
         }
     };
@@ -1817,41 +1822,7 @@ var NgxDocScannerComponent = /** @class */ (function () {
              * @return {?}
              */
             function () {
-                /** @type {?} */
-                var dst = cv.imread(_this.editedImage);
-                // const dst = new cv.Mat();
-                cv.transpose(dst, dst);
-                if (clockwise) {
-                    cv.flip(dst, dst, 1);
-                }
-                else {
-                    cv.flip(dst, dst, 0);
-                }
-                cv.imshow(_this.editedImage, dst);
-                // src.delete();
-                dst.delete();
-                // save current preview dimensions and positions
-                /** @type {?} */
-                var initialPreviewDimensions = { width: 0, height: 0 };
-                Object.assign(initialPreviewDimensions, _this.previewDimensions);
-                /** @type {?} */
-                var initialPositions = Array.from(_this.points);
-                // get new dimensions
-                // set new preview pane dimensions
-                _this.setPreviewPaneDimensions(_this.editedImage);
-                // get preview pane resize ratio
-                /** @type {?} */
-                var previewResizeRatios = {
-                    width: _this.previewDimensions.width / initialPreviewDimensions.width,
-                    height: _this.previewDimensions.height / initialPreviewDimensions.height
-                };
-                // set new preview pane dimensions
-                if (clockwise) {
-                    _this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
-                }
-                else {
-                    _this.limitsService.rotateAntiClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
-                }
+                _this.rotate(clockwise);
                 _this.showPreview().then((/**
                  * @return {?}
                  */
@@ -1861,6 +1832,83 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 }));
             }), 30);
         }));
+    };
+    /**
+     * @return {?}
+     */
+    NgxDocScannerComponent.prototype.doubleRotate = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        return new Promise((/**
+         * @param {?} resolve
+         * @param {?} reject
+         * @return {?}
+         */
+        function (resolve, reject) {
+            _this.processing.emit(true);
+            setTimeout((/**
+             * @return {?}
+             */
+            function () {
+                _this.rotate(true);
+                _this.rotate(false);
+                _this.showPreview().then((/**
+                 * @return {?}
+                 */
+                function () {
+                    _this.processing.emit(false);
+                    resolve();
+                }));
+            }), 30);
+        }));
+    };
+    /**
+     * @param {?=} clockwise
+     * @return {?}
+     */
+    NgxDocScannerComponent.prototype.rotate = /**
+     * @param {?=} clockwise
+     * @return {?}
+     */
+    function (clockwise) {
+        if (clockwise === void 0) { clockwise = true; }
+        /** @type {?} */
+        var dst = cv.imread(this.editedImage);
+        // const dst = new cv.Mat();
+        cv.transpose(dst, dst);
+        if (clockwise) {
+            cv.flip(dst, dst, 1);
+        }
+        else {
+            cv.flip(dst, dst, 0);
+        }
+        cv.imshow(this.editedImage, dst);
+        // src.delete();
+        dst.delete();
+        // save current preview dimensions and positions
+        /** @type {?} */
+        var initialPreviewDimensions = { width: 0, height: 0 };
+        Object.assign(initialPreviewDimensions, this.previewDimensions);
+        /** @type {?} */
+        var initialPositions = Array.from(this.points);
+        // get new dimensions
+        // set new preview pane dimensions
+        this.setPreviewPaneDimensions(this.editedImage);
+        // get preview pane resize ratio
+        /** @type {?} */
+        var previewResizeRatios = {
+            width: this.previewDimensions.width / initialPreviewDimensions.width,
+            height: this.previewDimensions.height / initialPreviewDimensions.height
+        };
+        // set new preview pane dimensions
+        if (clockwise) {
+            this.limitsService.rotateClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+        }
+        else {
+            this.limitsService.rotateAntiClockwise(previewResizeRatios, initialPreviewDimensions, initialPositions);
+        }
     };
     /**
      * detects the contours of the document and
