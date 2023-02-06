@@ -29,13 +29,14 @@ export class DemoComponent implements OnInit {
       height: 16
     },
     maxPreviewWidth: 500,
+    maxPreviewHeight: 700,
     exportImageIcon: 'cloud_download',
     editorDimensions: {
       width: '100%',
       height: 'calc(' + (this.zoom * 100).toString() + '% - 20px)'
     },
     extraCss: {
-      position: 'absolute',
+      position: 'relative',
       top: 0,
       left: 0
     },
@@ -160,16 +161,17 @@ export class DemoComponent implements OnInit {
   }
 
   zoom_out() {
-    if (this.zoom < 2) {
-      this.zoom = this.zoom += 0.25;
+    if (this.zoom > 0) {
+      this.zoom = this.zoom -= 0.25;
     }
     const conf = {...this.config};
+    conf.maxPreviewHeight = this.zoom * 700;
     conf.maxPreviewWidth = this.zoom * 500;
     const tInfo = {...conf.thresholdInfo};
     conf.thresholdInfo = tInfo;
     conf.editorDimensions = {
       width: (this.zoom * 100).toString() + '%',
-      height: 'calc(' + (this.zoom * 100).toString() + '% - 20px)'
+      height: (this.zoom * 100).toString() + '%',
     };
     this.config = conf;
 
@@ -177,16 +179,18 @@ export class DemoComponent implements OnInit {
   }
 
   zoom_in() {
-    if (this.zoom > 0) {
-      this.zoom = this.zoom -= 0.25;
+
+    if (this.zoom < 2) {
+      this.zoom = this.zoom += 0.25;
     }
     const conf = {...this.config};
     conf.maxPreviewWidth = this.zoom * 500;
+    conf.maxPreviewHeight = this.zoom * 700;
     const tInfo = {...conf.thresholdInfo};
     conf.thresholdInfo = tInfo;
     conf.editorDimensions = {
       width: (this.zoom * 100).toString() + '%',
-      height: 'calc(' + (this.zoom * 100).toString() + '% - 20px)'
+      height: (this.zoom * 100).toString() + '%',
     };
     this.config = conf;
 

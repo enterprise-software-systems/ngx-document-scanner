@@ -1,13 +1,16 @@
 <!--Doc Scanner Component-->
-<ngx-doc-scanner *ngIf="image"
-                 [file]="image"
-                 (editResult)="editResult($event)"
-                 (exitEditor)="exitEditor()"
-                 (error)="onError($event)"
-                 (processing)="editorState($event)"
-                 [config]="config"
->
-</ngx-doc-scanner>
+<div style="height: 90vh; width: 50vw; overflow: auto">
+  <ngx-doc-scanner *ngIf="image"
+                   [file]="image"
+                   (editResult)="editResult($event)"
+                   (exitEditor)="exitEditor()"
+                   (error)="onError($event)"
+                   (processing)="editorState($event)"
+                   [config]="config"
+  >
+  </ngx-doc-scanner>
+</div>
+
 
 <!--Drop Zone & File Input-->
 <div fxFlex="100" fxLayoutAlign="space-around" style="height: 80vh">

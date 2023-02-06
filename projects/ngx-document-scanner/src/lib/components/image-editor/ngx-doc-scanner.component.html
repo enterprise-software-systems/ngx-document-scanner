@@ -1,4 +1,4 @@
-<div [ngStyle]="editorStyle" fxLayout="column" fxLayoutAlign="space-around" style="direction: ltr !important">
+<div [ngStyle]="getStoyle()" fxLayout="column" fxLayoutAlign="space-around" style="direction: ltr !important">
   <div #imageContainer [ngStyle]="imageDivStyle" style="margin: auto;">
     <ng-container *ngIf="imageLoaded && mode === 'crop'">
       <ngx-shape-outine #shapeOutline [color]="options.cropToolColor"

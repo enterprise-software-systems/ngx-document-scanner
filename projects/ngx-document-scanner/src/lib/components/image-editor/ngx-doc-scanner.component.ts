@@ -270,7 +270,9 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
         updatePreview = true;
       }
       if (changes.config.currentValue.editorDimensions !== changes.config.previousValue.editorDimensions) {
-        Object.assign(this.editorStyle, changes.config.currentValue.editorDimensions);
+        const obj = {...this.editorStyle};
+        Object.assign(obj, changes.config.currentValue.editorDimensions);
+        this.editorStyle = obj;
         updatePreview = true;
       }
       if (updatePreview) {
@@ -310,7 +312,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
   /**
    * applies the selected filter, and when done emits the resulted image
    */
-   async exportImage() {
+  async exportImage() {
     await this.applyFilter(false);
     if (this.options.maxImageDimensions) {
       this.resize(this.editedImage)
@@ -929,6 +931,10 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
     return this.points.find(point => {
       return this.limitsService.compareArray(point.roles, roles);
     });
+  }
+
+  getStoyle(): { [p: string]: string | number } {
+    return this.editorStyle;
   }
 }
 

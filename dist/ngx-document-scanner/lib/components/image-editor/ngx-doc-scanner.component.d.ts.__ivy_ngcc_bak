@@ -185,6 +185,9 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
      * @param roles - an array of roles by which the point will be fetched
      */
     private getPoint;
+    getStoyle(): {
+        [p: string]: string | number;
+    };
 }
 /**
  * a class for generating configuration objects for the editor
