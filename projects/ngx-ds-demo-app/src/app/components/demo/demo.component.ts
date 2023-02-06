@@ -106,10 +106,7 @@ export class DemoComponent implements OnInit {
 
   // handles the result emitted by the editor
   editResult(result: Blob) {
-    const link = <HTMLAnchorElement>document.createElement('a');
-    link.href = URL.createObjectURL(result);
-    link.setAttribute('download', `edited_image_${new Date().toLocaleString()}.${this.image.type.split('/')[1]}`);
-    link.click();
+    console.log(result);
   }
 
   // handles errors emitted by the component
@@ -129,6 +126,9 @@ export class DemoComponent implements OnInit {
 
   rotate(): void {
     this.docScanner.rotateImage();
+  }
+  export(): void {
+    this.docScanner.exportImage();
   }
 
   rotateAntiClockwise() {

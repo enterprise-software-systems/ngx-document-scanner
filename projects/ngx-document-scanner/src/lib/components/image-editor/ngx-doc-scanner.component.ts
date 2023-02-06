@@ -269,8 +269,8 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
         this.maxPreviewHeight = changes.config.currentValue.maxPreviewHeight;
         updatePreview = true;
       }
-      if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
-        Object.assign(this.editorStyle, changes.config.currentValue.extraCss);
+      if (changes.config.currentValue.editorDimensions !== changes.config.previousValue.editorDimensions) {
+        Object.assign(this.editorStyle, changes.config.currentValue.editorDimensions);
         updatePreview = true;
       }
       if (updatePreview) {
@@ -310,7 +310,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
   /**
    * applies the selected filter, and when done emits the resulted image
    */
-  private async exportImage() {
+   async exportImage() {
     await this.applyFilter(false);
     if (this.options.maxImageDimensions) {
       this.resize(this.editedImage)

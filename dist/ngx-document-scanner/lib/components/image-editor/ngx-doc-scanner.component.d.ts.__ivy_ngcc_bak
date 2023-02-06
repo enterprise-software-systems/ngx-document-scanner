@@ -128,7 +128,7 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     /**
      * applies the selected filter, and when done emits the resulted image
      */
-    private exportImage;
+    exportImage(): Promise<void>;
     /**
      * open the bottom sheet for selecting filters, and applies the selected filter in preview mode
      */

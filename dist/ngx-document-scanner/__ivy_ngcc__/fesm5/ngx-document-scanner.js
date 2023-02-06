@@ -1579,8 +1579,8 @@ var NgxDocScannerComponent = /** @class */ (function () {
                 this.maxPreviewHeight = changes.config.currentValue.maxPreviewHeight;
                 updatePreview = true;
             }
-            if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
-                Object.assign(this.editorStyle, changes.config.currentValue.extraCss);
+            if (changes.config.currentValue.editorDimensions !== changes.config.previousValue.editorDimensions) {
+                Object.assign(this.editorStyle, changes.config.currentValue.editorDimensions);
                 updatePreview = true;
             }
             if (updatePreview) {
@@ -1661,12 +1661,10 @@ var NgxDocScannerComponent = /** @class */ (function () {
      */
     /**
      * applies the selected filter, and when done emits the resulted image
-     * @private
      * @return {?}
      */
     NgxDocScannerComponent.prototype.exportImage = /**
      * applies the selected filter, and when done emits the resulted image
-     * @private
      * @return {?}
      */
     function () {

@@ -5,7 +5,8 @@
                  (exitEditor)="exitEditor()"
                  (error)="onError($event)"
                  (processing)="editorState($event)"
-                 [config]="config">
+                 [config]="config"
+>
 </ngx-doc-scanner>
 
 <!--Drop Zone & File Input-->
@@ -57,6 +58,9 @@
 
 <div *ngIf="image && !modeIsCrop()">
   <button mat-mini-fab [name]="undo" (click)="undo()">
+    <mat-icon>undo</mat-icon>
+  </button>
+  <button mat-mini-fab [name]="export" (click)="export()">
     <mat-icon>undo</mat-icon>
   </button>
 </div>
