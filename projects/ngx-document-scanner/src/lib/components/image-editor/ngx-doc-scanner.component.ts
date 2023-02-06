@@ -472,7 +472,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
         // convert the image to grayscale, blur it, and find edges in the image
         cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
         cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
-        cv.Canny(src, src, 75, 200);
+        // cv.Canny(src, src, 75, 200);
         // find contours
 
         if (this.config.thresholdInfo.thresholdType === 'standard') {
