@@ -1181,6 +1181,12 @@ class NgxDocScannerComponent {
             if (changes.config.currentValue.thresholdInfo.thresh !== changes.config.previousValue.thresholdInfo.thresh) {
                 this.loadFile(this.originalImage);
             }
+            if (changes.config.currentValue.maxPreviewWidth !== changes.config.previousValue.maxPreviewWidth) {
+                this.maxPreviewWidth = changes.config.currentValue.maxPreviewWidth;
+            }
+            if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
+                Object.assign(this.editorStyle, changes.config.currentValue.extraCss);
+            }
         }
     }
     // ***************************** //
@@ -1495,7 +1501,7 @@ class NgxDocScannerComponent {
                 // convert the image to grayscale, blur it, and find edges in the image
                 cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
                 cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
-                //cv.Canny(src, src, 75, 200);
+                // cv.Canny(src, src, 75, 200);
                 // find contours
                 if (this.config.thresholdInfo.thresholdType === 'standard') {
                     cv.threshold(src, src, this.config.thresholdInfo.thresh, this.config.thresholdInfo.maxValue, cv.THRESH_BINARY);

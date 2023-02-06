@@ -258,6 +258,12 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
       if (changes.config.currentValue.thresholdInfo.thresh !== changes.config.previousValue.thresholdInfo.thresh) {
         this.loadFile(this.originalImage);
       }
+      if (changes.config.currentValue.maxPreviewWidth !== changes.config.previousValue.maxPreviewWidth) {
+        this.maxPreviewWidth = changes.config.currentValue.maxPreviewWidth;
+      }
+      if (changes.config.currentValue.extraCss !== changes.config.previousValue.extraCss) {
+        Object.assign(this.editorStyle, changes.config.currentValue.extraCss);
+      }
     }
   }
 
