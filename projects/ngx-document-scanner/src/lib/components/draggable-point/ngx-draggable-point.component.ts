@@ -56,6 +56,7 @@ export class NgxDraggablePointComponent implements AfterViewInit {
   @HostListener('window:mouseup', ['$event'])
   mouseUp(event) {
     this.clicking = false;
+    this.hover = false;
   }
 
   /**

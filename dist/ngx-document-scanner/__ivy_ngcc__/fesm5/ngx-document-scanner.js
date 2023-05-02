@@ -687,6 +687,7 @@ var NgxDraggablePointComponent = /** @class */ (function () {
      */
     function (event) {
         this.clicking = false;
+        this.hover = false;
     };
     /**
      * returns a css style object for the point
