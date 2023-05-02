@@ -1,5 +1,5 @@
 import { Injectable, ɵɵdefineInjectable, Component, Input, EventEmitter, Inject, Output, ViewChild, ElementRef, NgModule } from '@angular/core';
-import { __spread, __awaiter, __generator, __assign } from 'tslib';
+import { __spread, __assign, __awaiter, __generator } from 'tslib';
 import { BehaviorSubject } from 'rxjs';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { NgxOpenCVService, OpenCvConfigToken, NgxOpenCVModule } from 'ngx-opencv';
@@ -549,6 +549,8 @@ var NgxDraggablePointComponent = /** @class */ (function () {
         this.color = '#3cabe2';
         this.shape = 'rect';
         this.pointOptions = 'rect';
+        this.hover = false;
+        this.clicking = false;
         this.position = {
             x: 0,
             y: 0
@@ -614,6 +616,39 @@ var NgxDraggablePointComponent = /** @class */ (function () {
             'border-radius': this.shape === 'circle' ? '100%' : 0,
             position: 'absolute'
         };
+    };
+    /**
+     * @return {?}
+     */
+    NgxDraggablePointComponent.prototype.hoverPointStyle = /**
+     * @return {?}
+     */
+    function () {
+        return __assign(__assign({}, this.pointStyle()), { cursor: 'grab', 'background-color': '#CCFF33' });
+    };
+    /**
+     * @return {?}
+     */
+    NgxDraggablePointComponent.prototype.clickingPointStyle = /**
+     * @return {?}
+     */
+    function () {
+        return __assign(__assign({}, this.hoverPointStyle()), { cursor: 'grabbing' });
+    };
+    /**
+     * @return {?}
+     */
+    NgxDraggablePointComponent.prototype.getStyle = /**
+     * @return {?}
+     */
+    function () {
+        if (this.clicking) {
+            return this.clickingPointStyle();
+        }
+        else if (this.hover) {
+            return this.hoverPointStyle();
+        }
+        return this.pointStyle();
     };
     /**
      * registers a position change on the limits service, and adjusts position if necessary
@@ -793,7 +828,8 @@ var NgxDraggablePointComponent = /** @class */ (function () {
     NgxDraggablePointComponent.decorators = [
         { type: Component, args: [{
                     selector: 'ngx-draggable-point',
-                    template: "<div #point ngDraggable=\"draggable\"\r\n     (movingOffset)=\"positionChange($event)\"\r\n     [ngStyle]=\"pointStyle()\"\r\n     [position]=\"position\"\r\n     [bounds]=\"container\"\r\n     [inBounds]=\"true\"\r\n     (endOffset)=\"movementEnd($event)\"\r\n      style=\"z-index: 1000\">\r\n</div>\r\n"
+                    template: "<div #point ngDraggable=\"draggable\"\r\n     (movingOffset)=\"positionChange($event)\"\r\n     [ngStyle]=\"getStyle()\"\r\n     (mousedown)=\"clicking=true\"\r\n     (mouseup)=\"clicking=false\"\r\n     (mouseover)=\"hover=true\"\r\n     (mouseleave)=\"hover=false\"\r\n     [position]=\"position\"\r\n     [bounds]=\"container\"\r\n     [inBounds]=\"true\"\r\n     (endOffset)=\"movementEnd($event)\"\r\n     style=\"z-index: 1000\">\r\n</div>\r\n",
+                    styles: [""]
                 }] }
     ];
     /** @nocollapse */
@@ -835,6 +871,10 @@ if (false) {
      * @private
      */
     NgxDraggablePointComponent.prototype._currentPosition;
+    /** @type {?} */
+    NgxDraggablePointComponent.prototype.hover;
+    /** @type {?} */
+    NgxDraggablePointComponent.prototype.clicking;
     /** @type {?} */
     NgxDraggablePointComponent.prototype.position;
     /**

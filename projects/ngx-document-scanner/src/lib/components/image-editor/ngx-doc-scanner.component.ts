@@ -608,7 +608,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
           rect[key] = rect[key] * this.imageResizeRatio;
         });
 
-        let contourCoordinates;
+        let contourCoordinates: PositionChangeData[];
 
         const firstRoles: RolesArray = [this.isTop(vertices[0], [vertices[1], vertices[2], vertices[3]]) ? 'top' : 'bottom'];
         const secondRoles: RolesArray = [this.isTop(vertices[1], [vertices[0], vertices[2], vertices[3]]) ? 'top' : 'bottom'];

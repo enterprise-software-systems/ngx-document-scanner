@@ -6,6 +6,7 @@ import {LimitException, XYPosition} from '../../PrivateModels';
 @Component({
   selector: 'ngx-draggable-point',
   templateUrl: './ngx-draggable-point.component.html',
+  styleUrls: ['./ngx-draggable-point.component.scss']
 })
 export class NgxDraggablePointComponent implements AfterViewInit {
   @Input() width = 10;
@@ -13,10 +14,12 @@ export class NgxDraggablePointComponent implements AfterViewInit {
   @Input() color = '#3cabe2';
   @Input() shape: 'rect' | 'circle' = 'rect';
   @Input() pointOptions: 'rect' | 'circle' = 'rect';
-  @Input() limitRoles: Array<'left'|'right'|'top'|'bottom'>;
+  @Input() limitRoles: Array<'left' | 'right' | 'top' | 'bottom'>;
   @Input() startPosition: XYPosition;
   @Input() container: HTMLElement;
   @Input() private _currentPosition: XYPosition;
+  hover = false;
+  clicking = false;
   position: XYPosition = {
     x: 0,
     y: 0
@@ -24,7 +27,8 @@ export class NgxDraggablePointComponent implements AfterViewInit {
   private _paneDimensions: ImageDimensions;
   resetPosition: XYPosition;
 
-  constructor(private limitsService: LimitsService) {}
+  constructor(private limitsService: LimitsService) {
+  }
 
   ngAfterViewInit() {
     Object.keys(this.pointOptions).forEach(key => {
@@ -60,6 +64,31 @@ export class NgxDraggablePointComponent implements AfterViewInit {
       'border-radius': this.shape === 'circle' ? '100%' : 0,
       position: 'absolute'
     };
+  }
+
+  hoverPointStyle() {
+    return {
+      ...this.pointStyle(),
+      cursor: 'grab',
+      'background-color': '#CCFF33'
+    };
+  }
+
+  clickingPointStyle() {
+    return {
+      ...this.hoverPointStyle(),
+      cursor: 'grabbing'
+    };
+  }
+
+  getStyle() {
+    if (this.clicking) {
+      return this.clickingPointStyle();
+    } else if (this.hover) {
+      return this.hoverPointStyle();
+    }
+
+    return this.pointStyle();
   }
 
   /**
@@ -143,10 +172,18 @@ export class NgxDraggablePointComponent implements AfterViewInit {
     if (this._paneDimensions.width === 0 || this._paneDimensions.height === 0) {
       return position;
     } else {
-      if (position.x > this._paneDimensions.width) { position.x = this._paneDimensions.width; }
-      if (position.x < 0) { position.x = 1; }
-      if (position.y > this._paneDimensions.height) { position.y = this._paneDimensions.height; }
-      if (position.y < 0) { position.y = 1; }
+      if (position.x > this._paneDimensions.width) {
+        position.x = this._paneDimensions.width;
+      }
+      if (position.x < 0) {
+        position.x = 1;
+      }
+      if (position.y > this._paneDimensions.height) {
+        position.y = this._paneDimensions.height;
+      }
+      if (position.y < 0) {
+        position.y = 1;
+      }
     }
     return position;
   }

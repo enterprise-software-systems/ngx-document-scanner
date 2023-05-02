@@ -12,6 +12,8 @@ export declare class NgxDraggablePointComponent implements AfterViewInit {
     startPosition: XYPosition;
     container: HTMLElement;
     private _currentPosition;
+    hover: boolean;
+    clicking: boolean;
     position: XYPosition;
     private _paneDimensions;
     resetPosition: XYPosition;
@@ -21,6 +23,29 @@ export declare class NgxDraggablePointComponent implements AfterViewInit {
      * returns a css style object for the point
      */
     pointStyle(): {
+        width: string;
+        height: string;
+        'background-color': string;
+        'border-radius': string | number;
+        position: string;
+    };
+    hoverPointStyle(): {
+        cursor: string;
+        'background-color': string;
+        width: string;
+        height: string;
+        'border-radius': string | number;
+        position: string;
+    };
+    clickingPointStyle(): {
+        cursor: string;
+        'background-color': string;
+        width: string;
+        height: string;
+        'border-radius': string | number;
+        position: string;
+    };
+    getStyle(): {
         width: string;
         height: string;
         'background-color': string;

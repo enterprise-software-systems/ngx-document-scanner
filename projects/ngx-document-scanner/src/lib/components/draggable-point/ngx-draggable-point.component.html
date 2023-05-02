@@ -1,9 +1,13 @@
 <div #point ngDraggable="draggable"
      (movingOffset)="positionChange($event)"
-     [ngStyle]="pointStyle()"
+     [ngStyle]="getStyle()"
+     (mousedown)="clicking=true"
+     (mouseup)="clicking=false"
+     (mouseover)="hover=true"
+     (mouseleave)="hover=false"
      [position]="position"
      [bounds]="container"
      [inBounds]="true"
      (endOffset)="movementEnd($event)"
-      style="z-index: 1000">
+     style="z-index: 1000">
 </div>
