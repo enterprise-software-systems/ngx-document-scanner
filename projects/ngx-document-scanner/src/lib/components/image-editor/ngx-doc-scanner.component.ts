@@ -257,6 +257,9 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.config) {
+      if(!changes.config.previousValue){
+        return;
+      }
       if (changes.config.currentValue.thresholdInfo.thresh !== changes.config.previousValue.thresholdInfo.thresh) {
         this.loadFile(this.originalImage);
       }
