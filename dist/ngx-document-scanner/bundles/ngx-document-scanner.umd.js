@@ -818,6 +818,17 @@
             }));
         };
         /**
+         * @param {?} event
+         * @return {?}
+         */
+        NgxDraggablePointComponent.prototype.mouseUp = /**
+         * @param {?} event
+         * @return {?}
+         */
+        function (event) {
+            this.clicking = false;
+        };
+        /**
          * returns a css style object for the point
          */
         /**
@@ -1065,7 +1076,8 @@
             limitRoles: [{ type: core.Input }],
             startPosition: [{ type: core.Input }],
             container: [{ type: core.Input }],
-            _currentPosition: [{ type: core.Input }]
+            _currentPosition: [{ type: core.Input }],
+            mouseUp: [{ type: core.HostListener, args: ['window:mouseup', ['$event'],] }]
         };
         return NgxDraggablePointComponent;
     }());

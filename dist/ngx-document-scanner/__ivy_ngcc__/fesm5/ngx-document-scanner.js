@@ -1,4 +1,4 @@
-import { Injectable, ɵɵdefineInjectable, Component, Input, EventEmitter, Inject, Output, ViewChild, ElementRef, NgModule } from '@angular/core';
+import { Injectable, ɵɵdefineInjectable, Component, Input, HostListener, EventEmitter, Inject, Output, ViewChild, ElementRef, NgModule } from '@angular/core';
 import { __spread, __assign, __awaiter, __generator } from 'tslib';
 import { BehaviorSubject } from 'rxjs';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -678,6 +678,17 @@ var NgxDraggablePointComponent = /** @class */ (function () {
         }));
     };
     /**
+     * @param {?} event
+     * @return {?}
+     */
+    NgxDraggablePointComponent.prototype.mouseUp = /**
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        this.clicking = false;
+    };
+    /**
      * returns a css style object for the point
      */
     /**
@@ -918,10 +929,13 @@ var NgxDraggablePointComponent = /** @class */ (function () {
         limitRoles: [{ type: Input }],
         startPosition: [{ type: Input }],
         container: [{ type: Input }],
-        _currentPosition: [{ type: Input }]
+        _currentPosition: [{ type: Input }],
+        mouseUp: [{ type: HostListener, args: ['window:mouseup', ['$event'],] }]
     };
 NgxDraggablePointComponent.ɵfac = function NgxDraggablePointComponent_Factory(t) { return new (t || NgxDraggablePointComponent)(ɵngcc0.ɵɵdirectiveInject(LimitsService)); };
-NgxDraggablePointComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: NgxDraggablePointComponent, selectors: [["ngx-draggable-point"]], inputs: { width: "width", height: "height", color: "color", shape: "shape", pointOptions: "pointOptions", _currentPosition: "_currentPosition", limitRoles: "limitRoles", startPosition: "startPosition", container: "container" }, decls: 2, vars: 4, consts: [["ngDraggable", "draggable", 2, "z-index", "1000", 3, "ngStyle", "position", "bounds", "inBounds", "movingOffset", "mousedown", "mouseup", "mouseover", "mouseleave", "endOffset"], ["point", ""]], template: function NgxDraggablePointComponent_Template(rf, ctx) { if (rf & 1) {
+NgxDraggablePointComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: NgxDraggablePointComponent, selectors: [["ngx-draggable-point"]], hostBindings: function NgxDraggablePointComponent_HostBindings(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵlistener("mouseup", function NgxDraggablePointComponent_mouseup_HostBindingHandler($event) { return ctx.mouseUp($event); }, false, ɵngcc0.ɵɵresolveWindow);
+    } }, inputs: { width: "width", height: "height", color: "color", shape: "shape", pointOptions: "pointOptions", _currentPosition: "_currentPosition", limitRoles: "limitRoles", startPosition: "startPosition", container: "container" }, decls: 2, vars: 4, consts: [["ngDraggable", "draggable", 2, "z-index", "1000", 3, "ngStyle", "position", "bounds", "inBounds", "movingOffset", "mousedown", "mouseup", "mouseover", "mouseleave", "endOffset"], ["point", ""]], template: function NgxDraggablePointComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵelementStart(0, "div", 0, 1);
         ɵngcc0.ɵɵlistener("movingOffset", function NgxDraggablePointComponent_Template_div_movingOffset_0_listener($event) { return ctx.positionChange($event); })("mousedown", function NgxDraggablePointComponent_Template_div_mousedown_0_listener() { return ctx.clicking = true; })("mouseup", function NgxDraggablePointComponent_Template_div_mouseup_0_listener() { return ctx.clicking = false; })("mouseover", function NgxDraggablePointComponent_Template_div_mouseover_0_listener() { return ctx.hover = true; })("mouseleave", function NgxDraggablePointComponent_Template_div_mouseleave_0_listener() { return ctx.hover = false; })("endOffset", function NgxDraggablePointComponent_Template_div_endOffset_0_listener($event) { return ctx.movementEnd($event); });
         ɵngcc0.ɵɵelementEnd();
@@ -945,6 +959,9 @@ NgxDraggablePointComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: NgxDragga
             type: Input
         }], pointOptions: [{
             type: Input
+        }], mouseUp: [{
+            type: HostListener,
+            args: ['window:mouseup', ['$event']]
         }], _currentPosition: [{
             type: Input
         }], limitRoles: [{

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Input} from '@angular/core';
 import {LimitsService, PointPositionChange, PositionChangeData} from '../../services/limits.service';
 import {ImageDimensions} from '../../PublicModels';
 import {LimitException, XYPosition} from '../../PrivateModels';
@@ -51,6 +51,11 @@ export class NgxDraggablePointComponent implements AfterViewInit {
         this.externalReposition(positions);
       }
     });
+  }
+
+  @HostListener('window:mouseup', ['$event'])
+  mouseUp(event) {
+    this.clicking = false;
   }
 
   /**

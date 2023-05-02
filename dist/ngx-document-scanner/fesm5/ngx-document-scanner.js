@@ -1,4 +1,4 @@
-import { Injectable, ɵɵdefineInjectable, Component, Input, EventEmitter, Inject, Output, ViewChild, ElementRef, NgModule } from '@angular/core';
+import { Injectable, ɵɵdefineInjectable, Component, Input, HostListener, EventEmitter, Inject, Output, ViewChild, ElementRef, NgModule } from '@angular/core';
 import { __spread, __assign, __awaiter, __generator } from 'tslib';
 import { BehaviorSubject } from 'rxjs';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -598,6 +598,17 @@ var NgxDraggablePointComponent = /** @class */ (function () {
         }));
     };
     /**
+     * @param {?} event
+     * @return {?}
+     */
+    NgxDraggablePointComponent.prototype.mouseUp = /**
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        this.clicking = false;
+    };
+    /**
      * returns a css style object for the point
      */
     /**
@@ -845,7 +856,8 @@ var NgxDraggablePointComponent = /** @class */ (function () {
         limitRoles: [{ type: Input }],
         startPosition: [{ type: Input }],
         container: [{ type: Input }],
-        _currentPosition: [{ type: Input }]
+        _currentPosition: [{ type: Input }],
+        mouseUp: [{ type: HostListener, args: ['window:mouseup', ['$event'],] }]
     };
     return NgxDraggablePointComponent;
 }());
