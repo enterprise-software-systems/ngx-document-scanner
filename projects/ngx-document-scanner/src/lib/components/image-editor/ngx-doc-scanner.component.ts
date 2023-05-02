@@ -535,7 +535,6 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
           this.processing.emit(false);
           return;
         }
-        console.log(contours);
         // console.log('----------UNIQUE RECTANGLES FROM ALL CONTOURS----------');
         const rects = [];
         for (let i = 0; i < contours.size(); i++) {
@@ -631,21 +630,28 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
         // console.log(ts);
         // console.log(bs);
 
-        if (this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
-          roles[ts[0]].push('left');
-          roles[ts[1]].push('right');
-        } else {
-          roles[ts[1]].push('right');
-          roles[ts[0]].push('left');
+        try {
+          if (this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
+            roles[ts[0]].push('left');
+            roles[ts[1]].push('right');
+          } else {
+            roles[ts[1]].push('right');
+            roles[ts[0]].push('left');
+          }
+
+          if (this.isLeft(vertices[bs[0]], vertices[bs[1]])) {
+            roles[bs[0]].push('left');
+            roles[bs[1]].push('right');
+          } else {
+            roles[bs[1]].push('left');
+            roles[bs[0]].push('right');
+          }
+        } catch (e) {
+          this.processing.emit(false);
+          return;
+
         }
 
-        if (this.isLeft(vertices[bs[0]], vertices[bs[1]])) {
-          roles[bs[0]].push('left');
-          roles[bs[1]].push('right');
-        } else {
-          roles[bs[1]].push('left');
-          roles[bs[0]].push('right');
-        }
 
         // console.log(roles);
 
