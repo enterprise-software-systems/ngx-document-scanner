@@ -1643,6 +1643,9 @@
          */
         function (changes) {
             if (changes.config) {
+                if (!changes.config.previousValue) {
+                    return;
+                }
                 if (changes.config.currentValue.thresholdInfo.thresh !== changes.config.previousValue.thresholdInfo.thresh) {
                     this.loadFile(this.originalImage);
                 }
@@ -2196,7 +2199,10 @@
                     cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
                     /** @type {?} */
                     var cnt = contours.get(4);
-                    console.log(contours);
+                    if (!cnt) {
+                        _this.processing.emit(false);
+                        return;
+                    }
                     // console.log('----------UNIQUE RECTANGLES FROM ALL CONTOURS----------');
                     /** @type {?} */
                     var rects = [];
@@ -2296,21 +2302,27 @@
                     }
                     // console.log(ts);
                     // console.log(bs);
-                    if (_this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
-                        roles[ts[0]].push('left');
-                        roles[ts[1]].push('right');
+                    try {
+                        if (_this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
+                            roles[ts[0]].push('left');
+                            roles[ts[1]].push('right');
+                        }
+                        else {
+                            roles[ts[1]].push('right');
+                            roles[ts[0]].push('left');
+                        }
+                        if (_this.isLeft(vertices[bs[0]], vertices[bs[1]])) {
+                            roles[bs[0]].push('left');
+                            roles[bs[1]].push('right');
+                        }
+                        else {
+                            roles[bs[1]].push('left');
+                            roles[bs[0]].push('right');
+                        }
                     }
-                    else {
-                        roles[ts[1]].push('right');
-                        roles[ts[0]].push('left');
-                    }
-                    if (_this.isLeft(vertices[bs[0]], vertices[bs[1]])) {
-                        roles[bs[0]].push('left');
-                        roles[bs[1]].push('right');
-                    }
-                    else {
-                        roles[bs[1]].push('left');
-                        roles[bs[0]].push('right');
+                    catch (e) {
+                        _this.processing.emit(false);
+                        return;
                     }
                     // console.log(roles);
                     if (_this.config.useRotatedRectangle
