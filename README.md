@@ -5,12 +5,12 @@ It uses a [WASM](https://webassembly.org/) build of [OpenCV](https://opencv.org/
 Note that there are a few extra steps required to configure the component other than installing the package from npm.
 
 ## Live Demo
-View a live demo **[here](https://roiperlman.github.io/ngx-document-scanner)**
+View a live demo **[here](https://enterprise-software-systems.github.io/ngx-document-scanner/)**
 
 ## Installation & Setup
 install the package via npm
 
-    npm install ngx-document-scanner --save
+    npm install https://github.com/enterprise-software-systems/ngx-document-scanner/tree/master/dist/ngx-document-scanner --force --save
 
 the UI is based on `@angular/material`, if you don't have it installed:
 
