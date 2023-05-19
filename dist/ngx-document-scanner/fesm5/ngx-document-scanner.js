@@ -1605,7 +1605,7 @@ var NgxDocScannerComponent = /** @class */ (function () {
                                 function (blob) {
                                     _this.editResult.emit(blob);
                                     _this.processing.emit(false);
-                                }), _this.originalImage.type);
+                                }), 'image/jpeg', 0.8);
                             }));
                         }
                         else {
@@ -1616,7 +1616,7 @@ var NgxDocScannerComponent = /** @class */ (function () {
                             function (blob) {
                                 _this.editResult.emit(blob);
                                 _this.processing.emit(false);
-                            }), this.originalImage.type);
+                            }), 'image/jpeg', 0.8);
                         }
                         return [2 /*return*/];
                 }

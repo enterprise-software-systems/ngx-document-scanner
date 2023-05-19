@@ -323,13 +323,13 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
         resizeResult.toBlob((blob) => {
           this.editResult.emit(blob);
           this.processing.emit(false);
-        }, this.originalImage.type);
+        }, 'image/jpeg', 0.8);
       });
     } else {
       this.editedImage.toBlob((blob) => {
         this.editResult.emit(blob);
         this.processing.emit(false);
-      }, this.originalImage.type);
+      },  'image/jpeg', 0.8);
     }
   }
 

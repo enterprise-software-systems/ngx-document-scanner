@@ -1303,7 +1303,7 @@ class NgxDocScannerComponent {
                     (blob) => {
                         this.editResult.emit(blob);
                         this.processing.emit(false);
-                    }), this.originalImage.type);
+                    }), 'image/jpeg', 0.8);
                 }));
             }
             else {
@@ -1314,7 +1314,7 @@ class NgxDocScannerComponent {
                 (blob) => {
                     this.editResult.emit(blob);
                     this.processing.emit(false);
-                }), this.originalImage.type);
+                }), 'image/jpeg', 0.8);
             }
         });
     }
