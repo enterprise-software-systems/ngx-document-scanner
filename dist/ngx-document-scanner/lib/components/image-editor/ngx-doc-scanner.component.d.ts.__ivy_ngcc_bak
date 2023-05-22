@@ -31,9 +31,7 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     /**
      * dimensions of the image container
      */
-    imageDivStyle: {
-        [key: string]: string | number;
-    };
+    imageDivStyle: any;
     /**
      * editor div style
      */
@@ -190,7 +188,6 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     getStoyle(): {
         [p: string]: string | number;
     };
-    getSanitisedStyle(): import("@angular/platform-browser").SafeStyle;
 }
 /**
  * a class for generating configuration objects for the editor

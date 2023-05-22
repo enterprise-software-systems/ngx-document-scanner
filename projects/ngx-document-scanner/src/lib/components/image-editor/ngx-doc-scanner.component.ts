@@ -47,7 +47,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
   /**
    * dimensions of the image container
    */
-  imageDivStyle: { [key: string]: string | number };
+  imageDivStyle: any;
   /**
    * editor div style
    */
@@ -910,8 +910,8 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
     this.imageDivStyle = {
       width: this.previewDimensions.width + this.options.cropToolDimensions.width + 'px',
       height: this.previewDimensions.height + this.options.cropToolDimensions.height + 'px',
-      'margin-left': `calc((100% - ${this.previewDimensions.width + 10}px) / 2 + ${this.options.cropToolDimensions.width / 2}px)`,
-      'margin-right': `calc((100% - ${this.previewDimensions.width + 10}px) / 2 - ${this.options.cropToolDimensions.width / 2}px)`,
+      'margin-left': this.sanitizer.bypassSecurityTrustStyle(`calc((100% - ${this.previewDimensions.width + 10}px) / 2 + ${this.options.cropToolDimensions.width / 2}px)`),
+      'margin-right': this.sanitizer.bypassSecurityTrustStyle(`calc((100% - ${this.previewDimensions.width + 10}px) / 2 - ${this.options.cropToolDimensions.width / 2}px)`),
     };
     this.limitsService.setPaneDimensions({width: this.previewDimensions.width, height: this.previewDimensions.height});
   }
@@ -952,10 +952,6 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
 
   getStoyle(): { [p: string]: string | number } {
     return this.editorStyle;
-  }
-
-  getSanitisedStyle() {
-    return this.sanitizer.bypassSecurityTrustStyle(this.imageDivStyle.toString());
   }
 }
 
