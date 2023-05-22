@@ -4,10 +4,12 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { EditorActionButton, PointOptions, PointShape } from '../../PrivateModels';
 import { DocScannerConfig, ImageDimensions } from '../../PublicModels';
 import { NgxOpenCVService } from 'ngx-opencv';
+import { DomSanitizer } from '@angular/platform-browser';
 export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     private ngxOpenCv;
     private limitsService;
     private bottomSheet;
+    private sanitizer;
     value: number;
     /**
      * editor config object
@@ -115,7 +117,7 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
      * editor configuration object
      */
     config: DocScannerConfig;
-    constructor(ngxOpenCv: NgxOpenCVService, limitsService: LimitsService, bottomSheet: MatBottomSheet);
+    constructor(ngxOpenCv: NgxOpenCVService, limitsService: LimitsService, bottomSheet: MatBottomSheet, sanitizer: DomSanitizer);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     /**
@@ -188,6 +190,7 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     getStoyle(): {
         [p: string]: string | number;
     };
+    getSanitisedStyle(): import("@angular/platform-browser").SafeStyle;
 }
 /**
  * a class for generating configuration objects for the editor

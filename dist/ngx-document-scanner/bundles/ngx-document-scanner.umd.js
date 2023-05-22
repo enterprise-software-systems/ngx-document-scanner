@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs'), require('@angular/material/bottom-sheet'), require('ngx-opencv'), require('@angular/flex-layout'), require('angular2-draggable'), require('@angular/common'), require('@angular/material/button'), require('@angular/material/icon'), require('@angular/material/list'), require('@angular/material/slider'), require('@angular/forms')) :
-    typeof define === 'function' && define.amd ? define('ngx-document-scanner', ['exports', '@angular/core', 'rxjs', '@angular/material/bottom-sheet', 'ngx-opencv', '@angular/flex-layout', 'angular2-draggable', '@angular/common', '@angular/material/button', '@angular/material/icon', '@angular/material/list', '@angular/material/slider', '@angular/forms'], factory) :
-    (global = global || self, factory(global['ngx-document-scanner'] = {}, global.ng.core, global.rxjs, global.ng.material.bottomSheet, global.ngxOpencv, global.ng.flexLayout, global.angular2Draggable, global.ng.common, global.ng.material.button, global.ng.material.icon, global.ng.material.list, global.ng.material.slider, global.ng.forms));
-}(this, (function (exports, core, rxjs, bottomSheet, ngxOpencv, flexLayout, angular2Draggable, common, button, icon, list, slider, forms) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs'), require('@angular/material/bottom-sheet'), require('ngx-opencv'), require('@angular/platform-browser'), require('@angular/flex-layout'), require('angular2-draggable'), require('@angular/common'), require('@angular/material/button'), require('@angular/material/icon'), require('@angular/material/list'), require('@angular/material/slider'), require('@angular/forms')) :
+    typeof define === 'function' && define.amd ? define('ngx-document-scanner', ['exports', '@angular/core', 'rxjs', '@angular/material/bottom-sheet', 'ngx-opencv', '@angular/platform-browser', '@angular/flex-layout', 'angular2-draggable', '@angular/common', '@angular/material/button', '@angular/material/icon', '@angular/material/list', '@angular/material/slider', '@angular/forms'], factory) :
+    (global = global || self, factory(global['ngx-document-scanner'] = {}, global.ng.core, global.rxjs, global.ng.material.bottomSheet, global.ngxOpencv, global.ng.platformBrowser, global.ng.flexLayout, global.angular2Draggable, global.ng.common, global.ng.material.button, global.ng.material.icon, global.ng.material.list, global.ng.material.slider, global.ng.forms));
+}(this, (function (exports, core, rxjs, bottomSheet, ngxOpencv, platformBrowser, flexLayout, angular2Draggable, common, button, icon, list, slider, forms) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -1453,11 +1453,12 @@
      * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var NgxDocScannerComponent = /** @class */ (function () {
-        function NgxDocScannerComponent(ngxOpenCv, limitsService, bottomSheet) {
+        function NgxDocScannerComponent(ngxOpenCv, limitsService, bottomSheet, sanitizer) {
             var _this = this;
             this.ngxOpenCv = ngxOpenCv;
             this.limitsService = limitsService;
             this.bottomSheet = bottomSheet;
+            this.sanitizer = sanitizer;
             this.value = 0;
             /**
              * true after the image is loaded and preview is displayed
@@ -2355,6 +2356,8 @@
                     }
                     // console.log(ts);
                     // console.log(bs);
+                    dst.delete();
+                    cnt.delete();
                     try {
                         if (_this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
                             roles[ts[0]].push('left');
@@ -2863,10 +2866,19 @@
         function () {
             return this.editorStyle;
         };
+        /**
+         * @return {?}
+         */
+        NgxDocScannerComponent.prototype.getSanitisedStyle = /**
+         * @return {?}
+         */
+        function () {
+            return this.sanitizer.bypassSecurityTrustStyle(this.imageDivStyle.toString());
+        };
         NgxDocScannerComponent.decorators = [
             { type: core.Component, args: [{
                         selector: 'ngx-doc-scanner',
-                        template: "<div [ngStyle]=\"getStoyle()\" fxLayout=\"column\" fxLayoutAlign=\"space-around\" style=\"direction: ltr !important\">\r\n  <div #imageContainer [ngStyle]=\"imageDivStyle\" style=\"margin: auto;\">\r\n    <ng-container *ngIf=\"imageLoaded && mode === 'crop'\">\r\n      <ngx-shape-outine #shapeOutline [color]=\"options.cropToolColor\"\r\n                        [weight]=\"options.cropToolLineWeight\"\r\n                        [dimensions]=\"previewDimensions\"></ngx-shape-outine>\r\n      <ngx-draggable-point #topLeft [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: 0, y: 0}\" [limitRoles]=\"['top', 'left']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #topRight [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: previewDimensions.width, y: 0}\"\r\n                           [limitRoles]=\"['top', 'right']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomLeft [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: 0, y: previewDimensions.height}\"\r\n                           [limitRoles]=\"['bottom', 'left']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomRight [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: previewDimensions.width, y: previewDimensions.height}\"\r\n                           [limitRoles]=\"['bottom', 'right']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n    </ng-container>\r\n    <canvas #PreviewCanvas [ngStyle]=\"{'max-width': options.maxPreviewWidth}\"\r\n            style=\"z-index: 5\"></canvas>\r\n  </div>\r\n<!--  <div fxLayout=\"column\" style=\"width: 100vw\">-->\r\n<!--    <div class=\"editor-actions\" fxLayout=\"row\" fxLayoutAlign=\"space-around\">-->\r\n<!--      <ng-container *ngFor=\"let button of displayedButtons\" [ngSwitch]=\"button.type\">-->\r\n<!--        <button mat-mini-fab *ngSwitchCase=\"'fab'\" [name]=\"button.name\" (click)=\"button.action()\"-->\r\n<!--                [color]=\"options.buttonThemeColor\">-->\r\n<!--          <mat-icon>{{button.icon}}</mat-icon>-->\r\n<!--        </button>-->\r\n<!--        <button mat-raised-button *ngSwitchCase=\"'button'\" [name]=\"button.name\"-->\r\n<!--                (click)=\"button.action()\" [color]=\"options.buttonThemeColor\">-->\r\n<!--          <mat-icon>{{button.icon}}</mat-icon>-->\r\n<!--          <span>{{button.text}}}</span>-->\r\n<!--        </button>-->\r\n<!--      </ng-container>-->\r\n<!--    </div>-->\r\n<!--  </div>-->\r\n\r\n</div>\r\n\r\n\r\n",
+                        template: "<div [ngStyle]=\"getStoyle()\" fxLayout=\"column\" fxLayoutAlign=\"space-around\" style=\"direction: ltr !important\">\r\n  <div #imageContainer [ngStyle]=\"getSanitisedStyle()\" style=\"margin: auto;\">\r\n    <ng-container *ngIf=\"imageLoaded && mode === 'crop'\">\r\n      <ngx-shape-outine #shapeOutline [color]=\"options.cropToolColor\"\r\n                        [weight]=\"options.cropToolLineWeight\"\r\n                        [dimensions]=\"previewDimensions\"></ngx-shape-outine>\r\n      <ngx-draggable-point #topLeft [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: 0, y: 0}\" [limitRoles]=\"['top', 'left']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #topRight [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: previewDimensions.width, y: 0}\"\r\n                           [limitRoles]=\"['top', 'right']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomLeft [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: 0, y: previewDimensions.height}\"\r\n                           [limitRoles]=\"['bottom', 'left']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n      <ngx-draggable-point #bottomRight [pointOptions]=\"options.pointOptions\"\r\n                           [startPosition]=\"{x: previewDimensions.width, y: previewDimensions.height}\"\r\n                           [limitRoles]=\"['bottom', 'right']\"\r\n                           [container]=\"imageContainer\"></ngx-draggable-point>\r\n    </ng-container>\r\n    <canvas #PreviewCanvas [ngStyle]=\"{'max-width': options.maxPreviewWidth}\"\r\n            style=\"z-index: 5\"></canvas>\r\n  </div>\r\n<!--  <div fxLayout=\"column\" style=\"width: 100vw\">-->\r\n<!--    <div class=\"editor-actions\" fxLayout=\"row\" fxLayoutAlign=\"space-around\">-->\r\n<!--      <ng-container *ngFor=\"let button of displayedButtons\" [ngSwitch]=\"button.type\">-->\r\n<!--        <button mat-mini-fab *ngSwitchCase=\"'fab'\" [name]=\"button.name\" (click)=\"button.action()\"-->\r\n<!--                [color]=\"options.buttonThemeColor\">-->\r\n<!--          <mat-icon>{{button.icon}}</mat-icon>-->\r\n<!--        </button>-->\r\n<!--        <button mat-raised-button *ngSwitchCase=\"'button'\" [name]=\"button.name\"-->\r\n<!--                (click)=\"button.action()\" [color]=\"options.buttonThemeColor\">-->\r\n<!--          <mat-icon>{{button.icon}}</mat-icon>-->\r\n<!--          <span>{{button.text}}}</span>-->\r\n<!--        </button>-->\r\n<!--      </ng-container>-->\r\n<!--    </div>-->\r\n<!--  </div>-->\r\n\r\n</div>\r\n\r\n\r\n",
                         styles: [".editor-actions{padding:12px}.editor-actions button{margin:5px}.example-h2{margin-left:10px;margin-right:10px}.example-section{display:flex;flex-wrap:wrap;align-content:center;align-items:center}.example-margin{margin:8px}.example-width{max-width:180px;width:100%}.mat-mdc-slider{max-width:300px;width:100%}.mat-mdc-card+.mat-mdc-card{margin-top:8px}.example-result-card h2{margin:0 8px}.example-label-container{display:flex;justify-content:space-between;margin:20px 10px 0;max-width:284px}.example-result-card .example-value-label{font-weight:600}"]
                     }] }
         ];
@@ -2874,7 +2886,8 @@
         NgxDocScannerComponent.ctorParameters = function () { return [
             { type: ngxOpencv.NgxOpenCVService },
             { type: LimitsService },
-            { type: bottomSheet.MatBottomSheet }
+            { type: bottomSheet.MatBottomSheet },
+            { type: platformBrowser.DomSanitizer }
         ]; };
         NgxDocScannerComponent.propDecorators = {
             previewCanvas: [{ type: core.ViewChild, args: ['PreviewCanvas', { read: core.ElementRef },] }],
@@ -3037,6 +3050,11 @@
          * @private
          */
         NgxDocScannerComponent.prototype.bottomSheet;
+        /**
+         * @type {?}
+         * @private
+         */
+        NgxDocScannerComponent.prototype.sanitizer;
     }
     /**
      * a class for generating configuration objects for the editor

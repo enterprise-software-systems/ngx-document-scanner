@@ -6,6 +6,7 @@ import {EditorActionButton, PointOptions, PointShape} from '../../PrivateModels'
 // import {NgxOpenCVService} from '../../services/ngx-opencv.service';
 import {DocScannerConfig, ImageDimensions, OpenCVState} from '../../PublicModels';
 import {NgxOpenCVService} from 'ngx-opencv';
+import {DomSanitizer} from '@angular/platform-browser';
 
 declare var cv: any;
 
@@ -165,7 +166,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
    */
   @Input() config: DocScannerConfig;
 
-  constructor(private ngxOpenCv: NgxOpenCVService, private limitsService: LimitsService, private bottomSheet: MatBottomSheet) {
+  constructor(private ngxOpenCv: NgxOpenCVService, private limitsService: LimitsService, private bottomSheet: MatBottomSheet, private sanitizer: DomSanitizer) {
     this.screenDimensions = {
       width: window.innerWidth,
       height: window.innerHeight
@@ -630,6 +631,9 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
         // console.log(ts);
         // console.log(bs);
 
+        dst.delete();
+        cnt.delete();
+
         try {
           if (this.isLeft(vertices[ts[0]], vertices[ts[1]])) {
             roles[ts[0]].push('left');
@@ -948,6 +952,10 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
 
   getStoyle(): { [p: string]: string | number } {
     return this.editorStyle;
+  }
+
+  getSanitisedStyle() {
+    return this.sanitizer.bypassSecurityTrustStyle(this.imageDivStyle.toString());
   }
 }
 
