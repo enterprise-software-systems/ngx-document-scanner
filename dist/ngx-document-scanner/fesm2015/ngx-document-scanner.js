@@ -1582,14 +1582,11 @@ class NgxDocScannerComponent {
              */
             () => {
                 // load the image and compute the ratio of the old height to the new height, clone it, and resize it
-                /** @type {?} */
-                const processingResizeRatio = 0.5;
+                // const processingResizeRatio = 0.5;
                 /** @type {?} */
                 const src = cv.imread(this.editedImage);
                 /** @type {?} */
                 const dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
-                /** @type {?} */
-                const dsize = new cv.Size(src.rows * processingResizeRatio, src.cols * processingResizeRatio);
                 /** @type {?} */
                 const ksize = new cv.Size(5, 5);
                 // convert the image to grayscale, blur it, and find edges in the image
@@ -1643,40 +1640,29 @@ class NgxDocScannerComponent {
                     if (add) {
                         rects.push(r);
                     }
+                    else {
+                        try {
+                            r.delete();
+                        }
+                        catch (e) {
+                        }
+                    }
                 }
                 /** @type {?} */
                 let rect2 = cv.minAreaRect(cnt);
                 for (let i = 0; i < rects.length; i++) {
-                    // const v = cv.RotatedRect.points(rects[i]);
-                    // let isNegative = false;
-                    // for (let j = 0; j < v.length; j++) {
-                    //   if (v[j].x < 0 || v[j].y < 0) {
-                    //     isNegative = true;
-                    //     break;
-                    //   }
-                    // }
-                    // if (isNegative) {
-                    //   continue;
-                    // }
                     if (((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
                         && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
                             || rects[i].angle === -90 || rects[i].angle === -180) && ((rects[i].angle > 85 || rects[i].angle < 5)))) {
                         rect2 = rects[i];
                     }
                 }
-                // console.log(rects);
-                //
-                // console.log('---------------------------------------------------------');
-                // console.log(cnt);
-                // console.log(rect2);
                 /** @type {?} */
                 const vertices = cv.RotatedRect.points(rect2);
-                // console.log(vertices);
                 for (let i = 0; i < 4; i++) {
                     vertices[i].x = vertices[i].x * this.imageResizeRatio;
                     vertices[i].y = vertices[i].y * this.imageResizeRatio;
                 }
-                // console.log(vertices);
                 /** @type {?} */
                 const rect = cv.boundingRect(src);
                 src.delete();
@@ -1714,8 +1700,6 @@ class NgxDocScannerComponent {
                         bs.push(i);
                     }
                 }
-                // console.log(ts);
-                // console.log(bs);
                 dst.delete();
                 cnt.delete();
                 try {
@@ -1740,7 +1724,6 @@ class NgxDocScannerComponent {
                     this.processing.emit(false);
                     return;
                 }
-                // console.log(roles);
                 if (this.config.useRotatedRectangle
                     && this.pointsAreNotTheSame(vertices)) {
                     contourCoordinates = [
@@ -2042,6 +2025,13 @@ class NgxDocScannerComponent {
             cv.imshow(this.previewCanvas.nativeElement, dst);
             src.delete();
             dst.delete();
+            try {
+                if (image) {
+                    image.delete();
+                }
+            }
+            catch (e) {
+            }
             resolve();
         }));
     }

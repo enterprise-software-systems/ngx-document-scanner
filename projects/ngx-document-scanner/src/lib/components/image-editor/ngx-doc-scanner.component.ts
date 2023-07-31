@@ -166,7 +166,8 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
    */
   @Input() config: DocScannerConfig;
 
-  constructor(private ngxOpenCv: NgxOpenCVService, private limitsService: LimitsService, private bottomSheet: MatBottomSheet, private sanitizer: DomSanitizer) {
+  constructor(private ngxOpenCv: NgxOpenCVService, private limitsService: LimitsService,
+              private bottomSheet: MatBottomSheet, private sanitizer: DomSanitizer) {
     this.screenDimensions = {
       width: window.innerWidth,
       height: window.innerHeight
@@ -330,7 +331,7 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
       this.editedImage.toBlob((blob) => {
         this.editResult.emit(blob);
         this.processing.emit(false);
-      },  'image/jpeg', 0.8);
+      }, 'image/jpeg', 0.8);
     }
   }
 
@@ -507,10 +508,9 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
       this.processing.emit(true);
       setTimeout(() => {
         // load the image and compute the ratio of the old height to the new height, clone it, and resize it
-        const processingResizeRatio = 0.5;
+        // const processingResizeRatio = 0.5;
         const src = cv.imread(this.editedImage);
         const dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
-        const dsize = new cv.Size(src.rows * processingResizeRatio, src.cols * processingResizeRatio);
         const ksize = new cv.Size(5, 5);
         // convert the image to grayscale, blur it, and find edges in the image
         cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
@@ -562,22 +562,16 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
 
           if (add) {
             rects.push(r);
+          } else {
+            try {
+              r.delete();
+            } catch (e) {
+            }
           }
         }
 
         let rect2 = cv.minAreaRect(cnt);
         for (let i = 0; i < rects.length; i++) {
-          // const v = cv.RotatedRect.points(rects[i]);
-          // let isNegative = false;
-          // for (let j = 0; j < v.length; j++) {
-          //   if (v[j].x < 0 || v[j].y < 0) {
-          //     isNegative = true;
-          //     break;
-          //   }
-          // }
-          // if (isNegative) {
-          //   continue;
-          // }
           if (((rects[i].size.width * rects[i].size.height) > (rect2.size.width * rect2.size.height)
             && !(rects[i].angle === 90 || rects[i].angle === 180 || rects[i].angle === 0
               || rects[i].angle === -90 || rects[i].angle === -180) && ((rects[i].angle > 85 || rects[i].angle < 5)))
@@ -585,19 +579,11 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
             rect2 = rects[i];
           }
         }
-        // console.log(rects);
-        //
-        // console.log('---------------------------------------------------------');
-        // console.log(cnt);
-        // console.log(rect2);
         const vertices = cv.RotatedRect.points(rect2);
-        // console.log(vertices);
         for (let i = 0; i < 4; i++) {
           vertices[i].x = vertices[i].x * this.imageResizeRatio;
           vertices[i].y = vertices[i].y * this.imageResizeRatio;
         }
-
-        // console.log(vertices);
 
         const rect = cv.boundingRect(src);
 
@@ -628,9 +614,6 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
           }
         }
 
-        // console.log(ts);
-        // console.log(bs);
-
         dst.delete();
         cnt.delete();
 
@@ -655,9 +638,6 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
           return;
 
         }
-
-
-        // console.log(roles);
 
         if (this.config.useRotatedRectangle
           && this.pointsAreNotTheSame(vertices)
@@ -891,6 +871,12 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
       cv.imshow(this.previewCanvas.nativeElement, dst);
       src.delete();
       dst.delete();
+      try {
+        if (image) {
+          image.delete();
+        }
+      } catch (e) {
+      }
       resolve();
     });
   }

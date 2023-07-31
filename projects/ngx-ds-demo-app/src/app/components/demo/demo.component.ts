@@ -91,7 +91,8 @@ export class DemoComponent implements OnInit {
       'image/jpg',
     ];
     return types.findIndex(type => {
-      return type === file.type;
+      return file ? (type === file.type) : -1;
+
     }) !== -1;
   }
 
@@ -128,6 +129,7 @@ export class DemoComponent implements OnInit {
   rotate(): void {
     this.docScanner.rotateImage();
   }
+
   export(): void {
     this.docScanner.exportImage();
   }
