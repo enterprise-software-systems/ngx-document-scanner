@@ -395,6 +395,10 @@ export class NgxDocScannerComponent implements OnInit, OnChanges {
         reject(err);
       }
       const img = new Image();
+      if (this.editedImage) {
+        console.log('clearing old edited image...');
+        this.editedImage.remove();
+      }
       img.onload = async () => {
         // set edited image canvas and dimensions
         this.editedImage = <HTMLCanvasElement>document.createElement('canvas');

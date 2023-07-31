@@ -1409,6 +1409,10 @@ class NgxDocScannerComponent {
             }
             /** @type {?} */
             const img = new Image();
+            if (this.editedImage) {
+                console.log('clearing old edited image...');
+                this.editedImage.remove();
+            }
             img.onload = (/**
              * @return {?}
              */

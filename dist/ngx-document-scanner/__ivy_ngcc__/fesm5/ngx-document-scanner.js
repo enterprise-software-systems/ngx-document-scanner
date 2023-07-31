@@ -1931,6 +1931,10 @@ var NgxDocScannerComponent = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 3:
                         img = new Image();
+                        if (this.editedImage) {
+                            console.log('clearing old edited image...');
+                            this.editedImage.remove();
+                        }
                         img.onload = (/**
                          * @return {?}
                          */
