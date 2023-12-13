@@ -8,9 +8,13 @@ import { BehaviorSubject } from 'rxjs';
  */
 /** @type {?} */
 import * as ɵngcc0 from '@angular/core';
-var OpenCvConfigToken = new InjectionToken('OpenCV config object token');
-var NgxOpenCVService = /** @class */ (function () {
-    function NgxOpenCVService(options, _ngZone) {
+const OpenCvConfigToken = new InjectionToken('OpenCV config object token');
+class NgxOpenCVService {
+    /**
+     * @param {?} options
+     * @param {?} _ngZone
+     */
+    constructor(options, _ngZone) {
         this._ngZone = _ngZone;
         this.cvState = new BehaviorSubject({
             ready: false,
@@ -26,66 +30,48 @@ var NgxOpenCVService = /** @class */ (function () {
     }
     /**
      * load the OpenCV script
-     */
-    /**
-     * load the OpenCV script
      * @return {?}
      */
-    NgxOpenCVService.prototype.loadOpenCv = /**
-     * load the OpenCV script
-     * @return {?}
-     */
-    function () {
-        var _this = this;
+    loadOpenCv() {
         this.cvState.next(this.newState('loading'));
         // create global module variable
         window['Module'] = this.configModule;
         // create script element and set attributes
         /** @type {?} */
-        var script = (/** @type {?} */ (document.createElement('script')));
+        const script = (/** @type {?} */ (document.createElement('script')));
         script.setAttribute('async', '');
         script.setAttribute('type', 'text/javascript');
         // listen for errors
         script.addEventListener('error', (/**
          * @return {?}
          */
-        function () {
+        () => {
             /** @type {?} */
-            var err = new Error('Failed to load ' + _this.configModule.scriptUrl);
-            _this.cvState.next(_this.newState('error'));
-            _this.cvState.error(err);
+            const err = new Error('Failed to load ' + this.configModule.scriptUrl);
+            this.cvState.next(this.newState('error'));
+            this.cvState.error(err);
         }), { passive: true });
         // set script url
         script.src = this.configModule.scriptUrl;
         // insert script as first script tag
         /** @type {?} */
-        var node = document.getElementsByTagName('script')[0];
+        const node = document.getElementsByTagName('script')[0];
         if (node) {
             node.parentNode.insertBefore(script, node);
         }
         else {
             document.head.appendChild(script);
         }
-    };
-    /**
-     * generates a new state object
-     * @param change - the new state of the module
-     */
+    }
     /**
      * generates a new state object
      * @private
      * @param {?} change - the new state of the module
      * @return {?}
      */
-    NgxOpenCVService.prototype.newState = /**
-     * generates a new state object
-     * @private
-     * @param {?} change - the new state of the module
-     * @return {?}
-     */
-    function (change) {
+    newState(change) {
         /** @type {?} */
-        var newStateObj = {
+        const newStateObj = {
             ready: false,
             loading: false,
             error: false,
@@ -95,7 +81,7 @@ var NgxOpenCVService = /** @class */ (function () {
          * @param {?} key
          * @return {?}
          */
-        function (key) {
+        key => {
             if (key !== 'state') {
                 if (key === change) {
                     newStateObj[key] = true;
@@ -107,54 +93,44 @@ var NgxOpenCVService = /** @class */ (function () {
             }
         }));
         return newStateObj;
-    };
-    /**
-     * generates a config module for the global Module object
-     * @param options - configuration options
-     */
+    }
     /**
      * generates a config module for the global Module object
      * @private
      * @param {?} options - configuration options
      * @return {?}
      */
-    NgxOpenCVService.prototype.generateConfigModule = /**
-     * generates a config module for the global Module object
-     * @private
-     * @param {?} options - configuration options
-     * @return {?}
-     */
-    function (options) {
-        var _this = this;
+    generateConfigModule(options) {
         return {
-            scriptUrl: options.openCVDirPath ? options.openCVDirPath + "/opencv.js" : "/assets/opencv/opencv.js",
+            scriptUrl: options.openCVDirPath ? `${options.openCVDirPath}/opencv.js` : `/assets/opencv/opencv.js`,
             wasmBinaryFile: 'opencv_js.wasm',
             usingWasm: true,
             onRuntimeInitialized: (/**
              * @return {?}
              */
-            function () {
-                _this._ngZone.run((/**
+            () => {
+                this._ngZone.run((/**
                  * @return {?}
                  */
-                function () {
+                () => {
                     console.log('openCV Ready');
-                    _this.cvState.next(_this.newState('ready'));
+                    this.cvState.next(this.newState('ready'));
                     if (options.runOnOpenCVInit) {
                         options.runOnOpenCVInit();
                     }
                 }));
             })
         };
-    };
-    /** @nocollapse */
-    NgxOpenCVService.ctorParameters = function () { return [
-        { type: undefined, decorators: [{ type: Inject, args: [OpenCvConfigToken,] }] },
-        { type: NgZone }
-    ]; };
-    /** @nocollapse */ NgxOpenCVService.ɵprov = ɵɵdefineInjectable({ factory: function NgxOpenCVService_Factory() { return new NgxOpenCVService(ɵɵinject(OpenCvConfigToken), ɵɵinject(NgZone)); }, token: NgxOpenCVService, providedIn: "root" });
+    }
+}
 NgxOpenCVService.ɵfac = function NgxOpenCVService_Factory(t) { return new (t || NgxOpenCVService)(ɵngcc0.ɵɵinject(OpenCvConfigToken), ɵngcc0.ɵɵinject(ɵngcc0.NgZone)); };
-/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(NgxOpenCVService, [{
+/** @nocollapse */
+NgxOpenCVService.ctorParameters = () => [
+    { type: undefined, decorators: [{ type: Inject, args: [OpenCvConfigToken,] }] },
+    { type: NgZone }
+];
+/** @nocollapse */ NgxOpenCVService.ɵprov = ɵɵdefineInjectable({ factory: function NgxOpenCVService_Factory() { return new NgxOpenCVService(ɵɵinject(OpenCvConfigToken), ɵɵinject(NgZone)); }, token: NgxOpenCVService, providedIn: "root" });
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && ɵngcc0.ɵsetClassMetadata(NgxOpenCVService, [{
         type: Injectable,
         args: [{
                 providedIn: 'root'
@@ -163,8 +139,6 @@ NgxOpenCVService.ɵfac = function NgxOpenCVService_Factory(t) { return new (t ||
                 type: Inject,
                 args: [OpenCvConfigToken]
             }] }, { type: ɵngcc0.NgZone }]; }, null); })();
-    return NgxOpenCVService;
-}());
 if (false) {
     /** @type {?} */
     NgxOpenCVService.prototype.cvState;
@@ -197,37 +171,31 @@ if (false) {
  * Generated from: lib/ngx-opencv.module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-var NgxOpenCVModule = /** @class */ (function () {
-    function NgxOpenCVModule() {
-    }
+class NgxOpenCVModule {
     /**
      * @param {?} config
      * @return {?}
      */
-    NgxOpenCVModule.forRoot = /**
-     * @param {?} config
-     * @return {?}
-     */
-    function (config) {
+    static forRoot(config) {
         return {
             ngModule: NgxOpenCVModule,
             providers: [{ provide: OpenCvConfigToken, useValue: config }]
         };
-    };
-NgxOpenCVModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: NgxOpenCVModule });
-NgxOpenCVModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function NgxOpenCVModule_Factory(t) { return new (t || NgxOpenCVModule)(); }, providers: [NgxOpenCVService] });
-/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(NgxOpenCVModule, [{
+    }
+}
+NgxOpenCVModule.ɵfac = function NgxOpenCVModule_Factory(t) { return new (t || NgxOpenCVModule)(); };
+NgxOpenCVModule.ɵmod = /*@__PURE__*/ ɵngcc0.ɵɵdefineNgModule({ type: NgxOpenCVModule });
+NgxOpenCVModule.ɵinj = /*@__PURE__*/ ɵngcc0.ɵɵdefineInjector({ providers: [NgxOpenCVService] });
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && ɵngcc0.ɵsetClassMetadata(NgxOpenCVModule, [{
         type: NgModule,
         args: [{
                 declarations: [],
                 exports: [],
                 providers: [NgxOpenCVService]
             }]
-    }], function () { return []; }, null); })();
-    return NgxOpenCVModule;
-}());
+    }], null, null); })();
 /** @type {?} */
-var a = 0;
+const a = 0;
 
 /**
  * @fileoverview added by tsickle
