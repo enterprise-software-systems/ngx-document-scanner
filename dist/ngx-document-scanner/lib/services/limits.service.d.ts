@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { ImageDimensions } from '../PublicModels';
 import { LimitException, XYPosition } from '../PrivateModels';
-import * as ɵngcc0 from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class LimitsService {
     private limitDirections;
     /**
@@ -75,7 +75,8 @@ export declare class LimitsService {
      */
     compareArray(array1: Array<string>, array2: Array<string>): boolean;
     private getDirectionAxis;
-    static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<LimitsService, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<LimitsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<LimitsService>;
 }
 export interface PointPositionChange {
     x: number;
@@ -88,13 +89,11 @@ export interface AreaLimits {
     right: number;
     left: number;
 }
-export declare type RolesArray = Array<Direction>;
+export type RolesArray = Array<Direction>;
 export declare class PositionChangeData implements PointPositionChange {
     x: number;
     y: number;
     roles: RolesArray;
     constructor(position: XYPosition, roles: RolesArray);
 }
-export declare type Direction = 'left' | 'right' | 'top' | 'bottom';
-
-//# sourceMappingURL=limits.service.d.ts.map
+export type Direction = 'left' | 'right' | 'top' | 'bottom';

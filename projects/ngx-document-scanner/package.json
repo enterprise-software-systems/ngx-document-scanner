@@ -1,36 +1,36 @@
 {
-  "name": "ngx-document-scanner",
-  "version": "1.0.9",
-  "keywords": [
-    "opencv",
-    "camscanner",
-    "scanner",
-    "image processing",
-    "document",
-    "angular",
-    "OpenCVJS",
-    "image manipulation",
-    "crop"
-  ],
-  "description": "Angular 2+ component for cropping and enhancing images of documents",
-  "author": "RoiP",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/roiperlman/ngx-document-scanner.git"
-  },
-  "peerDependencies": {
-    "@angular/common": "^9.1.9",
-    "@angular/core": "^9.1.9",
-    "@angular/platform-browser": "~9.1.9",
-    "@angular/platform-browser-dynamic": "~9.1.9",
-    "rxjs": "~6.5.5"
-  },
-  "dependencies": {
-    "angular2-draggable": "^2.3.2",
-    "ngx-opencv": "2.0.1",
-    "@angular/flex-layout": "^9.0.0-beta.31",
-    "@angular/material": "^9.2.4",
-    "@angular/cdk": "~9.2.4"
-  }
+    "name": "ngx-document-scanner",
+    "version": "1.0.9",
+    "keywords": [
+        "opencv",
+        "camscanner",
+        "scanner",
+        "image processing",
+        "document",
+        "angular",
+        "OpenCVJS",
+        "image manipulation",
+        "crop"
+    ],
+    "description": "Angular 2+ component for cropping and enhancing images of documents",
+    "author": "RoiP",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/roiperlman/ngx-document-scanner.git"
+    },
+    "peerDependencies": {
+        "@angular/common": "^15.2.0",
+        "@angular/core": "^15.2.0",
+        "@angular/platform-browser": "^15.2.0",
+        "@angular/platform-browser-dynamic": "^15.2.0",
+        "rxjs": "~7.8.0"
+    },
+    "dependencies": {
+        "angular2-draggable": "^1.5.0",
+        "ngx-opencv": "2.0.1",
+        "@angular/flex-layout": "^15.0.0-beta.42",
+        "@angular/material": "^15.2.9",
+        "@angular/cdk": "~15.2.9"
+    }
 }

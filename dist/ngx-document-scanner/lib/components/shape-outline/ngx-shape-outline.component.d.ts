@@ -1,7 +1,7 @@
 import { AfterViewInit } from '@angular/core';
 import { LimitsService } from '../../services/limits.service';
 import { ImageDimensions } from '../../PublicModels';
-import * as ɵngcc0 from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NgxShapeOutlineComponent implements AfterViewInit {
     private limitsService;
     color: string;
@@ -24,8 +24,6 @@ export declare class NgxShapeOutlineComponent implements AfterViewInit {
      * draws a line between the points according to their order
      */
     private drawShape;
-    static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<NgxShapeOutlineComponent, never>;
-    static ɵcmp: ɵngcc0.ɵɵComponentDeclaration<NgxShapeOutlineComponent, "ngx-shape-outine", never, { "color": "color"; "weight": "weight"; "dimensions": "dimensions"; }, {}, never, never, false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NgxShapeOutlineComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NgxShapeOutlineComponent, "ngx-shape-outine", never, { "color": "color"; "weight": "weight"; "dimensions": "dimensions"; }, {}, never, never, false, never>;
 }
-
-//# sourceMappingURL=ngx-shape-outline.component.d.ts.map

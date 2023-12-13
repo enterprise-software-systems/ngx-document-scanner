@@ -5,7 +5,7 @@ import { EditorActionButton, PointOptions, PointShape } from '../../PrivateModel
 import { DocScannerConfig, ImageDimensions } from '../../PublicModels';
 import { NgxOpenCVService } from 'ngx-opencv';
 import { DomSanitizer } from '@angular/platform-browser';
-import * as ɵngcc0 from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     private ngxOpenCv;
     private limitsService;
@@ -189,8 +189,8 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     getStoyle(): {
         [p: string]: string | number;
     };
-    static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<NgxDocScannerComponent, never>;
-    static ɵcmp: ɵngcc0.ɵɵComponentDeclaration<NgxDocScannerComponent, "ngx-doc-scanner", never, { "file": "file"; "config": "config"; }, { "exitEditor": "exitEditor"; "editResult": "editResult"; "error": "error"; "ready": "ready"; "processing": "processing"; }, never, never, false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NgxDocScannerComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NgxDocScannerComponent, "ngx-doc-scanner", never, { "file": "file"; "config": "config"; }, { "exitEditor": "exitEditor"; "editResult": "editResult"; "error": "error"; "ready": "ready"; "processing": "processing"; }, never, never, false, never>;
 }
 /**
  * a class for generating configuration objects for the editor
@@ -262,5 +262,3 @@ declare class ImageEditorConfig implements DocScannerConfig {
     constructor(options: DocScannerConfig);
 }
 export {};
-
-//# sourceMappingURL=ngx-doc-scanner.component.d.ts.map
