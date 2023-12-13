@@ -13,7 +13,7 @@ export interface EditorActionButton {
 /**
  * a string describing the shape of a draggable point
  */
-export declare type PointShape = 'rect' | 'circle';
+export type PointShape = 'rect' | 'circle';
 export interface DraggablePointConfig {
     width?: number;
     height?: number;

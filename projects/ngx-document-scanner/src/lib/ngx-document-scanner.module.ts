@@ -54,7 +54,7 @@ import {FormsModule} from '@angular/forms';
   ]
 })
 export class NgxDocumentScannerModule {
-  static forRoot(config: OpenCVConfig): ModuleWithProviders {
+  static forRoot(config: OpenCVConfig): ModuleWithProviders<NgxDocumentScannerModule> {
     return {
       ngModule: NgxDocumentScannerModule,
       providers: [

@@ -46,7 +46,7 @@ export class LimitsService {
     return new Promise((resolve, reject) => {
       this._paneDimensions = dimensions;
       this.paneDimensions.next(dimensions);
-      resolve();
+      resolve(dimensions);
     });
   }
 
