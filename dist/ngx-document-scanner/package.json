@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "angular2-draggable": "^16.0.0",
-    "ngx-opencv": "2.0.1",
+    "@ess/ngx-opencv": "16.0.0",
     "@angular/flex-layout": "^15.0.0-beta.42",
     "@angular/material": "^16.2.12",
     "@angular/cdk": "~16.2.12",

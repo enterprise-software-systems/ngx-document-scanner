@@ -33,6 +33,7 @@ yarn-error.log
 testem.log
 /typings
 .angular
+projects/ngx-document-scanner/node_modules
 
 # System Files
 .DS_Store

@@ -1,10 +1,10 @@
 {
-  "name": "ngx-opencv",
-  "version": "1.0.5",
+  "name": "@ess/ngx-opencv",
+  "version": "16.0.0",
   "peerDependencies": {
     "@angular/common": "^16.2.12",
     "@angular/core": "^16.2.12",
-    "ngx-opencv": "^2.0.1"
+    "@ess/ngx-opencv": "^16.0.0"
   },
   "keywords": [
     "opencv",
@@ -24,7 +24,7 @@
     "type": "git",
     "url": "https://github.com/roiperlman/ngx-document-scanner.git"
   },
-  "module": "fesm2022/ngx-opencv.mjs",
+  "module": "fesm2022/ess-ngx-opencv.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -32,9 +32,9 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2022": "./esm2022/ngx-opencv.mjs",
-      "esm": "./esm2022/ngx-opencv.mjs",
-      "default": "./fesm2022/ngx-opencv.mjs"
+      "esm2022": "./esm2022/ess-ngx-opencv.mjs",
+      "esm": "./esm2022/ess-ngx-opencv.mjs",
+      "default": "./fesm2022/ess-ngx-opencv.mjs"
     }
   },
   "sideEffects": false,

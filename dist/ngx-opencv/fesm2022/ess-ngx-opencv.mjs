@@ -129,4 +129,4 @@ const a = 0;
  */
 
 export { NgxOpenCVModule, NgxOpenCVService, OpenCvConfigToken };
-//# sourceMappingURL=ngx-opencv.mjs.map
+//# sourceMappingURL=ess-ngx-opencv.mjs.map

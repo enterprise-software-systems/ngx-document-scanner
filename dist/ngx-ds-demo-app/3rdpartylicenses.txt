@@ -69,13 +69,13 @@ MIT
 @angular/router
 MIT
 
+@ess/ngx-opencv
+MIT
+
 angular2-draggable
 MIT
 
 ngx-document-scanner
-MIT
-
-ngx-opencv
 MIT
 
 rxjs
