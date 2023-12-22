@@ -1,6 +1,6 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import {OpenCVConfig} from './models';
-import {NgxOpenCVService, OpenCvConfigToken} from './ngx-open-cv.service';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { OpenCVConfig } from './models';
+import { NgxOpenCVService, OpenCvConfigToken } from './ngx-open-cv.service';
 
 
 @NgModule({

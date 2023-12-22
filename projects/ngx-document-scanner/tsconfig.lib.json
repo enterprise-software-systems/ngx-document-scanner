@@ -29,5 +29,13 @@
   "exclude": [
     "src/test.ts",
     "**/*.spec.ts"
-  ]
+  ],
+  "paths": {
+    "ngx-opencv": [
+      "dist/ngx-opencv"
+    ],
+    "ngx-opencv/*": [
+      "dist/ngx-opencv/*"
+    ]
+  }
 }
