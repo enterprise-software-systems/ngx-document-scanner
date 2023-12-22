@@ -82,5 +82,5 @@ export declare class NgxDraggablePointComponent implements AfterViewInit {
      */
     private enforcePaneLimits;
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxDraggablePointComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<NgxDraggablePointComponent, "ngx-draggable-point", never, { "width": "width"; "height": "height"; "color": "color"; "shape": "shape"; "pointOptions": "pointOptions"; "limitRoles": "limitRoles"; "startPosition": "startPosition"; "container": "container"; "_currentPosition": "_currentPosition"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NgxDraggablePointComponent, "ngx-draggable-point", never, { "width": { "alias": "width"; "required": false; }; "height": { "alias": "height"; "required": false; }; "color": { "alias": "color"; "required": false; }; "shape": { "alias": "shape"; "required": false; }; "pointOptions": { "alias": "pointOptions"; "required": false; }; "limitRoles": { "alias": "limitRoles"; "required": false; }; "startPosition": { "alias": "startPosition"; "required": false; }; "container": { "alias": "container"; "required": false; }; "_currentPosition": { "alias": "_currentPosition"; "required": false; }; }, {}, never, never, false, never>;
 }

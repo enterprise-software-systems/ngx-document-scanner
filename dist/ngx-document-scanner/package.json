@@ -34,11 +34,7 @@
     "@angular/cdk": "~15.2.9",
     "tslib": "^2.3.0"
   },
-  "module": "fesm2015/ngx-document-scanner.mjs",
-  "es2020": "fesm2020/ngx-document-scanner.mjs",
-  "esm2020": "esm2020/ngx-document-scanner.mjs",
-  "fesm2020": "fesm2020/ngx-document-scanner.mjs",
-  "fesm2015": "fesm2015/ngx-document-scanner.mjs",
+  "module": "fesm2022/ngx-document-scanner.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -46,11 +42,9 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2020": "./esm2020/ngx-document-scanner.mjs",
-      "es2020": "./fesm2020/ngx-document-scanner.mjs",
-      "es2015": "./fesm2015/ngx-document-scanner.mjs",
-      "node": "./fesm2015/ngx-document-scanner.mjs",
-      "default": "./fesm2020/ngx-document-scanner.mjs"
+      "esm2022": "./esm2022/ngx-document-scanner.mjs",
+      "esm": "./esm2022/ngx-document-scanner.mjs",
+      "default": "./fesm2022/ngx-document-scanner.mjs"
     }
   },
   "sideEffects": false,

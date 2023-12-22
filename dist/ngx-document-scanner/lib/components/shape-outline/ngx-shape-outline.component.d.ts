@@ -25,5 +25,5 @@ export declare class NgxShapeOutlineComponent implements AfterViewInit {
      */
     private drawShape;
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxShapeOutlineComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<NgxShapeOutlineComponent, "ngx-shape-outine", never, { "color": "color"; "weight": "weight"; "dimensions": "dimensions"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NgxShapeOutlineComponent, "ngx-shape-outine", never, { "color": { "alias": "color"; "required": false; }; "weight": { "alias": "weight"; "required": false; }; "dimensions": { "alias": "dimensions"; "required": false; }; }, {}, never, never, false, never>;
 }

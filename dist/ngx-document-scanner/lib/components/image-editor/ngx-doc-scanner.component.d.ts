@@ -190,7 +190,7 @@ export declare class NgxDocScannerComponent implements OnInit, OnChanges {
         [p: string]: string | number;
     };
     static ɵfac: i0.ɵɵFactoryDeclaration<NgxDocScannerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<NgxDocScannerComponent, "ngx-doc-scanner", never, { "file": "file"; "config": "config"; }, { "exitEditor": "exitEditor"; "editResult": "editResult"; "error": "error"; "ready": "ready"; "processing": "processing"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NgxDocScannerComponent, "ngx-doc-scanner", never, { "file": { "alias": "file"; "required": false; }; "config": { "alias": "config"; "required": false; }; }, { "exitEditor": "exitEditor"; "editResult": "editResult"; "error": "error"; "ready": "ready"; "processing": "processing"; }, never, never, false, never>;
 }
 /**
  * a class for generating configuration objects for the editor

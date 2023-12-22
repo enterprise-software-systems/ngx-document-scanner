@@ -1,0 +1,4 @@
+export * from './lib/ngx-opencv.module';
+export * from './lib/models';
+export * from './lib/ngx-open-cv.service';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljX2FwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3Byb2plY3RzL25neC1vcGVuY3Yvc3JjL3B1YmxpY19hcGkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0EsY0FBYyx5QkFBeUIsQ0FBQztBQUN4QyxjQUFjLGNBQWMsQ0FBQztBQUM3QixjQUFjLDJCQUEyQixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiXHJcbmV4cG9ydCAqIGZyb20gJy4vbGliL25neC1vcGVuY3YubW9kdWxlJztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvbW9kZWxzJztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvbmd4LW9wZW4tY3Yuc2VydmljZSc7XHJcbiJdfQ==

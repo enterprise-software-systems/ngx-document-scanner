@@ -1,7 +1,7 @@
 import { InjectionToken, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { OpenCVConfig, OpenCVState } from './models';
-import * as ɵngcc0 from '@angular/core';
+import * as i0 from "@angular/core";
 export declare const OpenCvConfigToken: InjectionToken<OpenCVConfig>;
 export declare class NgxOpenCVService {
     private _ngZone;
@@ -22,7 +22,8 @@ export declare class NgxOpenCVService {
      * @param options - configuration options
      */
     private generateConfigModule;
-    static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<NgxOpenCVService, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NgxOpenCVService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NgxOpenCVService>;
 }
 /**
  * describes the global Module object that is used to initiate OpenCV.js
@@ -34,5 +35,3 @@ interface OpenCvConfigModule {
     onRuntimeInitialized: Function;
 }
 export {};
-
-//# sourceMappingURL=ngx-open-cv.service.d.ts.map

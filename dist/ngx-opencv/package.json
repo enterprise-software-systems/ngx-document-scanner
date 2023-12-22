@@ -2,8 +2,8 @@
   "name": "ngx-opencv",
   "version": "1.0.5",
   "peerDependencies": {
-    "@angular/common": "^9.1.9",
-    "@angular/core": "^9.1.9",
+    "@angular/common": "^16.2.12",
+    "@angular/core": "^16.2.12",
     "ngx-opencv": "^2.0.1"
   },
   "keywords": [
@@ -24,27 +24,24 @@
     "type": "git",
     "url": "https://github.com/roiperlman/ngx-document-scanner.git"
   },
-  "main": "bundles/ngx-opencv.umd.js",
-  "module": "fesm5/ngx-opencv.js",
-  "es2015_ivy_ngcc": "__ivy_ngcc__/fesm2015/ngx-opencv.js",
-  "es2015": "fesm2015/ngx-opencv.js",
-  "esm5": "esm5/ngx-opencv.js",
-  "esm2015": "esm2015/ngx-opencv.js",
-  "fesm5": "fesm5/ngx-opencv.js",
-  "fesm2015_ivy_ngcc": "__ivy_ngcc__/fesm2015/ngx-opencv.js",
-  "fesm2015": "fesm2015/ngx-opencv.js",
-  "typings": "ngx-opencv.d.ts",
-  "metadata": "ngx-opencv.metadata.json",
+  "module": "fesm2022/ngx-opencv.mjs",
+  "typings": "index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2022": "./esm2022/ngx-opencv.mjs",
+      "esm": "./esm2022/ngx-opencv.mjs",
+      "default": "./fesm2022/ngx-opencv.mjs"
+    }
+  },
   "sideEffects": false,
   "dependencies": {
-    "tslib": "^1.10.0"
+    "tslib": "^2.3.0"
   },
   "scripts": {
-    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by NGCC. This is not allowed.\\nPlease delete and rebuild the package, without compiling with NGCC, before attempting to publish.\\nNote that NGCC may have been run by importing this package into another project that is being built with Ivy enabled.\\n')\" && exit 1"
-  },
-  "__processed_by_ivy_ngcc__": {
-    "es2015": "15.2.10",
-    "fesm2015": "15.2.10",
-    "typings": "15.2.10"
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy in full compilation mode. This is not allowed.\\nPlease delete and rebuild the package with Ivy partial compilation mode, before attempting to publish.\\n')\" && exit 1"
   }
 }

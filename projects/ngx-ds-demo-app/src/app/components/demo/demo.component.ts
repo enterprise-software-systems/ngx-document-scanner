@@ -1,7 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {DocScannerConfig} from '../../../../../ngx-document-scanner/src/lib/PublicModels';
-import {NgxDocScannerComponent} from 'ngx-document-scanner';
-import {MatSliderChange} from '@angular/material/slider';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgxDocScannerComponent } from 'ngx-document-scanner';
+import { DocScannerConfig } from '../../../../../ngx-document-scanner/src/lib/PublicModels';
 
 @Component({
   selector: 'app-demo',
@@ -154,10 +153,10 @@ export class DemoComponent implements OnInit {
     }
   }
 
-  onChange($event: MatSliderChange) {
+  onChange(value: number) {
     const conf = {...this.config};
     const tInfo = {...conf.thresholdInfo};
-    tInfo.thresh = $event.value;
+    tInfo.thresh = value;
     conf.thresholdInfo = tInfo;
     this.config = conf;
   }

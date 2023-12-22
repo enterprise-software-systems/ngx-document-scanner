@@ -45,9 +45,6 @@ import {FormsModule} from '@angular/forms';
     AngularDraggableModule,
     NgxDocScannerComponent,
   ],
-  entryComponents: [
-    NgxFilterMenuComponent,
-  ],
   providers: [
     NgxOpenCVService,
     LimitsService,
