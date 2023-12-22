@@ -1,12 +1,11 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {LimitsService, PointPositionChange, PositionChangeData, RolesArray} from '../../services/limits.service';
-import {MatBottomSheet} from '@angular/material/bottom-sheet';
-import {NgxFilterMenuComponent} from '../filter-menu/ngx-filter-menu.component';
-import {EditorActionButton, PointOptions, PointShape} from '../../PrivateModels';
-// import {NgxOpenCVService} from '../../services/ngx-opencv.service';
-import {DocScannerConfig, ImageDimensions, OpenCVState} from '../../PublicModels';
-import {NgxOpenCVService} from 'ngx-opencv';
-import {DomSanitizer} from '@angular/platform-browser';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { DomSanitizer } from '@angular/platform-browser';
+import { EditorActionButton, PointOptions, PointShape } from '../../PrivateModels';
+import { DocScannerConfig, ImageDimensions, OpenCVState } from '../../PublicModels';
+import { LimitsService, PointPositionChange, PositionChangeData, RolesArray } from '../../services/limits.service';
+import { NgxFilterMenuComponent } from '../filter-menu/ngx-filter-menu.component';
+import { NgxOpenCVService } from 'ngx-opencv';
 
 declare var cv: any;
 

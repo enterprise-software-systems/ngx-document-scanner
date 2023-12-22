@@ -1,25 +1,25 @@
-import * as i0 from '@angular/core';
-import { Injectable, Component, Input, HostListener, EventEmitter, Inject, Output, ViewChild, ElementRef, NgModule } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import * as i2 from '@angular/flex-layout/extended';
-import * as i3 from 'angular2-draggable';
-import { AngularDraggableModule } from 'angular2-draggable';
 import * as i5 from '@angular/common';
 import { CommonModule } from '@angular/common';
+import * as i0 from '@angular/core';
+import { Injectable, Component, Input, HostListener, EventEmitter, Inject, Output, ViewChild, ElementRef, NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 import * as i1 from '@angular/material/bottom-sheet';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import * as i5$1 from '@angular/flex-layout/flex';
+import { MatButtonModule } from '@angular/material/button';
 import * as i3$1 from '@angular/material/icon';
 import { MatIconModule } from '@angular/material/icon';
 import * as i4 from '@angular/material/list';
 import { MatListModule } from '@angular/material/list';
+import { MatSliderModule } from '@angular/material/slider';
+import * as i3 from 'angular2-draggable';
+import { AngularDraggableModule } from 'angular2-draggable';
 import * as i1$1 from 'ngx-opencv';
 import { OpenCvConfigToken, NgxOpenCVService, NgxOpenCVModule } from 'ngx-opencv';
+import { BehaviorSubject } from 'rxjs';
+import * as i2 from '@angular/flex-layout/extended';
+import * as i5$1 from '@angular/flex-layout/flex';
 import * as i4$1 from '@angular/platform-browser';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSliderModule } from '@angular/material/slider';
-import { FormsModule } from '@angular/forms';
 
 class LimitsService {
     constructor() {

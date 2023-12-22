@@ -1,23 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
-import {FormsModule} from '@angular/forms';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
 
-import {NgxDocumentScannerModule} from 'ngx-document-scanner';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { RoutingModule } from './routing.module';
+import { MatSliderModule } from '@angular/material/slider';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxDocumentScannerModule, OpenCVConfig } from 'ngx-document-scanner';
 import { DemoComponent } from './components/demo/demo.component';
-import {OpenCVConfig} from 'ngx-document-scanner';
-import {MatSliderModule} from '@angular/material/slider';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { RoutingModule } from './routing.module';
 
 const openCvConfig: OpenCVConfig = {
   openCVDirPath: './assets/opencv'

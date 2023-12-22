@@ -1,10 +1,10 @@
 import { EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { LimitsService } from '../../services/limits.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { DomSanitizer } from '@angular/platform-browser';
 import { EditorActionButton, PointOptions, PointShape } from '../../PrivateModels';
 import { DocScannerConfig, ImageDimensions } from '../../PublicModels';
+import { LimitsService } from '../../services/limits.service';
 import { NgxOpenCVService } from 'ngx-opencv';
-import { DomSanitizer } from '@angular/platform-browser';
 import * as i0 from "@angular/core";
 export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     private ngxOpenCv;
