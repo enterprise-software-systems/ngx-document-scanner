@@ -51,7 +51,7 @@
                         "outputPath": "dist/ngx-ds-demo-app",
                         "index": "projects/ngx-ds-demo-app/src/index.html",
                         "main": "projects/ngx-ds-demo-app/src/main.ts",
-                        "polyfills": "projects/ngx-ds-demo-app/src/polyfills.ts",
+                        "polyfills": "zone.js",
                         "tsConfig": "projects/ngx-ds-demo-app/tsconfig.app.json",
                         "assets": [
                             "projects/ngx-ds-demo-app/src/favicon.ico",
@@ -88,18 +88,18 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "ngx-ds-demo-app:build"
+                        "buildTarget": "ngx-ds-demo-app:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "ngx-ds-demo-app:build:production"
+                            "buildTarget": "ngx-ds-demo-app:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "ngx-ds-demo-app:build"
+                        "buildTarget": "ngx-ds-demo-app:build"
                     }
                 },
                 "test": {

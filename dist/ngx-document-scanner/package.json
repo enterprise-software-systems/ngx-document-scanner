@@ -20,18 +20,18 @@
     "url": "https://github.com/roiperlman/ngx-document-scanner.git"
   },
   "peerDependencies": {
-    "@angular/common": "^16.2.12",
-    "@angular/core": "^16.2.12",
-    "@angular/platform-browser": "^16.2.12",
-    "@angular/platform-browser-dynamic": "^16.2.12",
-    "@ess/ngx-opencv": "16.0.1",
+    "@angular/common": "^17.0.8",
+    "@angular/core": "^17.0.8",
+    "@angular/platform-browser": "^17.0.8",
+    "@angular/platform-browser-dynamic": "^17.0.8",
     "rxjs": "~7.8.0"
   },
   "dependencies": {
     "angular2-draggable": "^16.0.0",
+    "@ess/ngx-opencv": "17.0.0",
     "@angular/flex-layout": "^15.0.0-beta.42",
-    "@angular/material": "^16.2.12",
-    "@angular/cdk": "~16.2.12",
+    "@angular/material": "^17.0.4",
+    "@angular/cdk": "~17.0.4",
     "tslib": "^2.3.0"
   },
   "module": "fesm2022/ngx-document-scanner.mjs",
