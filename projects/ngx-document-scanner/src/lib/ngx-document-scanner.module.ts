@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
 import { AngularDraggableModule } from 'angular2-draggable';
-import { NgxOpenCVModule, NgxOpenCVService, OpenCvConfigToken } from 'ngx-opencv';
+import { NgxOpenCVModule, NgxOpenCVService, OpenCvConfigToken } from '@ess/ngx-opencv';
 import { OpenCVConfig } from './PublicModels';
 import { NgxDraggablePointComponent } from './components/draggable-point/ngx-draggable-point.component';
 import { NgxFilterMenuComponent } from './components/filter-menu/ngx-filter-menu.component';

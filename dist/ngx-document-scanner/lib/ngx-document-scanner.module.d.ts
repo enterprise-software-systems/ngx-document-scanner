@@ -12,7 +12,7 @@ import * as i8 from "@angular/material/bottom-sheet";
 import * as i9 from "@angular/material/list";
 import * as i10 from "angular2-draggable";
 import * as i11 from "@angular/common";
-import * as i12 from "ngx-opencv";
+import * as i12 from "@ess/ngx-opencv";
 import * as i13 from "@angular/material/slider";
 import * as i14 from "@angular/forms";
 export declare class NgxDocumentScannerModule {

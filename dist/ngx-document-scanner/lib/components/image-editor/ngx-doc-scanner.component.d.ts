@@ -4,7 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { EditorActionButton, PointOptions, PointShape } from '../../PrivateModels';
 import { DocScannerConfig, ImageDimensions } from '../../PublicModels';
 import { LimitsService } from '../../services/limits.service';
-import { NgxOpenCVService } from 'ngx-opencv';
+import { NgxOpenCVService } from '@ess/ngx-opencv';
 import * as i0 from "@angular/core";
 export declare class NgxDocScannerComponent implements OnInit, OnChanges {
     private ngxOpenCv;

@@ -5,7 +5,7 @@ import { EditorActionButton, PointOptions, PointShape } from '../../PrivateModel
 import { DocScannerConfig, ImageDimensions, OpenCVState } from '../../PublicModels';
 import { LimitsService, PointPositionChange, PositionChangeData, RolesArray } from '../../services/limits.service';
 import { NgxFilterMenuComponent } from '../filter-menu/ngx-filter-menu.component';
-import { NgxOpenCVService } from 'ngx-opencv';
+import { NgxOpenCVService } from '@ess/ngx-opencv';
 
 declare var cv: any;
 
