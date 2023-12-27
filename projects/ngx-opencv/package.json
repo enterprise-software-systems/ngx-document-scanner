@@ -1,10 +1,9 @@
 {
     "name": "@ess/ngx-opencv",
-    "version": "16.0.0",
+    "version": "16.0.1",
     "peerDependencies": {
         "@angular/common": "^16.2.12",
-        "@angular/core": "^16.2.12",
-        "@ess/ngx-opencv": "^16.0.0"
+        "@angular/core": "^16.2.12"
     },
     "keywords": [
         "opencv",

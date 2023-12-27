@@ -124,9 +124,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
         }] });
 const a = 0;
 
+const ESS_NGX_OPENCV_API = "@ess/ngx-opencv";
+
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { NgxOpenCVModule, NgxOpenCVService, OpenCvConfigToken };
+export { ESS_NGX_OPENCV_API, NgxOpenCVModule, NgxOpenCVService, OpenCvConfigToken };
 //# sourceMappingURL=ess-ngx-opencv.mjs.map
