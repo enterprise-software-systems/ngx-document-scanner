@@ -90,18 +90,18 @@ class NgxOpenCVService {
             }
         };
     }
-    /** @nocollapse */ static { this.ɵfac = function NgxOpenCVService_Factory(t) { return new (t || NgxOpenCVService)(i0.ɵɵinject(OpenCvConfigToken), i0.ɵɵinject(i0.NgZone)); }; }
-    /** @nocollapse */ static { this.ɵprov = /** @pureOrBreakMyCode */ i0.ɵɵdefineInjectable({ token: NgxOpenCVService, factory: NgxOpenCVService.ɵfac, providedIn: 'root' }); }
+    /** @nocollapse */ static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: NgxOpenCVService, deps: [{ token: OpenCvConfigToken }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    /** @nocollapse */ static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: NgxOpenCVService, providedIn: 'root' }); }
 }
-(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxOpenCVService, [{
-        type: Injectable,
-        args: [{
-                providedIn: 'root'
-            }]
-    }], function () { return [{ type: undefined, decorators: [{
-                type: Inject,
-                args: [OpenCvConfigToken]
-            }] }, { type: i0.NgZone }]; }, null); })();
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: NgxOpenCVService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: function () { return [{ type: undefined, decorators: [{
+                    type: Inject,
+                    args: [OpenCvConfigToken]
+                }] }, { type: i0.NgZone }]; } });
 
 class NgxOpenCVModule {
     static forRoot(config) {
@@ -110,18 +110,18 @@ class NgxOpenCVModule {
             providers: [{ provide: OpenCvConfigToken, useValue: config }]
         };
     }
-    /** @nocollapse */ static { this.ɵfac = function NgxOpenCVModule_Factory(t) { return new (t || NgxOpenCVModule)(); }; }
-    /** @nocollapse */ static { this.ɵmod = /** @pureOrBreakMyCode */ i0.ɵɵdefineNgModule({ type: NgxOpenCVModule }); }
-    /** @nocollapse */ static { this.ɵinj = /** @pureOrBreakMyCode */ i0.ɵɵdefineInjector({ providers: [NgxOpenCVService] }); }
+    /** @nocollapse */ static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: NgxOpenCVModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    /** @nocollapse */ static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: NgxOpenCVModule }); }
+    /** @nocollapse */ static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: NgxOpenCVModule, providers: [NgxOpenCVService] }); }
 }
-(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(NgxOpenCVModule, [{
-        type: NgModule,
-        args: [{
-                declarations: [],
-                exports: [],
-                providers: [NgxOpenCVService]
-            }]
-    }], null, null); })();
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: NgxOpenCVModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    declarations: [],
+                    exports: [],
+                    providers: [NgxOpenCVService]
+                }]
+        }] });
 const a = 0;
 
 /**
